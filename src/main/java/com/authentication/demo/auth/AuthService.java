@@ -1,5 +1,6 @@
 package com.authentication.demo.auth;
 
+import com.authentication.demo.auth.dto.UserDto;
 import com.authentication.demo.auth.request.LoginRequest;
 import com.authentication.demo.auth.request.RegisterRequest;
 import com.authentication.demo.auth.response.LoginResponse;
@@ -52,5 +53,10 @@ public class AuthService {
                         request.getPassword()));
         User user = this.userRepository.findByEmail(request.getEmail()).orElseThrow();
         String token = this.jwtService.generateToken(user);
+        UserDto userDto = new UserDto(
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName());
+        return new LoginResponse(token, userDto);
     }
 }

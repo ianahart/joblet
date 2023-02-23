@@ -1,29 +1,29 @@
 package com.authentication.demo.auth.response;
 
-import com.authentication.demo.user.User;
+import com.authentication.demo.auth.dto.UserDto;
 
 public class LoginResponse {
     private String token;
-    private User user;
+    private UserDto userDto;
 
     public String getToken() {
         return token;
     }
 
-    public User getUser() {
-        return user;
+    public UserDto getUserDto() {
+        return userDto;
     }
 
-    public LoginResponse(String token, User user) {
+    public LoginResponse(String token, UserDto userDto) {
         this.token = token;
-        this.user = user;
+        this.userDto = userDto;
     }
 
     public void setToken(String token) {
         this.token = token;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
     }
 }
