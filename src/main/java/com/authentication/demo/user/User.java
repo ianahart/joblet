@@ -25,7 +25,7 @@ public class User implements UserDetails {
     private Long id;
     @Column(name = "first_name", length = 100)
     private String firstName;
-    @Column(name = "last_name", length  = 100)
+    @Column(name = "last_name", length = 100)
     private String lastName;
     @Column(name = "email", unique = true)
     private String email;
@@ -39,22 +39,25 @@ public class User implements UserDetails {
 
     }
 
-    public User(Long id, String firstName, String lastName, String email, String password) {
+    public User(Long id, String firstName, String lastName, String email, String password, Role role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
-    public User(String firstName, String lastName, String email, String password) {
+    public User(String firstName, String lastName, String email, String password, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
-    public Long getId() {
-        return id;
+    public Role getRole() {
+        return role;
     }
 
     public String getEmail() {
