@@ -3,6 +3,8 @@ package com.authentication.demo.user;
 import java.util.Collection;
 import java.util.List;
 
+import com.authentication.demo.token.Token;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +15,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -35,10 +38,12 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
+
     public User() {
 
     }
-
     public User(Long id, String firstName, String lastName, String email, String password, Role role) {
         this.id = id;
         this.firstName = firstName;
@@ -87,6 +92,10 @@ public class User implements UserDetails {
         return password;
     }
 
+    public List<Token> getTokens() {
+        return tokens;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -109,6 +118,10 @@ public class User implements UserDetails {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public void setTokens(List<Token> tokens) {
+        this.tokens = tokens;
     }
 
     @Override
