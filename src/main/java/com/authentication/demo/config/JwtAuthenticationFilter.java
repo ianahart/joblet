@@ -2,6 +2,8 @@ package com.authentication.demo.config;
 
 import java.io.IOException;
 
+import com.authentication.demo.token.TokenRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,10 +28,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private final UserDetailsService userDetailsService;
 
+    @Autowired
+    private final TokenRepository tokenRepository;
+
     public JwtAuthenticationFilter(JwtService jwtService,
-            UserDetailsService userDetailsService) {
+            UserDetailsService userDetailsService,
+            TokenRepository tokenRepository) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
+        this.tokenRepository = tokenRepository;
     }
 
     @Override
@@ -54,7 +61,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
-            if (jwtService.isTokenValid(jwt, userDetails)) {
+            var isTokenValid = this.tokenRepository.findByToken(jwt)
+                    .map(t -> !t.getExpired() && t.getRevoked()).orElse(false);
+
+            if (jwtService.isTokenValid(jwt, userDetails) && isTokenValid) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,

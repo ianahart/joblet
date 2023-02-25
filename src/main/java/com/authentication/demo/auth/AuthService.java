@@ -1,5 +1,6 @@
 package com.authentication.demo.auth;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.authentication.demo.advice.BadRequestException;
@@ -9,6 +10,9 @@ import com.authentication.demo.auth.request.LoginRequest;
 import com.authentication.demo.auth.request.RegisterRequest;
 import com.authentication.demo.auth.response.LoginResponse;
 import com.authentication.demo.config.JwtService;
+import com.authentication.demo.token.Token;
+import com.authentication.demo.token.TokenRepository;
+import com.authentication.demo.token.TokenType;
 import com.authentication.demo.user.Role;
 import com.authentication.demo.user.User;
 import com.authentication.demo.user.UserRepository;
@@ -23,16 +27,19 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final TokenRepository tokenRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
     public AuthService(
             PasswordEncoder passwordEncoder,
             UserRepository userRepository,
+            TokenRepository tokenRepository,
             JwtService jwtService,
             AuthenticationManager authenticationManager) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.tokenRepository = tokenRepository;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
     }
@@ -54,6 +61,27 @@ public class AuthService {
         return new RegisterResponse("User created.");
     }
 
+    private void saveTokenWithUser(String token, User user) {
+        Token tokenToSave = new Token(token, TokenType.BEARER, false, false, user);
+        this.tokenRepository.save(tokenToSave);
+
+    }
+
+    private void revokeAllUserTokens(User user) {
+        List<Token> tokens = this.tokenRepository.findAllValidTokens(user.getId());
+
+        if (tokens.isEmpty()) {
+            return;
+        }
+
+        tokens.forEach(t -> {
+            t.setExpired(true);
+            t.setRevoked(true);
+        });
+
+        this.tokenRepository.saveAll(tokens);
+    }
+
     public LoginResponse login(LoginRequest request) {
 
         this.authenticationManager.authenticate(
@@ -62,12 +90,17 @@ public class AuthService {
                         request.getPassword()));
         User user = this.userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new NotFoundException("User not found by email."));
-        String token = this.jwtService.generateToken(user);
+        String jwtToken = this.jwtService.generateToken(user);
+
+        this.revokeAllUserTokens(user);
+        this.saveTokenWithUser(jwtToken, user);
+
         UserDto userDto = new UserDto(
+                user.getId(),
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getRole());
-        return new LoginResponse(token, userDto);
+        return new LoginResponse(jwtToken, userDto);
     }
 }

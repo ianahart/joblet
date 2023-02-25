@@ -2,6 +2,7 @@ package com.authentication.demo.token;
 
 import com.authentication.demo.user.User;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -18,18 +19,30 @@ public class Token {
     @Id
     @GeneratedValue
     private Long id;
+    @Column(name = "token")
     private String token;
+    @Column(name = "token_type")
     @Enumerated(EnumType.STRING)
     private TokenType tokenType;
+    @Column(name = "expired")
     private Boolean expired;
+    @Column(name = "revoked")
     private Boolean revoked;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Token() {
+    public Token(Long id) {
+        this.id = id;
+    }
 
+    public Token(Long id, String token, TokenType tokenType, Boolean expired, Boolean revoked) {
+        this.id = id;
+        this.token = token;
+        this.tokenType = tokenType;
+        this.expired = expired;
+        this.revoked = revoked;
     }
 
     public Token(Long id, String token, TokenType tokenType, Boolean expired, Boolean revoked, User user) {

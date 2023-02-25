@@ -1,3 +1,5 @@
+package com.authentication.demo.auth;
+
 
 public class RegisterResponse {
     String message;
