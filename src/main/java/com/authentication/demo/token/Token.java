@@ -33,8 +33,7 @@ public class Token {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Token(Long id) {
-        this.id = id;
+    public Token() {
     }
 
     public Token(Long id, String token, TokenType tokenType, Boolean expired, Boolean revoked) {
