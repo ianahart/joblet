@@ -3,6 +3,7 @@ package com.authentication.demo.user;
 import java.util.Collection;
 import java.util.List;
 
+import com.authentication.demo.refreshtoken.RefreshToken;
 import com.authentication.demo.token.Token;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -39,6 +40,9 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToMany(mappedBy = "user")
+    private List<RefreshToken> refreshTokens;
+
+    @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 
     public User() {
@@ -70,6 +74,10 @@ public class User implements UserDetails {
 
     public Long getId() {
         return id;
+    }
+
+    public List<RefreshToken> getRefreshTokens() {
+        return refreshTokens;
     }
 
     public Role getRole() {
@@ -127,6 +135,10 @@ public class User implements UserDetails {
 
     public void setTokens(List<Token> tokens) {
         this.tokens = tokens;
+    }
+
+    public void setRefreshTokens(List<RefreshToken> refreshTokens) {
+        this.refreshTokens = refreshTokens;
     }
 
     @Override
