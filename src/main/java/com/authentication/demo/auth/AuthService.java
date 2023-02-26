@@ -66,13 +66,13 @@ public class AuthService {
         return new RegisterResponse("User created.");
     }
 
-    private void saveTokenWithUser(String token, User user) {
+    public void saveTokenWithUser(String token, User user) {
         Token tokenToSave = new Token(token, TokenType.BEARER, false, false, user);
         this.tokenRepository.save(tokenToSave);
 
     }
 
-    private void revokeAllUserTokens(User user) {
+    public void revokeAllUserTokens(User user) {
         List<Token> tokens = this.tokenRepository.findAllValidTokens(user.getId());
 
         if (tokens.isEmpty()) {
@@ -98,7 +98,6 @@ public class AuthService {
         String jwtToken = this.jwtService.generateToken(user);
 
         this.revokeAllUserTokens(user);
-        // deleteAllRefreshTokens that are active
         this.saveTokenWithUser(jwtToken, user);
         RefreshToken refreshToken = this.refreshTokenService.generateRefreshToken(user.getId());
 
