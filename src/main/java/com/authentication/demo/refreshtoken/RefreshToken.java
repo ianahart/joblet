@@ -30,6 +30,23 @@ public class RefreshToken {
     @Column(nullable = false)
     private Instant expiryDate;
 
+    public RefreshToken() {
+
+    }
+
+    public RefreshToken(Long id, String refreshToken, Instant expiryDate, User user) {
+        this.id = id;
+        this.refreshToken = refreshToken;
+        this.expiryDate = expiryDate;
+        this.user = user;
+    }
+
+    public RefreshToken(String refreshToken, Instant expiryDate, User user) {
+        this.refreshToken = refreshToken;
+        this.expiryDate = expiryDate;
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }

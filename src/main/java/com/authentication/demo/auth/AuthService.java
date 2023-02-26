@@ -10,6 +10,8 @@ import com.authentication.demo.auth.request.LoginRequest;
 import com.authentication.demo.auth.request.RegisterRequest;
 import com.authentication.demo.auth.response.LoginResponse;
 import com.authentication.demo.config.JwtService;
+import com.authentication.demo.config.RefreshTokenService;
+import com.authentication.demo.refreshtoken.RefreshToken;
 import com.authentication.demo.token.Token;
 import com.authentication.demo.token.TokenRepository;
 import com.authentication.demo.token.TokenType;
@@ -30,17 +32,20 @@ public class AuthService {
     private final TokenRepository tokenRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final RefreshTokenService refreshTokenService;
 
     public AuthService(
             PasswordEncoder passwordEncoder,
             UserRepository userRepository,
             TokenRepository tokenRepository,
             JwtService jwtService,
+            RefreshTokenService refreshTokenService,
             AuthenticationManager authenticationManager) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.tokenRepository = tokenRepository;
         this.jwtService = jwtService;
+        this.refreshTokenService = refreshTokenService;
         this.authenticationManager = authenticationManager;
     }
 
@@ -93,7 +98,9 @@ public class AuthService {
         String jwtToken = this.jwtService.generateToken(user);
 
         this.revokeAllUserTokens(user);
+        // deleteAllRefreshTokens that are active
         this.saveTokenWithUser(jwtToken, user);
+        RefreshToken refreshToken = this.refreshTokenService.generateRefreshToken(user.getId());
 
         UserDto userDto = new UserDto(
                 user.getId(),
@@ -101,6 +108,6 @@ public class AuthService {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getRole());
-        return new LoginResponse(jwtToken, userDto);
+        return new LoginResponse(jwtToken, refreshToken.getRefreshToken(), userDto);
     }
 }
