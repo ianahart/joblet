@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ public class PostController {
 
     @GetMapping(path = "/")
     public ResponseEntity<List<String>> getPosts() {
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
         return ResponseEntity.status(HttpStatus.OK).body(
                 List.of("post1", "post2", "post3"));
     }
