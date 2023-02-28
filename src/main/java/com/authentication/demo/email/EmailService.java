@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.authentication.demo.advice.NotFoundException;
 import com.authentication.demo.auth.request.EmailRequest;
 import com.authentication.demo.auth.response.EmailResponse;
 import com.authentication.demo.config.JwtService;
@@ -64,16 +65,19 @@ public class EmailService {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
         helper.setFrom(sender);
         helper.setSubject("Reset Your Password");
+
+        User user = this.userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new NotFoundException("A user with this email does not exist."));
+
         helper.setTo(request.getEmail());
-        String emailContent = getEmailContent(request.getEmail());
+        String emailContent = getEmailContent(user);
         helper.setText(emailContent, true);
         javaMailSender.send(mimeMessage);
 
         return new EmailResponse("Email sent successfully...");
     }
 
-    String getEmailContent(String email) throws IOException, TemplateException {
-        User user = this.userRepository.findByEmail(email).orElseThrow();
+    String getEmailContent(User user) throws IOException, TemplateException {
         String token = this.jwtService.generateToken(user);
         this.passwordResetService.savePasswordReset(user, token);
 
