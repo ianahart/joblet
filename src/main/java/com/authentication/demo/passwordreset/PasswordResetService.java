@@ -1,5 +1,6 @@
 package com.authentication.demo.passwordreset;
 
+import com.authentication.demo.advice.ForbiddenException;
 import com.authentication.demo.user.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,15 @@ public class PasswordResetService {
 
     public PasswordResetService(PasswordResetRepository passwordResetRepository) {
         this.passwordResetRepository = passwordResetRepository;
+    }
+
+    public void deleteUserPasswordResetsById(Long id) {
+        this.passwordResetRepository.deleteUserPasswordResetsById(id);
+    }
+
+    public void isResetTokenValid(String token) {
+        PasswordReset passwordReset = this.passwordResetRepository.findByToken(token)
+                .orElseThrow(() -> new ForbiddenException("Reset token is invalid."));
     }
 
     public void savePasswordReset(User user, String token) {
