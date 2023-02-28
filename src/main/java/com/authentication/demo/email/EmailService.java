@@ -5,19 +5,15 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.authentication.demo.advice.BadRequestException;
-import com.authentication.demo.advice.NotFoundException;
 import com.authentication.demo.auth.request.EmailRequest;
 import com.authentication.demo.auth.response.EmailResponse;
 import com.authentication.demo.config.JwtService;
-import com.authentication.demo.token.Token;
+import com.authentication.demo.passwordreset.PasswordResetService;
 import com.authentication.demo.user.User;
 import com.authentication.demo.user.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -29,6 +25,8 @@ import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class EmailService {
+    @Autowired
+    private final PasswordResetService passwordResetService;
 
     @Autowired
     private final JwtService jwtService;
@@ -43,12 +41,14 @@ public class EmailService {
     final UserRepository userRepository;
 
     public EmailService(
+            PasswordResetService passwordResetService,
             JwtService jwtService,
             Configuration configuration,
             JavaMailSender javaMailSender,
             UserRepository userRepository) {
 
         this.jwtService = jwtService;
+        this.passwordResetService = passwordResetService;
         this.configuration = configuration;
         this.javaMailSender = javaMailSender;
         this.userRepository = userRepository;
@@ -75,6 +75,7 @@ public class EmailService {
     String getEmailContent(String email) throws IOException, TemplateException {
         User user = this.userRepository.findByEmail(email).orElseThrow();
         String token = this.jwtService.generateToken(user);
+        this.passwordResetService.savePasswordReset(user, token);
 
         StringWriter stringWriter = new StringWriter();
         Map<String, Object> model = new HashMap<>();

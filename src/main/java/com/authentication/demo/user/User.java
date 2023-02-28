@@ -3,6 +3,7 @@ package com.authentication.demo.user;
 import java.util.Collection;
 import java.util.List;
 
+import com.authentication.demo.passwordreset.PasswordReset;
 import com.authentication.demo.refreshtoken.RefreshToken;
 import com.authentication.demo.token.Token;
 
@@ -45,6 +46,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 
+    @OneToMany(mappedBy = "user")
+    private List<PasswordReset> passwordResets;
+
     public User() {
 
     }
@@ -78,6 +82,10 @@ public class User implements UserDetails {
 
     public List<RefreshToken> getRefreshTokens() {
         return refreshTokens;
+    }
+
+    public List<PasswordReset> getPasswordResets() {
+        return passwordResets;
     }
 
     public Role getRole() {
@@ -139,6 +147,10 @@ public class User implements UserDetails {
 
     public void setRefreshTokens(List<RefreshToken> refreshTokens) {
         this.refreshTokens = refreshTokens;
+    }
+
+    public void setPasswordResets(List<PasswordReset> passwordResets) {
+        this.passwordResets = passwordResets;
     }
 
     @Override
