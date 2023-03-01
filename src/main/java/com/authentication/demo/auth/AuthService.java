@@ -55,7 +55,7 @@ public class AuthService {
                 request.getLastName(),
                 request.getEmail(),
                 this.passwordEncoder.encode(request.getPassword()),
-                Role.USER);
+                request.getRole().equals("USER") ? Role.USER : Role.EMPLOYER);
 
         Optional<User> exists = this.userRepository.findByEmail(request.getEmail());
 
