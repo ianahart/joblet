@@ -62,7 +62,6 @@ const Register = () => {
       navigate('/login');
     } catch (err: unknown | AxiosError) {
       if (err instanceof AxiosError && err.response) {
-        console.log(err);
         if (err.response.status === 400) {
           setError(err.response.data.message);
         }
