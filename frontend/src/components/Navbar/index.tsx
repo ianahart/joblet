@@ -32,7 +32,7 @@ const Navbar = () => {
   }, [handleResize]);
 
   return (
-    <Box as="nav" bg="blue.primary" py="0.5rem">
+    <Box as="nav" bg="green.primary" py="0.5rem">
       <UnorderedList listStyleType="none" display="flex" alignItems="center">
         <RouterLink to="/">
           <Image width="50px" height="50px" borderRadius="8px" src={jobletLogo} />

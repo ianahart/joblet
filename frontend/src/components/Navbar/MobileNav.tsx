@@ -42,7 +42,7 @@ const MobileNav = ({ handleSetMobileNavOpen, triggerRef }: IMobileNavProps) => {
       top="-20px"
       right="0"
       background="blue"
-      zIndex="10"
+      zIndex="99"
       minWidth="250px"
       bg="#fff"
       boxShadow="rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;"
