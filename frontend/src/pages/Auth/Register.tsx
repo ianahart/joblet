@@ -91,8 +91,10 @@ const Register = () => {
             <Flex
               my="1.5rem"
               flexDir={['column', 'column', 'row']}
-              justifyContent="flex-start"
-              m={['1rem', '1rem', '2.5rem']}
+              m="1rem"
+              textAlign="left"
+              space-around
+              justifyContent="space-around"
             >
               <RegisterFormLabel text="Name" />
               <FormInput
@@ -102,7 +104,7 @@ const Register = () => {
                 name={form.firstName.name}
                 type={form.firstName.type}
                 errorField="First name"
-                width="85%"
+                width="90%"
                 htmlFor="firstName"
                 label="First Name"
               />
@@ -113,7 +115,7 @@ const Register = () => {
                 name={form.lastName.name}
                 type={form.lastName.type}
                 errorField="Last name"
-                width="85%"
+                width="90%"
                 htmlFor="lastName"
                 label="Last Name"
               />
