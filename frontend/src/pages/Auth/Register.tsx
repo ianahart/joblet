@@ -93,7 +93,6 @@ const Register = () => {
               flexDir={['column', 'column', 'row']}
               m="1rem"
               textAlign="left"
-              space-around
               justifyContent="space-around"
             >
               <RegisterFormLabel text="Name" />

@@ -11,6 +11,7 @@ const RegisterFormLabel = ({ text }: IRegisterFormLabelProps) => {
       width="100px"
       color="black.primary"
       fontWeight="bold"
+      textAlign="left"
       mr="1rem"
     >
       {text}
