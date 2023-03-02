@@ -56,7 +56,7 @@ const FormInput = ({
 
   return (
     <FormControl my="1.5rem" display="flex" mx="1rem" flexDir="column">
-      <Box position="relative">
+      <Box position="relative" display="flex" justifyContent="flex-start">
         <Input
           color="text.primary"
           onChange={handleOnChange}
@@ -78,7 +78,7 @@ const FormInput = ({
           color="text.primary"
           top="10px"
           fontSize="1.5rem"
-          right="40px"
+          right="55px"
         >
           {type === 'password' ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
         </Box>

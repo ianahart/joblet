@@ -4,3 +4,8 @@ export const createAccountState = {
   email: { name: 'email', value: '', error: '', type: 'email' },
   password: { name: 'password', value: '', error: '', type: 'password' },
 };
+
+export const loginState = {
+  email: { name: 'email', value: '', error: '', type: 'email' },
+  password: { name: 'password', value: '', error: '', type: 'password' },
+};
