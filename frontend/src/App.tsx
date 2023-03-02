@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import CompanyReviews from './pages/CompanyReviews';
+import ForgotPassword from './pages/Auth/ForgotPassword';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="login" element={<Login />} />
             <Route path="company-reviews" element={<CompanyReviews />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
           </Routes>
         </Box>
       </Router>
