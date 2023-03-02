@@ -11,7 +11,7 @@ export const theme = extendTheme({
       primary: '#e4e4e6',
     },
     black: {
-      primary: '#181717',
+      primary: '#454545',
       secondary: '#200F21',
     },
     text: {
@@ -32,6 +32,9 @@ export const theme = extendTheme({
     },
     cover: {
       primary: 'rgba(54, 54, 54, 0.8)',
+    },
+    error: {
+      primary: '#ff0033',
     },
   },
 });
