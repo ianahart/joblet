@@ -29,7 +29,6 @@ const FormInput = ({
   };
 
   const handleOnClick = () => {
-    console.log(type);
     type === 'password'
       ? updateField('password', 'text', 'type')
       : updateField('password', 'password', 'type');
