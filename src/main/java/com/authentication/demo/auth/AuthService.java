@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.authentication.demo.advice.BadRequestException;
+import com.authentication.demo.advice.ForbiddenException;
 import com.authentication.demo.advice.NotFoundException;
 import com.authentication.demo.auth.dto.UserDto;
 import com.authentication.demo.auth.request.LoginRequest;
@@ -21,6 +22,7 @@ import com.authentication.demo.user.UserRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -89,10 +91,15 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request) {
 
-        this.authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()));
+        try {
+            this.authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()));
+
+        } catch (BadCredentialsException e) {
+            throw new ForbiddenException("Credentials are invalid");
+        }
         User user = this.userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new NotFoundException("User not found by email."));
         String jwtToken = this.jwtService.generateToken(user);

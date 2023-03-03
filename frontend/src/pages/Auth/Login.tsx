@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from '@chakra-ui/react';
+import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import FormContainer from '../../components/Form/FormContainer';
 import loginBG from '../../images/login.png';
 import { ILoginForm } from '../../interfaces';
@@ -33,6 +33,7 @@ const Login = () => {
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError('');
     checkforErrors();
     if (checkforErrors()) {
       setError('Please make sure there are no errors');
@@ -50,7 +51,9 @@ const Login = () => {
       console.log(response);
     } catch (err: unknown | AxiosError) {
       if (err instanceof AxiosError && err.response) {
-        console.log(err);
+        if (err.response.status === 403) {
+          setError(err.response.data.message);
+        }
       }
     }
   };
@@ -66,6 +69,16 @@ const Login = () => {
         <FormContainer title="Sign In" width={['95%', '95%', '500px']} minH="500px">
           <Box as="main" py="5rem">
             <form onSubmit={handleOnSubmit}>
+              {error && (
+                <Text
+                  textAlign="center"
+                  my="1rem"
+                  color="error.primary"
+                  fontSize="0.85rem"
+                >
+                  {error}
+                </Text>
+              )}
               <FormInput
                 updateField={updateField}
                 value={form.email.value}
