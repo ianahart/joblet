@@ -15,7 +15,7 @@ interface IMobileNavProps {
 
 const MobileNav = ({ handleSetMobileNavOpen, triggerRef }: IMobileNavProps) => {
   const navigate = useNavigate();
-  const { logout } = useContext(UserContext) as IUserContext;
+  const { logout, user } = useContext(UserContext) as IUserContext;
 
   const handleOnLogout = async () => {
     try {
@@ -79,28 +79,34 @@ const MobileNav = ({ handleSetMobileNavOpen, triggerRef }: IMobileNavProps) => {
           to="company-reviews"
         />
         <Spacer />
-        <NavigationLink
-          handleSetMobileNavOpen={handleSetMobileNavOpen}
-          theme="dark"
-          text="Create Account"
-          to="register"
-        />
+        {user.id === 0 && (
+          <NavigationLink
+            handleSetMobileNavOpen={handleSetMobileNavOpen}
+            theme="dark"
+            text="Create Account"
+            to="register"
+          />
+        )}
         <Spacer />
-        <NavigationLink
-          handleSetMobileNavOpen={handleSetMobileNavOpen}
-          theme="dark"
-          text="Sign in"
-          to="login"
-        />
-        <Text
-          onClick={handleOnLogout}
-          p="0.5rem"
-          role="button"
-          color="black.primary"
-          fontWeight="bold"
-        >
-          Logout
-        </Text>
+        {user.id === 0 && (
+          <NavigationLink
+            handleSetMobileNavOpen={handleSetMobileNavOpen}
+            theme="dark"
+            text="Sign in"
+            to="login"
+          />
+        )}
+        {user.id !== 0 && (
+          <Text
+            onClick={handleOnLogout}
+            p="0.5rem"
+            role="button"
+            color="black.primary"
+            fontWeight="bold"
+          >
+            Logout
+          </Text>
+        )}
       </Flex>
     </Box>
   );

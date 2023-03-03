@@ -9,7 +9,7 @@ import NavigationLink from './NavigationLink';
 
 const DesktopNav = () => {
   const navigate = useNavigate();
-  const { logout } = useContext(UserContext) as IUserContext;
+  const { logout, user } = useContext(UserContext) as IUserContext;
 
   const handleOnLogout = async () => {
     try {
@@ -25,17 +25,21 @@ const DesktopNav = () => {
   return (
     <Flex display={['none', 'none', 'flex']}>
       <NavigationLink theme="light" text="Company Reviews" to="company-reviews" />
-      <NavigationLink theme="light" text="Create Account" to="register" />
-      <NavigationLink theme="light" text="Sign in" to="login" />
-      <Text
-        onClick={handleOnLogout}
-        p="0.5rem"
-        role="button"
-        color="light.primary"
-        fontWeight="bold"
-      >
-        Logout
-      </Text>
+      {user.id === 0 && (
+        <NavigationLink theme="light" text="Create Account" to="register" />
+      )}
+      {user.id === 0 && <NavigationLink theme="light" text="Sign in" to="login" />}
+      {user.id !== 0 && (
+        <Text
+          onClick={handleOnLogout}
+          p="0.5rem"
+          role="button"
+          color="light.primary"
+          fontWeight="bold"
+        >
+          Logout
+        </Text>
+      )}
     </Flex>
   );
 };
