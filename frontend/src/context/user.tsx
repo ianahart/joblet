@@ -11,6 +11,12 @@ const UserContextProvider = ({ children }: IChildren) => {
   const [user, setUser] = useState<IUser>(userState);
   const [tokens, setTokens] = useState<ITokens>(tokenState);
 
+  const logout = () => {
+    localStorage.clear();
+    setTokens({ refreshToken: '', token: '' });
+    setUser(userState);
+  };
+
   const stowTokens = (tokens: ITokens) => {
     localStorage.setItem('tokens', JSON.stringify(tokens));
     setTokens((prevState) => ({
@@ -28,7 +34,7 @@ const UserContextProvider = ({ children }: IChildren) => {
 
   return (
     <UserContext.Provider
-      value={{ updateUser, user, tokens, setUser, setTokens, stowTokens }}
+      value={{ updateUser, logout, user, tokens, setUser, setTokens, stowTokens }}
     >
       {children}
     </UserContext.Provider>

@@ -16,11 +16,11 @@ export interface ILoginForm {
 }
 
 export interface IUser {
-  id: number,
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
-    role: string;
+  role: string;
 }
 
 export interface ITokens {
@@ -31,6 +31,7 @@ export interface ITokens {
 export interface IUserContext {
   user: IUser;
   tokens: ITokens;
+    logout: () => void;
   setUser: (user: IUser) => void;
   setTokens: (tokens: ITokens) => void;
   stowTokens: (tokens: ITokens) => void;

@@ -95,6 +95,7 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<RefreshTokenResponse> refresh(@RequestBody RefreshTokenRequest request) {
         RefreshToken refreshToken = this.refreshTokenService.verifyRefreshToken(request.getRefreshToken());
+
         this.authService.revokeAllUserTokens(refreshToken.getUser());
         String token = this.jwtService.generateToken(refreshToken.getUser());
         this.authService.saveTokenWithUser(token, refreshToken.getUser());
