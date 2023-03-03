@@ -1,7 +1,12 @@
-import { Box, Flex, Spacer } from '@chakra-ui/react';
-import { useRef, useCallback, useEffect, RefObject } from 'react';
+import { Box, Flex, Spacer, Text } from '@chakra-ui/react';
+import { useRef, useCallback, useEffect, RefObject, useContext } from 'react';
 import NavigationLink from './NavigationLink';
 import { AiOutlineClose } from 'react-icons/ai';
+import { AxiosError } from 'axios';
+import { http } from '../../helpers/utils';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../context/user';
+import { IUserContext } from '../../interfaces';
 
 interface IMobileNavProps {
   handleSetMobileNavOpen: (open: boolean) => void;
@@ -9,6 +14,20 @@ interface IMobileNavProps {
 }
 
 const MobileNav = ({ handleSetMobileNavOpen, triggerRef }: IMobileNavProps) => {
+  const navigate = useNavigate();
+  const { logout } = useContext(UserContext) as IUserContext;
+
+  const handleOnLogout = async () => {
+    try {
+      await http.post('/auth/logout', {});
+      logout();
+      handleSetMobileNavOpen(false);
+      navigate('/login');
+    } catch (err: unknown | AxiosError) {
+      return;
+    }
+  };
+
   const menuRef = useRef<HTMLDivElement>(null);
 
   const handleClose = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -73,6 +92,15 @@ const MobileNav = ({ handleSetMobileNavOpen, triggerRef }: IMobileNavProps) => {
           text="Sign in"
           to="login"
         />
+        <Text
+          onClick={handleOnLogout}
+          p="0.5rem"
+          role="button"
+          color="black.primary"
+          fontWeight="bold"
+        >
+          Logout
+        </Text>
       </Flex>
     </Box>
   );

@@ -31,7 +31,7 @@ export interface ITokens {
 export interface IUserContext {
   user: IUser;
   tokens: ITokens;
-    logout: () => void;
+  logout: () => void;
   setUser: (user: IUser) => void;
   setTokens: (tokens: ITokens) => void;
   stowTokens: (tokens: ITokens) => void;
