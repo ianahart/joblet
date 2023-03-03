@@ -1,14 +1,18 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import FormContainer from '../../components/Form/FormContainer';
 import loginBG from '../../images/login.png';
-import { ILoginForm } from '../../interfaces';
+import { ILoginForm, ILoginResponse, IUserContext } from '../../interfaces';
 import { loginState } from '../../data';
-import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import FormInput from '../../components/Form/FormInput';
 import { AxiosError } from 'axios';
 import { http } from '../../helpers/utils';
+import { UserContext } from '../../context/user';
+
 const Login = () => {
+  const { stowTokens, updateUser } = useContext(UserContext) as IUserContext;
+  const navigate = useNavigate();
   const [form, setForm] = useState(loginState);
   const [error, setError] = useState('');
 
@@ -21,13 +25,11 @@ const Login = () => {
 
   const checkforErrors = () => {
     let errors = false;
-
     for (const [_, field] of Object.entries(form)) {
       if (field.error.length || field.value.trim().length === 0) {
         errors = true;
       }
     }
-
     return errors;
   };
 
@@ -44,11 +46,17 @@ const Login = () => {
 
   const signIn = async () => {
     try {
-      const response = await http.post('/auth/login', {
+      const response = await http.post<ILoginResponse>('/auth/login', {
         email: form.email.value,
         password: form.password.value,
       });
-      console.log(response);
+      stowTokens({
+        refreshToken: response.data.refreshToken,
+        token: response.data.token,
+      });
+      updateUser(response.data.userDto);
+
+      navigate('/joblet');
     } catch (err: unknown | AxiosError) {
       if (err instanceof AxiosError && err.response) {
         if (err.response.status === 403) {

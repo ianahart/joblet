@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import CompanyReviews from './pages/CompanyReviews';
 import ForgotPassword from './pages/Auth/ForgotPassword';
+import Joblet from './pages/Joblet';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="company-reviews" element={<CompanyReviews />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="joblet" element={<Joblet />} />
           </Routes>
         </Box>
       </Router>
