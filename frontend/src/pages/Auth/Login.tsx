@@ -74,7 +74,7 @@ const Login = () => {
       backgroundSize="cover"
     >
       <Box pt="5rem">
-        <FormContainer title="Sign In" width={['95%', '95%', '500px']} minH="500px">
+        <FormContainer title="Sign In" width={['95%', '85%', '500px']} minH="500px">
           <Box as="main" py="5rem">
             <form onSubmit={handleOnSubmit}>
               {error && (
