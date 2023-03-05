@@ -1,9 +1,14 @@
 package com.authentication.demo.config;
 
 import java.io.IOException;
+import java.util.List;
 
+import com.authentication.demo.token.Token;
 import com.authentication.demo.token.TokenRepository;
+import com.authentication.demo.user.User;
+import com.authentication.demo.user.UserRepository;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +28,9 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
+    private final UserRepository userRepository;
+
+    @Autowired
     private final JwtService jwtService;
 
     @Autowired
@@ -33,8 +41,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     public JwtAuthenticationFilter(JwtService jwtService,
             UserDetailsService userDetailsService,
+            UserRepository userRepository,
             TokenRepository tokenRepository) {
         this.jwtService = jwtService;
+        this.userRepository = userRepository;
         this.userDetailsService = userDetailsService;
         this.tokenRepository = tokenRepository;
     }

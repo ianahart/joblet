@@ -7,7 +7,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 import com.authentication.demo.token.Token;
+import com.authentication.demo.token.TokenRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,14 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
+
+    @Autowired
+    private final TokenRepository tokenRepository;
+
+    public JwtService(TokenRepository tokenRepository) {
+        this.tokenRepository = tokenRepository;
+    }
+
     @Value("${secretkey}")
     private String secretKey;
 
@@ -65,7 +75,8 @@ public class JwtService {
                 .builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                // .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 30000))
                 .signWith(getSignInKey())
                 .compact();
     }

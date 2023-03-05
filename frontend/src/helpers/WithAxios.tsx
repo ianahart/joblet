@@ -9,6 +9,21 @@ interface IProps {
   children: JSX.Element;
 }
 
+let isRefreshing = false;
+let failedQueue: any[] = [];
+
+const processQueue = (error: any, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+
+  failedQueue = [];
+};
+
 const WithAxios: React.FC<IProps> = ({ children }): JSX.Element => {
   const navigate = useNavigate();
   const [isLoaded, setLoaded] = useState(false);
@@ -24,55 +39,64 @@ const WithAxios: React.FC<IProps> = ({ children }): JSX.Element => {
       },
       (error) => Promise.reject(error)
     );
-
     const resInterceptorId = http.interceptors.response.use(
-      (res) => {
-        return res;
+      function (response) {
+        return response;
       },
-      async (error) => {
-        console.log(error);
+      function (error) {
         const originalRequest = error.config;
-        const notAuthenticated =
-          error.response?.data?.code === 'bad_authorization_header' ||
-          error.response?.data?.detail?.toLowerCase() ===
-            'authentication credentials were not provided.';
-        if (error.response?.status === 403 && notAuthenticated) {
-          setLoaded(true);
-        } else if (
-          error.response.status === 403 &&
-          originalRequest.url.includes('/auth/refresh')
-        ) {
-          console.log('hi');
-          return Promise.reject(error);
-        } else if (error.response.status === 403 && !originalRequest._retry) {
-          console.log('correct');
+
+        if (error.response.status === 403 && !originalRequest._retry) {
+          if (isRefreshing) {
+            return new Promise(function (resolve, reject) {
+              failedQueue.push({ resolve, reject });
+            })
+              .then((token: any) => {
+                originalRequest.headers['Authorization'] = 'Bearer ' + token;
+                return http(originalRequest);
+              })
+              .catch((err) => {
+                return Promise.reject(err);
+              });
+          }
+
           originalRequest._retry = true;
+          isRefreshing = true;
+
           const storage = retreiveTokens();
-          if (storage?.refreshToken) {
-            const response = await http.post(`/auth/refresh`, {
-              refreshToken: storage.refreshToken,
-            });
+          return new Promise(function (resolve, reject) {
+            http
+              .post('/auth/refresh', { refreshToken: storage.refreshToken })
+              .then((response) => {
+                http.defaults.headers.common['Authorization'] =
+                  'Bearer ' + response.data.token;
+                originalRequest.headers['Authorization'] =
+                  'Bearer ' + response.data.token;
 
-            const token: string = response.data.token;
-            const tokens = retreiveTokens();
-            tokens.token = token;
-            localStorage.setItem('tokens', JSON.stringify(tokens));
+                const token: string = response.data.token;
+                const tokens = retreiveTokens();
+                tokens.token = token;
+                localStorage.setItem('tokens', JSON.stringify(tokens));
 
-            //@ts-ignore
-            setTokens((prevState: ITokens) => ({
-              ...prevState,
-              token,
-            }));
-            return http(originalRequest);
-          }
+                //@ts-ignore
+                setTokens((prevState: ITokens) => ({
+                  ...prevState,
+                  token,
+                }));
+
+                processQueue(null, response.data.token);
+                resolve(http(originalRequest));
+              })
+              .catch((err) => {
+                processQueue(err, null);
+                reject(err);
+              })
+              .finally(() => {
+                isRefreshing = false;
+              });
+          });
         }
-        if (error.response.status === 403 || error.response.status === 401) {
-          logout();
-          if (!isLoaded) {
-            setLoaded(true);
-          }
-          return;
-        }
+
         return Promise.reject(error);
       }
     );

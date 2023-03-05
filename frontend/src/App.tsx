@@ -1,4 +1,5 @@
 import { Box } from '@chakra-ui/react';
+import { useCallback, useContext } from 'react';
 import './App.css';
 import Register from './pages/Auth/Register';
 import Login from './pages/Auth/Login';
@@ -12,7 +13,34 @@ import Joblet from './pages/Joblet';
 import RequireGuest from './components/Guard/RequireGuest';
 import RequireAuth from './components/Guard/RequireAuth';
 import WithAxios from './helpers/WithAxios';
+import { retreiveTokens } from './helpers/utils';
+import { UserContext } from './context/user';
+import { IUserContext } from './interfaces';
+import { http } from './helpers/utils';
+import { AxiosError } from 'axios';
+import { useEffectOnce } from './hooks/UseEffectOnce';
 function App() {
+  const { setUser, user } = useContext(UserContext) as IUserContext;
+
+  const storeUser = useCallback(async () => {
+    try {
+      const tokens = retreiveTokens();
+      const response = await http.get('/users/sync', {
+        headers: { Authorization: `Bearer ${tokens.token}` },
+      });
+      setUser(response.data);
+    } catch (err: unknown | AxiosError) {
+      if (err instanceof AxiosError && err.response) {
+        console.log(err);
+        return;
+      }
+    }
+  }, [setUser]);
+
+  useEffectOnce(() => {
+    storeUser();
+  });
+
   return (
     <Box as="main" className="App">
       <Router>

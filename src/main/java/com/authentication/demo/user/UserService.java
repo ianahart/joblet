@@ -1,19 +1,30 @@
 package com.authentication.demo.user;
 
+import java.security.Key;
+
 import com.authentication.demo.advice.BadRequestException;
 import com.authentication.demo.advice.ForbiddenException;
 import com.authentication.demo.advice.NotFoundException;
+import com.authentication.demo.auth.dto.UserDto;
 import com.authentication.demo.auth.request.PasswordResetRequest;
 import com.authentication.demo.config.JwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 
 @Service
 public class UserService {
 
-    @Autowired
+    @Value("${secretkey}")
+    private String secretKey;
+
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -29,6 +40,35 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.jwtService = jwtService;
+    }
+
+    private Key getSignInKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    private Claims extractUserIdFromToken(String token) {
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+    }
+
+    public UserDto getUserByToken(String token) {
+        Claims claims = extractUserIdFromToken(token);
+
+        User user = getUserByEmail(claims.getSubject());
+        UserDto userDto = new UserDto(
+                user.getId(),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getRole());
+        return userDto;
+
     }
 
     public User getUserByEmail(String email) {

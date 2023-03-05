@@ -6,13 +6,7 @@ import { useEffectOnce } from '../hooks/UseEffectOnce';
 const Joblet = () => {
   const fetchJobPosts = async () => {
     try {
-      const tokens = retreiveTokens();
-      const response = await http.get(
-        '/posts/'
-        //{
-        //        headers: { Authorization: `Bearer ${tokens.token}` },
-        //}
-      );
+      const response = await http.get('/posts/');
       console.log(response);
     } catch (err: unknown | AxiosError) {
       if (err instanceof AxiosError && err.response) {
