@@ -3,6 +3,7 @@ package com.authentication.demo.auth.request;
 public class PasswordResetRequest {
     private Long id;
     private String token;
+    private String oldPassword;
     private String confirmPassword;
     private String newPassword;
 
@@ -10,9 +11,10 @@ public class PasswordResetRequest {
 
     }
 
-    public PasswordResetRequest(Long id, String token, String confirmPassword, String newPassword) {
+    public PasswordResetRequest(Long id, String token, String oldPassword, String confirmPassword, String newPassword) {
         this.id = id;
         this.token = token;
+        this.oldPassword = oldPassword;
         this.confirmPassword = confirmPassword;
         this.newPassword = newPassword;
     }
@@ -23,6 +25,10 @@ public class PasswordResetRequest {
 
     public String getToken() {
         return token;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
     }
 
     public String getNewPassword() {
@@ -39,6 +45,10 @@ public class PasswordResetRequest {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 
     public void setNewPassword(String newPassword) {

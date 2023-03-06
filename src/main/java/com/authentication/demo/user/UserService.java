@@ -12,6 +12,8 @@ import com.authentication.demo.config.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
@@ -83,6 +85,10 @@ public class UserService {
 
         if (!this.jwtService.isTokenValid(request.getToken(), user)) {
             throw new ForbiddenException("Link has expired.");
+        }
+
+        if (!this.passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new BadRequestException("Old password is incorrect.");
         }
 
         if (!request.getNewPassword().equals(request.getConfirmPassword())) {
