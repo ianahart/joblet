@@ -19,6 +19,7 @@ import { IUserContext } from './interfaces';
 import { http } from './helpers/utils';
 import { AxiosError } from 'axios';
 import { useEffectOnce } from './hooks/UseEffectOnce';
+import PasswordReset from './pages/Auth/PasswordReset';
 function App() {
   const { setUser, user } = useContext(UserContext) as IUserContext;
 
@@ -88,6 +89,15 @@ function App() {
                   </RequireGuest>
                 }
               />
+              <Route
+                path="reset-password"
+                element={
+                  <RequireGuest>
+                    <PasswordReset />
+                  </RequireGuest>
+                }
+              />
+
               <Route
                 path="joblet"
                 element={

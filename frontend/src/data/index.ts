@@ -10,6 +10,12 @@ export const loginState = {
   password: { name: 'password', value: '', error: '', type: 'password' },
 };
 
+export const passwordResetState = {
+  oldPassword: { name: 'oldPassword', value: '', error: '', type: 'password' },
+  newPassword: { name: 'newPassword', value: '', error: '', type: 'password' },
+  confirmPassword: { name: 'confirmPassword', value: '', error: '', type: 'password' },
+};
+
 export const tokenState = {
   refreshToken: '',
   token: '',

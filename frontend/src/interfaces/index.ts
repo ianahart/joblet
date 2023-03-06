@@ -15,6 +15,12 @@ export interface ILoginForm {
   password: { name: string; value: string; error: string; type: string };
 }
 
+export interface IPasswordResetForm {
+  oldPassword: { name: string; value: string; error: string; type: string };
+  newPassword: { name: string; value: string; error: string; type: string };
+  confirmPassword: { name: string; value: string; error: string; type: string };
+}
+
 export interface IUser {
   id: number;
   firstName: string;
