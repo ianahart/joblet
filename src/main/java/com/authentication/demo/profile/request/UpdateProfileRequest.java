@@ -1,12 +1,14 @@
 package com.authentication.demo.profile.request;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class UpdateProfileRequest {
 
     @Email(message = "Please provide a valid email address.")
     private String email;
+    @Pattern(regexp = "(^$|[0-9]{10})", message = "Phone number must only consist of numbers.")
     private String phoneNumber;
     @Size(max = 100, message = "City has to be between 1 and 100 characters.")
     private String city;
