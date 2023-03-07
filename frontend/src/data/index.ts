@@ -27,4 +27,5 @@ export const userState = {
   lastName: '',
   email: '',
   role: '',
+  profileId: 0,
 };

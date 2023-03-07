@@ -23,6 +23,7 @@ export interface IPasswordResetForm {
 
 export interface IUser {
   id: number;
+  profileId: number;
   firstName: string;
   lastName: string;
   email: string;

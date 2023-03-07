@@ -12,6 +12,8 @@ import com.authentication.demo.auth.request.RegisterRequest;
 import com.authentication.demo.auth.response.LoginResponse;
 import com.authentication.demo.config.JwtService;
 import com.authentication.demo.config.RefreshTokenService;
+import com.authentication.demo.profile.Profile;
+import com.authentication.demo.profile.ProfileService;
 import com.authentication.demo.refreshtoken.RefreshToken;
 import com.authentication.demo.token.Token;
 import com.authentication.demo.token.TokenRepository;
@@ -34,15 +36,18 @@ public class AuthService {
     private final TokenRepository tokenRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final ProfileService profileService;
     private final RefreshTokenService refreshTokenService;
 
     public AuthService(
+            ProfileService profileService,
             PasswordEncoder passwordEncoder,
             UserRepository userRepository,
             TokenRepository tokenRepository,
             JwtService jwtService,
             RefreshTokenService refreshTokenService,
             AuthenticationManager authenticationManager) {
+        this.profileService = profileService;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.tokenRepository = tokenRepository;
@@ -52,8 +57,10 @@ public class AuthService {
     }
 
     public RegisterResponse register(RegisterRequest request) {
+        Profile profile = this.profileService.createProfile();
         User user = new User(
                 request.getFirstName(),
+                profile,
                 request.getLastName(),
                 request.getEmail(),
                 this.passwordEncoder.encode(request.getPassword()),
@@ -65,6 +72,7 @@ public class AuthService {
             throw new BadRequestException("A user with that email already exists.");
         }
         this.userRepository.save(user);
+
         return new RegisterResponse("User created.");
     }
 
@@ -110,6 +118,7 @@ public class AuthService {
 
         UserDto userDto = new UserDto(
                 user.getId(),
+                user.getProfile().getId(),
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),

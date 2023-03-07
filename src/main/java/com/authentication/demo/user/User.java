@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.authentication.demo.passwordreset.PasswordReset;
+import com.authentication.demo.profile.Profile;
 import com.authentication.demo.refreshtoken.RefreshToken;
 import com.authentication.demo.token.Token;
 
@@ -11,13 +12,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -40,6 +44,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
+    private Profile profile;
+
     @OneToMany(mappedBy = "user")
     private List<RefreshToken> refreshTokens;
 
@@ -53,16 +61,18 @@ public class User implements UserDetails {
 
     }
 
-    public User(Long id, String firstName, String lastName, String email, String password, Role role) {
+    public User(Long id, Profile profile, String firstName, String lastName, String email, String password, Role role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.profile = profile;
     }
 
-    public User(String firstName, String lastName, String email, String password, Role role) {
+    public User(String firstName, Profile profile, String lastName, String email, String password, Role role) {
+        this.profile = profile;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -70,7 +80,8 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public User(String firstName, String lastName, String email) {
+    public User(Profile profile, String firstName, String lastName, String email) {
+        this.profile = profile;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -109,6 +120,11 @@ public class User implements UserDetails {
         return firstName;
     }
 
+    public Profile getProfile() {
+        return profile;
+
+    }
+
     public String getPassword() {
         return password;
     }
@@ -131,6 +147,10 @@ public class User implements UserDetails {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     public void setPassword(String password) {
@@ -186,6 +206,7 @@ public class User implements UserDetails {
                 ", lastName=" + lastName + '\'' +
                 ", email=" + email +
                 ", role=" + role +
+                ", profile_id=" + profile +
                 '}';
     }
 

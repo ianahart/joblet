@@ -8,13 +8,15 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private Role role;
+    private Long profileId;
 
-    public UserDto(Long id, String email, String firstName, String lastName, Role role) {
+    public UserDto(Long id, Long profileId, String email, String firstName, String lastName, Role role) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
+        this.profileId = profileId;
     }
 
     public Long getId() {
@@ -23,6 +25,10 @@ public class UserDto {
 
     public Role getRole() {
         return role;
+    }
+
+    public Long getProfileId() {
+        return profileId;
     }
 
     public String getEmail() {
@@ -47,6 +53,10 @@ public class UserDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setProfileId(Long profileId) {
+        this.profileId = profileId;
     }
 
     public void setFirstName(String firstName) {

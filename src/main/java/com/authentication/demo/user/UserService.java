@@ -65,6 +65,7 @@ public class UserService {
         User user = getUserByEmail(claims.getSubject());
         UserDto userDto = new UserDto(
                 user.getId(),
+                user.getProfile().getId(),
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
