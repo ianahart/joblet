@@ -97,6 +97,15 @@ const MobileNav = ({ handleSetMobileNavOpen, triggerRef }: IMobileNavProps) => {
           />
         )}
         {user.id !== 0 && (
+          <NavigationLink
+            handleSetMobileNavOpen={handleSetMobileNavOpen}
+            theme="dark"
+            text="Profile"
+            to={`profile/${user.id}`}
+          />
+        )}
+
+        {user.id !== 0 && (
           <Text
             onClick={handleOnLogout}
             p="0.5rem"

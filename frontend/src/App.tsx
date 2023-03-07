@@ -20,6 +20,7 @@ import { http } from './helpers/utils';
 import { AxiosError } from 'axios';
 import { useEffectOnce } from './hooks/UseEffectOnce';
 import PasswordReset from './pages/Auth/PasswordReset';
+import Profile from './pages/Profile';
 function App() {
   const { setUser, user } = useContext(UserContext) as IUserContext;
 
@@ -32,7 +33,6 @@ function App() {
       setUser(response.data);
     } catch (err: unknown | AxiosError) {
       if (err instanceof AxiosError && err.response) {
-        console.log(err);
         return;
       }
     }
@@ -103,6 +103,15 @@ function App() {
                 element={
                   <RequireAuth>
                     <Joblet />
+                  </RequireAuth>
+                }
+              />
+
+              <Route
+                path="profile/:id"
+                element={
+                  <RequireAuth>
+                    <Profile />
                   </RequireAuth>
                 }
               />
