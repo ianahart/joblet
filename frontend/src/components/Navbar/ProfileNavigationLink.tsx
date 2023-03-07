@@ -9,7 +9,12 @@ interface IProfileNavigationLinkProps {
 
 const ProfileNavigationLink = ({ to, text, icon }: IProfileNavigationLinkProps) => {
   return (
-    <Flex alignItems="center" px="1rem">
+    <Flex
+      _hover={{ opacity: 0.8, backgroundColor: '#57cc99' }}
+      alignItems="center"
+      px="1rem"
+            py="1rem"
+    >
       {icon}
       <Box ml="0.5rem">
         <RouterLink to={to}>{text}</RouterLink>

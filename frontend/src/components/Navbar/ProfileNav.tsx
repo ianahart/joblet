@@ -72,7 +72,11 @@ const ProfileNav = ({ triggerRef, setShowProfile }: IProfileNavProps) => {
         icon={<CgFileDocument />}
       />
 
-      <Flex alignItems="center" p="1rem">
+      <Flex
+        _hover={{ opacity: 0.8, backgroundColor: '#57cc99' }}
+        alignItems="center"
+        p="1rem"
+      >
         <AiOutlineLogout />
         <Text ml="0.5rem" onClick={handleOnLogout} role="button">
           Logout
