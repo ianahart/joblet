@@ -5,6 +5,7 @@ import com.authentication.demo.advice.NotFoundException;
 import com.authentication.demo.profile.request.UpdateProfileRequest;
 import com.authentication.demo.user.User;
 import com.authentication.demo.user.UserRepository;
+import com.authentication.demo.util.MyUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -63,7 +64,7 @@ public class ProfileService {
 
         Profile profile = this.profileRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Profile was not found."));
-        profile.setCity(request.getCity());
+        profile.setCity(MyUtils.capitalize(request.getCity()));
         profile.setEmail(request.getEmail());
         profile.setState(request.getState());
         profile.setPhoneNumber(request.getPhoneNumber());

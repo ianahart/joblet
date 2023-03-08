@@ -52,6 +52,7 @@ export interface IUser {
   lastName: string;
   email: string;
   role: string;
+  abbreviation: string;
 }
 
 export interface ITokens {

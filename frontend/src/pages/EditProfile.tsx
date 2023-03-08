@@ -21,7 +21,10 @@ const EditProfile = () => {
   const updateField = (name: string, value: string, attribute: string) => {
     setForm((prevState) => ({
       ...prevState,
-      [name]: { ...prevState[name as keyof IEditProfileForm], [attribute]: value },
+      [name]: {
+        ...prevState[name as keyof IEditProfileForm],
+        [attribute]: value === null ? '' : value,
+      },
     }));
   };
 
@@ -53,7 +56,6 @@ const EditProfile = () => {
       preFillForm(response.data.profile);
     } catch (err: unknown | AxiosError) {
       if (err instanceof AxiosError && err.response) {
-        console.log(err);
         return;
       }
     }
@@ -61,6 +63,9 @@ const EditProfile = () => {
 
   const preFillForm = (data: IProfile) => {
     for (let prop in data) {
+      if (prop === 'id') {
+        continue;
+      }
       updateField(prop, data[prop as keyof IProfile] as string, 'value');
     }
   };

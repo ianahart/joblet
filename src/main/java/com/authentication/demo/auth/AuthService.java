@@ -21,6 +21,8 @@ import com.authentication.demo.token.TokenType;
 import com.authentication.demo.user.Role;
 import com.authentication.demo.user.User;
 import com.authentication.demo.user.UserRepository;
+import com.authentication.demo.util.MyUtils;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -59,9 +61,9 @@ public class AuthService {
     public RegisterResponse register(RegisterRequest request) {
         Profile profile = this.profileService.createProfile();
         User user = new User(
-                request.getFirstName(),
+                MyUtils.capitalize(request.getFirstName()),
                 profile,
-                request.getLastName(),
+                MyUtils.capitalize(request.getLastName()),
                 request.getEmail(),
                 this.passwordEncoder.encode(request.getPassword()),
                 request.getRole().equals("USER") ? Role.USER : Role.EMPLOYER);

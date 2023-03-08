@@ -10,6 +10,16 @@ export const loginState = {
   password: { name: 'password', value: '', error: '', type: 'password' },
 };
 
+export const profileState = {
+  city: '',
+  country: '',
+  email: '',
+  id: 0,
+  phoneNumber: '',
+  resume: '',
+  state: '',
+};
+
 export const passwordResetState = {
   oldPassword: { name: 'oldPassword', value: '', error: '', type: 'password' },
   newPassword: { name: 'newPassword', value: '', error: '', type: 'password' },
@@ -38,6 +48,7 @@ export const userState = {
   email: '',
   role: '',
   profileId: 0,
+  abbreviation: '',
 };
 
 export const countries = [
