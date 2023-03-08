@@ -23,6 +23,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "_user")
@@ -40,6 +41,8 @@ public class User implements UserDetails {
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
+    @Transient
+    private String abbreviation;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -85,6 +88,10 @@ public class User implements UserDetails {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+    }
+
+    public String getAbbreviation() {
+        return firstName.substring(0, 1).toUpperCase() + lastName.substring(0,  1).toUpperCase();
     }
 
     public Long getId() {
@@ -135,6 +142,10 @@ public class User implements UserDetails {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
     }
 
     public void setEmail(String email) {

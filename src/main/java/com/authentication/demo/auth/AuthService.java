@@ -122,7 +122,8 @@ public class AuthService {
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getRole());
+                user.getRole(),
+                user.getAbbreviation());
         return new LoginResponse(jwtToken, refreshToken.getRefreshToken(), userDto);
     }
 }

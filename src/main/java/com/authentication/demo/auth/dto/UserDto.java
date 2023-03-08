@@ -9,14 +9,21 @@ public class UserDto {
     private String lastName;
     private Role role;
     private Long profileId;
+    private String abbreviation;
 
-    public UserDto(Long id, Long profileId, String email, String firstName, String lastName, Role role) {
+    public UserDto(Long id, Long profileId, String email, String firstName, String lastName, Role role,
+            String abbreviation) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
         this.profileId = profileId;
+        this.abbreviation = abbreviation;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
     }
 
     public Long getId() {
@@ -65,5 +72,9 @@ public class UserDto {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
     }
 }
