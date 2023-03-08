@@ -29,7 +29,8 @@ public class ProfileController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<UpdateProfileResponse> updateProfile(
-            @Valid @RequestBody UpdateProfileRequest request, @PathVariable("id") Long id) {
+            @Valid @RequestBody UpdateProfileRequest request,
+            @PathVariable("id") Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new UpdateProfileResponse(this.profileService.updateProfile(id, request)));

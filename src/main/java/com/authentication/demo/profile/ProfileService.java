@@ -1,19 +1,30 @@
 package com.authentication.demo.profile;
 
+import com.authentication.demo.advice.ForbiddenException;
 import com.authentication.demo.advice.NotFoundException;
 import com.authentication.demo.profile.request.UpdateProfileRequest;
+import com.authentication.demo.user.User;
+import com.authentication.demo.user.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProfileService {
+
+    @Autowired
+    private final UserRepository userRepository;
+
     @Autowired
     private final ProfileRepository profileRepository;
 
-    public ProfileService(ProfileRepository profileRepository) {
+    public ProfileService(ProfileRepository profileRepository, UserRepository userRepository) {
         this.profileRepository = profileRepository;
+        this.userRepository = userRepository;
     }
 
     public Profile createProfile() {
@@ -24,6 +35,22 @@ public class ProfileService {
 
     @Transactional
     public Profile updateProfile(Long id, UpdateProfileRequest request) {
+        Object principal = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            System.out.println(username);
+            User user = this.userRepository.findByEmail(username)
+                    .orElseThrow(() -> new NotFoundException("User not found"));
+
+            if (user.getProfile().getId() != id) {
+                throw new ForbiddenException("You cannot edit another person's profile.");
+            }
+        }
+
         Profile profile = this.profileRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Profile was not found."));
         profile.setCity(request.getCity());
