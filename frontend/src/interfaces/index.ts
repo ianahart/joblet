@@ -21,6 +21,30 @@ export interface IPasswordResetForm {
   confirmPassword: { name: string; value: string; error: string; type: string };
 }
 
+export interface IEditProfileForm {
+  email: { name: string; value: string; error: string; type: string };
+  phoneNumber: { name: string; value: string; error: string; type: string };
+  city: { name: string; value: string; error: string; type: string };
+  state: { name: string; value: string; error: string; type: string };
+  country: { name: string; value: string; error: string; type: string };
+  resume: { name: string; value: string; error: string; type: string };
+}
+
+export interface IDropdownData {
+  name: string;
+  id: number;
+}
+
+export interface IProfile {
+  city: string;
+  country: string;
+  email: string;
+  phoneNumber: string;
+  resume: string;
+  state: string;
+  id: number;
+}
+
 export interface IUser {
   id: number;
   profileId: number;

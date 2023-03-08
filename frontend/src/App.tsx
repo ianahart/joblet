@@ -21,6 +21,7 @@ import { AxiosError } from 'axios';
 import { useEffectOnce } from './hooks/UseEffectOnce';
 import PasswordReset from './pages/Auth/PasswordReset';
 import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 function App() {
   const { setUser, user } = useContext(UserContext) as IUserContext;
 
@@ -112,6 +113,15 @@ function App() {
                 element={
                   <RequireAuth>
                     <Profile />
+                  </RequireAuth>
+                }
+              />
+
+              <Route
+                path="profile/:id/edit"
+                element={
+                  <RequireAuth>
+                    <EditProfile />
                   </RequireAuth>
                 }
               />

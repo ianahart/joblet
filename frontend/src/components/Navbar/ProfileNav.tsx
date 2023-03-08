@@ -22,6 +22,7 @@ const ProfileNav = ({ triggerRef, setShowProfile }: IProfileNavProps) => {
   const handleOnLogout = async () => {
     try {
       await http.post('/auth/logout', {});
+      setShowProfile(false);
       logout();
       navigate('/login');
     } catch (err: unknown | AxiosError) {
@@ -69,6 +70,7 @@ const ProfileNav = ({ triggerRef, setShowProfile }: IProfileNavProps) => {
       <ProfileNavigationLink
         to={`profile/${user.id}`}
         text="Profile"
+        setShowProfile={setShowProfile}
         icon={<CgFileDocument />}
       />
 

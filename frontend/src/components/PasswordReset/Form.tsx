@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { passwordResetState } from '../../data';
 import FormInput from '../Form/FormInput';
 import { IPasswordResetForm } from '../../interfaces';
-import PasswordResetHeader from './PasswordResetHeader';
+import Header from './Header';
 import { useSearchParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { http } from '../../helpers/utils';
@@ -65,7 +65,7 @@ const Form = ({ handleSuccess }: IFormProps) => {
 
   return (
     <Box>
-      <PasswordResetHeader
+      <Header
         icon="key"
         text="Your new password must be different to previously used passwords."
         heading="Set new password"

@@ -7,7 +7,6 @@ import com.authentication.demo.user.User;
 import com.authentication.demo.user.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -33,8 +32,14 @@ public class ProfileService {
         return this.profileRepository.save(profile);
     }
 
-    @Transactional
-    public Profile updateProfile(Long id, UpdateProfileRequest request) {
+    public Profile getProfile(Long id) {
+        checkOwnerShip(id, "You can only view your own profile.");
+        Profile profile = this.profileRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Profile not found."));
+        return profile;
+    }
+
+    private void checkOwnerShip(Long id, String message) {
         Object principal = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
@@ -42,14 +47,19 @@ public class ProfileService {
 
         if (principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
-            System.out.println(username);
             User user = this.userRepository.findByEmail(username)
                     .orElseThrow(() -> new NotFoundException("User not found"));
 
             if (user.getProfile().getId() != id) {
-                throw new ForbiddenException("You cannot edit another person's profile.");
+                throw new ForbiddenException(message);
             }
         }
+    }
+
+    @Transactional
+    public Profile updateProfile(Long id, UpdateProfileRequest request) {
+
+        checkOwnerShip(id, "You cannot edit another person's profile");
 
         Profile profile = this.profileRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Profile was not found."));

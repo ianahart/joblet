@@ -1,12 +1,12 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { Link as RouterLink } from 'react-router-dom';
-import PasswordResetHeader from './PasswordResetHeader';
+import Header from './Header';
 
 const Success = () => {
   return (
     <Flex flexDir="column" as="main">
-      <PasswordResetHeader
+      <Header
         heading="Password reset"
         icon="check"
         text="Your password has been successfully reset."
