@@ -1,5 +1,7 @@
 package com.authentication.demo.profile;
 
+import java.net.URL;
+
 import com.authentication.demo.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

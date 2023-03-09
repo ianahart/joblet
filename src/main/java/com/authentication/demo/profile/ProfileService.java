@@ -1,8 +1,12 @@
 package com.authentication.demo.profile;
 
+import java.net.URL;
+
 import com.authentication.demo.advice.ForbiddenException;
 import com.authentication.demo.advice.NotFoundException;
+import com.authentication.demo.amazon.AmazonService;
 import com.authentication.demo.profile.request.UpdateProfileRequest;
+import com.authentication.demo.profile.request.UploadPDFRequest;
 import com.authentication.demo.user.User;
 import com.authentication.demo.user.UserRepository;
 import com.authentication.demo.util.MyUtils;
@@ -15,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProfileService {
+    @Autowired
+    private final AmazonService amazonService;
 
     @Autowired
     private final UserRepository userRepository;
@@ -22,8 +28,12 @@ public class ProfileService {
     @Autowired
     private final ProfileRepository profileRepository;
 
-    public ProfileService(ProfileRepository profileRepository, UserRepository userRepository) {
+    public ProfileService(
+            ProfileRepository profileRepository,
+            AmazonService amazonService,
+            UserRepository userRepository) {
         this.profileRepository = profileRepository;
+        this.amazonService = amazonService;
         this.userRepository = userRepository;
     }
 
@@ -33,11 +43,29 @@ public class ProfileService {
         return this.profileRepository.save(profile);
     }
 
+    public String uploadResume(UploadPDFRequest request, Long id) {
+        checkOwnerShip(id, "Cannot upload to another user.");
+
+        return this.amazonService.upload("arrow-date/joblet",
+                request.getFile().getOriginalFilename(), request.getFile());
+    }
+
+    public String downloadPublicUrlResume(String fileName, Long id) {
+        return this.amazonService.getPublicUrl("arrow-date/joblet", fileName);
+    }
+
     public Profile getProfile(Long id) {
         checkOwnerShip(id, "You can only view your own profile.");
         Profile profile = this.profileRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Profile not found."));
         return profile;
+    }
+
+    public void updateResume(String resumeUrl, Long id) {
+        Profile profile = this.profileRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Profile not found."));
+        profile.setResume(resumeUrl);
+        this.profileRepository.save(profile);
     }
 
     private void checkOwnerShip(Long id, String message) {

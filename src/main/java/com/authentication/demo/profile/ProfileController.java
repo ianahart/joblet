@@ -1,8 +1,12 @@
 package com.authentication.demo.profile;
 
+import java.net.URL;
+
 import com.authentication.demo.profile.request.UpdateProfileRequest;
+import com.authentication.demo.profile.request.UploadPDFRequest;
 import com.authentication.demo.profile.response.ProfileResponse;
 import com.authentication.demo.profile.response.UpdateProfileResponse;
+import com.authentication.demo.profile.response.UploadPDFResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping(path = "/api/v1/profiles")
 public class ProfileController {
+
     @Autowired
     private final ProfileService profileService;
 
@@ -34,6 +39,14 @@ public class ProfileController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ProfileResponse(this.profileService.getProfile(id)));
+    }
+
+    @PatchMapping("/upload/{id}")
+    public ResponseEntity<UploadPDFResponse> upload(@PathVariable("id") Long id, UploadPDFRequest request) {
+        String newFileName = this.profileService.uploadResume(request, id);
+        String publicUrl = this.profileService.downloadPublicUrlResume(newFileName, id);
+        this.profileService.updateResume(publicUrl, id);
+        return ResponseEntity.status(HttpStatus.OK).body(new UploadPDFResponse(publicUrl));
     }
 
     @PatchMapping("/{id}")
