@@ -11,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "profile")
@@ -33,6 +32,8 @@ public class Profile {
     private String country;
     @Column(name = "resume")
     private String resume;
+    @Column(name = "fileName")
+    private String fileName;
 
     @JsonIgnore
     @OneToOne(mappedBy = "profile")
@@ -47,16 +48,20 @@ public class Profile {
     }
 
     public Profile(Long id, String email, String phoneNumber, String city, String state, String country,
-            String resume) {
+            String resume, String fileName) {
     }
 
     public Profile(String email, String phoneNumber, String city, String state, String country,
-            String resume) {
+            String resume, String fileName) {
 
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 
     public String getCity() {
@@ -98,6 +103,10 @@ public class Profile {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public void setEmail(String email) {

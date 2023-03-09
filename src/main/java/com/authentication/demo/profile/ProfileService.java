@@ -1,6 +1,7 @@
 package com.authentication.demo.profile;
 
 import java.net.URL;
+import java.util.Map;
 
 import com.authentication.demo.advice.ForbiddenException;
 import com.authentication.demo.advice.NotFoundException;
@@ -50,7 +51,7 @@ public class ProfileService {
                 request.getFile().getOriginalFilename(), request.getFile());
     }
 
-    public String downloadPublicUrlResume(String fileName, Long id) {
+    public Map<String, String> downloadPublicUrlResume(String fileName, Long id) {
         return this.amazonService.getPublicUrl("arrow-date/joblet", fileName);
     }
 
@@ -61,10 +62,19 @@ public class ProfileService {
         return profile;
     }
 
-    public void updateResume(String resumeUrl, Long id) {
+    public void deleteOldResume(Long id) {
+        Profile profile = this.profileRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Profile not found."));
+        if (profile.getFileName() != null) {
+            this.amazonService.delete("arrow-date/joblet", profile.getFileName());
+        }
+    }
+
+    public void updateResume(String resumeUrl, Long id, String fileName) {
         Profile profile = this.profileRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Profile not found."));
         profile.setResume(resumeUrl);
+        profile.setFileName(fileName);
         this.profileRepository.save(profile);
     }
 

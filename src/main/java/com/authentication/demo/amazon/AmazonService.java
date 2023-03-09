@@ -1,5 +1,7 @@
 package com.authentication.demo.amazon;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -62,6 +64,10 @@ public class AmazonService {
         return uuid + fileName;
     }
 
+    public void delete(String bucketName, String fileName) {
+        this.s3client.deleteObject(new DeleteObjectRequest(bucketName, fileName));
+    }
+
     public String upload(String path,
             String fileName,
             MultipartFile file) {
@@ -82,11 +88,14 @@ public class AmazonService {
         }
     }
 
-    public String getPublicUrl(String bucketName, String fileName) {
+    public Map<String, String> getPublicUrl(String bucketName, String fileName) {
         this.s3client.setObjectAcl(bucketName, fileName,
                 CannedAccessControlList.PublicRead);
         URL url = this.s3client.getUrl(bucketName, fileName);
-        return url.toString();
+        Map<String, String> hm = new HashMap<String, String>();
+        hm.put("url", url.toString());
+        hm.put("fileName", fileName);
+        return hm;
     }
 
 }

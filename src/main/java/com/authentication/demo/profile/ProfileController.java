@@ -1,6 +1,7 @@
 package com.authentication.demo.profile;
 
 import java.net.URL;
+import java.util.Map;
 
 import com.authentication.demo.profile.request.UpdateProfileRequest;
 import com.authentication.demo.profile.request.UploadPDFRequest;
@@ -44,9 +45,11 @@ public class ProfileController {
     @PatchMapping("/upload/{id}")
     public ResponseEntity<UploadPDFResponse> upload(@PathVariable("id") Long id, UploadPDFRequest request) {
         String newFileName = this.profileService.uploadResume(request, id);
-        String publicUrl = this.profileService.downloadPublicUrlResume(newFileName, id);
-        this.profileService.updateResume(publicUrl, id);
-        return ResponseEntity.status(HttpStatus.OK).body(new UploadPDFResponse(publicUrl));
+        Map<String, String> data = this.profileService.downloadPublicUrlResume(newFileName, id);
+        this.profileService.deleteOldResume(id);
+        this.profileService.updateResume(data.get("url"), id, data.get("fileName"));
+
+        return ResponseEntity.status(HttpStatus.OK).body(new UploadPDFResponse(data.get("url")));
     }
 
     @PatchMapping("/{id}")

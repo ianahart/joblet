@@ -63,7 +63,7 @@ const EditProfile = () => {
 
   const preFillForm = (data: IProfile) => {
     for (let prop in data) {
-      if (prop === 'id') {
+      if (prop === 'id' || 'fileName') {
         continue;
       }
       updateField(prop, data[prop as keyof IProfile] as string, 'value');
