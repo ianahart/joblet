@@ -8,11 +8,13 @@ import { http } from '../helpers/utils';
 import { useEffectOnce } from '../hooks/UseEffectOnce';
 import { IUserContext } from '../interfaces';
 import BasicInformation from '../components/Profile/BasicInformation';
-
+import FileUploader from '../components/Upload/FileUploader';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 const Profile = () => {
   const { user } = useContext(UserContext) as IUserContext;
   const { id: profileId } = useParams();
   const [profile, setProfile] = useState(profileState);
+  const [file, setFile] = useState<File | null>(null);
   const getProfile = async () => {
     try {
       const response = await http.get(`/profiles/${profileId}`);
@@ -24,9 +26,33 @@ const Profile = () => {
     }
   };
 
+  const handleFileUpload = async (file: File) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const response = await http.patch(`/profiles/upload/${profile.id}`, formData);
+      console.log(response);
+      setFile(file);
+    } catch (err: unknown | AxiosError) {
+      if (err instanceof AxiosError && err.response) {
+        console.log(err);
+      }
+    }
+  };
+
   useEffectOnce(() => {
     getProfile();
   });
+
+  const getFileName = () => {
+    if (file === null && profile.fileName === null) {
+      return '';
+    } else if (file !== null) {
+      return file.name;
+    } else {
+      return profile.fileName;
+    }
+  };
 
   return (
     <Box minH="100vh" display="flex" justifyContent="center">
@@ -58,8 +84,26 @@ const Profile = () => {
           state={profile.state}
           profileId={profile.id}
         />
+        <Box>
+          <Heading fontSize="1.5rem" color="black.primary">
+            Resume
+          </Heading>
+          <Flex
+            border="1px solid"
+            borderColor="border.primary"
+            borderRadius="8px"
+            minH="100px"
+            alignItems="center"
+            p="1rem"
+            justifyContent="space-between"
+          >
+            <FileUploader handleFileUpload={handleFileUpload} fileName={getFileName()} />
+            <Box>
+              <BsThreeDotsVertical />
+            </Box>
+          </Flex>
+        </Box>
       </Box>
-      {/*<RouterLink to={`/profile/${user.profileId}/edit`}>Edit Profile</RouterLink>*/}
     </Box>
   );
 };

@@ -18,6 +18,7 @@ export const profileState = {
   phoneNumber: '',
   resume: '',
   state: '',
+  fileName: '',
 };
 
 export const passwordResetState = {

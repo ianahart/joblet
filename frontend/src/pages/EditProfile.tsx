@@ -62,8 +62,9 @@ const EditProfile = () => {
   };
 
   const preFillForm = (data: IProfile) => {
+    const exclude = ['id', 'fileName'];
     for (let prop in data) {
-      if (prop === 'id' || 'fileName') {
+      if (exclude.includes(prop)) {
         continue;
       }
       updateField(prop, data[prop as keyof IProfile] as string, 'value');

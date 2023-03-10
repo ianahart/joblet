@@ -43,6 +43,7 @@ export interface IProfile {
   resume: string;
   state: string;
   id: number;
+  fileName: string;
 }
 
 export interface IUser {
