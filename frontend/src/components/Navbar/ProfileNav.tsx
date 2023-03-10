@@ -59,6 +59,7 @@ const ProfileNav = ({ triggerRef, setShowProfile }: IProfileNavProps) => {
       borderRadius="8px"
       bg="#fff"
       top="50px"
+      zIndex="10"
       fontSize="1rem"
       color="black.primary"
       minH="400px"

@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Link, Text } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
 import { useContext, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
@@ -15,6 +15,7 @@ const Profile = () => {
   const { id: profileId } = useParams();
   const [profile, setProfile] = useState(profileState);
   const [file, setFile] = useState<File | null>(null);
+  const [downloadUrl, setDownloadUrl] = useState('');
   const getProfile = async () => {
     try {
       const response = await http.get(`/profiles/${profileId}`);
@@ -31,7 +32,6 @@ const Profile = () => {
       const formData = new FormData();
       formData.append('file', file);
       const response = await http.patch(`/profiles/upload/${profile.id}`, formData);
-      console.log(response);
       setFile(file);
     } catch (err: unknown | AxiosError) {
       if (err instanceof AxiosError && err.response) {
@@ -51,6 +51,26 @@ const Profile = () => {
       return file.name;
     } else {
       return profile.fileName;
+    }
+  };
+
+  const downloadFile = async () => {
+    try {
+      const response = await http.get(`/profiles/download/${profile.id}`, {
+        responseType: 'blob',
+      });
+
+      const fileURL = window.URL.createObjectURL(response.data);
+
+      // Setting various property values
+      let alink = document.createElement('a');
+      alink.href = fileURL;
+      alink.download = 'SamplePDF.pdf';
+      alink.click();
+    } catch (err: unknown | AxiosError) {
+      if (err instanceof AxiosError && err.response) {
+        console.log(err.response);
+      }
     }
   };
 

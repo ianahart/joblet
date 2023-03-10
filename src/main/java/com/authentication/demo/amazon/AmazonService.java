@@ -2,12 +2,16 @@ package com.authentication.demo.amazon;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.UUID;
-
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.util.IOUtils;
+import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
@@ -20,8 +24,10 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 public class AmazonService {
@@ -98,4 +104,15 @@ public class AmazonService {
         return hm;
     }
 
+    public byte[] downloadFile(String bucketName, String fileName) {
+        S3Object s3Object = this.s3client.getObject(bucketName, fileName);
+        S3ObjectInputStream inputStream = s3Object.getObjectContent();
+        try {
+            byte[] content = IOUtils.toByteArray(inputStream);
+            return content;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

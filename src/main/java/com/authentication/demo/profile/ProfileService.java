@@ -1,5 +1,6 @@
 package com.authentication.demo.profile;
 
+import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.util.Map;
 
@@ -17,6 +18,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 public class ProfileService {
@@ -36,6 +40,12 @@ public class ProfileService {
         this.profileRepository = profileRepository;
         this.amazonService = amazonService;
         this.userRepository = userRepository;
+    }
+
+    public byte[] downloadResume(Long id) {
+        Profile profile = this.profileRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Profile not found."));
+        return this.amazonService.downloadFile("arrow-date/joblet", profile.getFileName());
     }
 
     public Profile createProfile() {

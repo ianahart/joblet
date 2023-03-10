@@ -19,11 +19,13 @@ const FileUploader = ({ fileName, handleFileUpload }: IFileUploaderProps) => {
   };
 
   const handleFileChange = (file: File) => {
+    setError('');
     if (file.size > 2000000) {
       setError('File size exceeds 2MB.');
+      return;
     }
-        setIsDragging(false);
-      handleFileUpload(file);
+    setIsDragging(false);
+    handleFileUpload(file);
   };
 
   const handleOnDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
@@ -83,7 +85,7 @@ const FileUploader = ({ fileName, handleFileUpload }: IFileUploaderProps) => {
       </Box>
       {error && (
         <Text color="error.primary" fontSize="0.85rem">
-          File can not exceed 2 MB
+          {error}
         </Text>
       )}
     </Box>
