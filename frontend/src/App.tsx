@@ -22,6 +22,7 @@ import { useEffectOnce } from './hooks/UseEffectOnce';
 import PasswordReset from './pages/Auth/PasswordReset';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
+import DocumentView from './components/Profile/DocumentView';
 function App() {
   const { setUser, user } = useContext(UserContext) as IUserContext;
 
@@ -122,6 +123,14 @@ function App() {
                 element={
                   <RequireAuth>
                     <EditProfile />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="document-view"
+                element={
+                  <RequireAuth>
+                    <DocumentView />
                   </RequireAuth>
                 }
               />

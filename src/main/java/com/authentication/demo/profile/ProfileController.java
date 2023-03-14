@@ -1,11 +1,11 @@
 package com.authentication.demo.profile;
 
-import java.io.ByteArrayOutputStream;
-import java.net.URL;
 import java.util.Map;
 
 import com.authentication.demo.profile.request.UpdateProfileRequest;
 import com.authentication.demo.profile.request.UploadPDFRequest;
+import com.authentication.demo.profile.request.DeleteResumeRequest;
+import com.authentication.demo.profile.response.DeleteResumeResponse;
 import com.authentication.demo.profile.response.ProfileResponse;
 import com.authentication.demo.profile.response.UpdateProfileResponse;
 import com.authentication.demo.profile.response.UploadPDFResponse;
@@ -13,8 +13,6 @@ import com.authentication.demo.profile.response.UploadPDFResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +20,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,9 +64,19 @@ public class ProfileController {
         String newFileName = this.profileService.uploadResume(request, id);
         Map<String, String> data = this.profileService.downloadPublicUrlResume(newFileName, id);
         this.profileService.deleteOldResume(id);
-        this.profileService.updateResume(data.get("url"), id, data.get("fileName"));
+        this.profileService.addResume(data.get("url"), id, data.get("fileName"));
 
         return ResponseEntity.status(HttpStatus.OK).body(new UploadPDFResponse(data.get("url")));
+    }
+
+    @PatchMapping("/resume/{id}")
+    public ResponseEntity<DeleteResumeResponse> deleteResume(@PathVariable("id") Long id,
+            @RequestBody DeleteResumeRequest request) {
+
+        this.profileService.deleteResume(id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new DeleteResumeResponse("success"));
+
     }
 
     @PatchMapping("/{id}")
@@ -81,4 +87,5 @@ public class ProfileController {
                 .status(HttpStatus.OK)
                 .body(new UpdateProfileResponse(this.profileService.updateProfile(id, request)));
     }
+
 }

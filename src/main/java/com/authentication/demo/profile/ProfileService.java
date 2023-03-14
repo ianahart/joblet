@@ -80,7 +80,7 @@ public class ProfileService {
         }
     }
 
-    public void updateResume(String resumeUrl, Long id, String fileName) {
+    public void addResume(String resumeUrl, Long id, String fileName) {
         Profile profile = this.profileRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Profile not found."));
         profile.setResume(resumeUrl);
@@ -121,5 +121,14 @@ public class ProfileService {
 
         return this.profileRepository.save(profile);
 
+    }
+
+    public void deleteResume(Long id) {
+        Profile profile = getProfile(id);
+        this.amazonService.delete("arrow-date/joblet", profile.getFileName());
+        profile.setResume(null);
+        profile.setFileName(null);
+
+        this.profileRepository.save(profile);
     }
 }

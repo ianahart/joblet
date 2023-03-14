@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Heading, Link, Text } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { UserContext } from '../context/user';
 import { profileState } from '../data';
@@ -10,12 +10,15 @@ import { IUserContext } from '../interfaces';
 import BasicInformation from '../components/Profile/BasicInformation';
 import FileUploader from '../components/Upload/FileUploader';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import ResumeOptions from '../components/Profile/ResumeOptions';
 const Profile = () => {
   const { user } = useContext(UserContext) as IUserContext;
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const { id: profileId } = useParams();
   const [profile, setProfile] = useState(profileState);
   const [file, setFile] = useState<File | null>(null);
-  const [downloadUrl, setDownloadUrl] = useState('');
+  const [resumeOptionsOpen, setResumeOptionsOpen] = useState(false);
   const getProfile = async () => {
     try {
       const response = await http.get(`/profiles/${profileId}`);
@@ -54,29 +57,32 @@ const Profile = () => {
     }
   };
 
-  const downloadFile = async () => {
-    try {
-      const response = await http.get(`/profiles/download/${profile.id}`, {
-        responseType: 'blob',
-      });
+  const clickAway = useCallback(
+    (e: MouseEvent) => {
+      const target = e.target as Element;
 
-      const fileURL = window.URL.createObjectURL(response.data);
-
-      // Setting various property values
-      let alink = document.createElement('a');
-      alink.href = fileURL;
-      alink.download = 'SamplePDF.pdf';
-      alink.click();
-    } catch (err: unknown | AxiosError) {
-      if (err instanceof AxiosError && err.response) {
-        console.log(err.response);
+      if (menuRef.current !== null && triggerRef.current !== null) {
+        if (!menuRef.current.contains(target) && triggerRef.current !== target) {
+          setResumeOptionsOpen(false);
+        }
       }
-    }
+    },
+    [triggerRef, setResumeOptionsOpen]
+  );
+
+  const handleResumeOptionsClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    setResumeOptionsOpen(true);
   };
+
+  useEffect(() => {
+    window.addEventListener('click', clickAway);
+    return () => window.removeEventListener('click', clickAway);
+  }, [clickAway]);
 
   return (
     <Box minH="100vh" display="flex" justifyContent="center">
-      <Box width={['95%', '95%', '550px']} mt="5rem" p="0.5rem" border="1px solid blue">
+      <Box width={['95%', '95%', '550px']} mt="5rem" p="0.5rem">
         <Flex justifyContent="space-between" alignItems="center">
           <Heading as="h1" color="black.primary">
             {user.firstName} {user.lastName}
@@ -118,8 +124,32 @@ const Profile = () => {
             justifyContent="space-between"
           >
             <FileUploader handleFileUpload={handleFileUpload} fileName={getFileName()} />
-            <Box>
-              <BsThreeDotsVertical />
+            <Box position="relative">
+              <Box ref={triggerRef} cursor="pointer" onClick={handleResumeOptionsClick}>
+                <BsThreeDotsVertical />
+              </Box>
+              {resumeOptionsOpen && (
+                <Box
+                  ref={menuRef}
+                  position="absolute"
+                  right="0px"
+                  top="30px"
+                  minH="400px"
+                  border="border 1px solid"
+                  borderColor="border.primary"
+                  minW="300px"
+                  borderRadius="8px"
+                  boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
+                  bg="#fff"
+                >
+                  <ResumeOptions
+                    setProfile={setProfile}
+                    setFile={setFile}
+                    resume={profile.resume}
+                    profileId={profile.id}
+                  />
+                </Box>
+              )}
             </Box>
           </Flex>
         </Box>
