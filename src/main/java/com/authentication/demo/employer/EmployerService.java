@@ -2,6 +2,7 @@ package com.authentication.demo.employer;
 
 import com.authentication.demo.advice.NotFoundException;
 import com.authentication.demo.employer.request.CreateEmployerRequest;
+import com.authentication.demo.employer.request.UpdateEmployerRequest;
 import com.authentication.demo.user.User;
 import com.authentication.demo.user.UserRepository;
 
@@ -57,5 +58,19 @@ public class EmployerService {
 
         user.setEmployer(employer);
         this.userRepository.save(user);
+    }
+
+    public Employer updateEmployer(UpdateEmployerRequest request, Long id) {
+        Employer currentEmployer = this.employerRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("User not found."));
+
+        currentEmployer.setNumOfEmployees(request.getNumOfEmployees());
+        currentEmployer.setEmail(request.getEmail());
+        currentEmployer.setLastName(request.getLastName());
+        currentEmployer.setFirstName(request.getFirstName());
+        currentEmployer.setLocation(request.getLocation());
+        currentEmployer.setCompanyName(request.getCompanyName());
+
+        return this.employerRepository.save(currentEmployer);
     }
 }
