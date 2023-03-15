@@ -1,6 +1,7 @@
 package com.authentication.demo.employer;
 
 import com.authentication.demo.employer.request.CreateEmployerRequest;
+import com.authentication.demo.employer.response.CreateEmployerResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,8 +22,15 @@ public class EmployerController {
     }
 
     @PostMapping(path = "/")
-    public ResponseEntity<Employer> createEmployer(@RequestBody CreateEmployerRequest request) {
+    public ResponseEntity<CreateEmployerResponse> createEmployer(@RequestBody CreateEmployerRequest request) {
+        Employer employer = this.employerService.createEmployer(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                this.employerService.createEmployer(request));
+                new CreateEmployerResponse(
+                        employer.getCompanyName(),
+                        employer.getNumOfEmployees(),
+                        employer.getFirstName(),
+                        employer.getLastName(),
+                        employer.getEmail(),
+                        employer.getCreatedAt()));
     }
 }

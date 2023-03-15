@@ -2,6 +2,9 @@ package com.authentication.demo.employer;
 
 import com.authentication.demo.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.sql.Date;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,6 +31,12 @@ public class Employer {
     private String lastName;
     @Column(name = "email")
     private String email;
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private Date createdAt;
+    @CreationTimestamp
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
     @JsonIgnore
     @OneToOne(mappedBy = "employer")
@@ -65,6 +74,14 @@ public class Employer {
         return id;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public Date getUpdated_at() {
+        return updatedAt;
+    }
+
     public User getUser() {
         return user;
     }
@@ -95,6 +112,14 @@ public class Employer {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public void setNumOfEmployees(Integer numOfEmployees) {

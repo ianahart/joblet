@@ -1,7 +1,6 @@
 package com.authentication.demo.passwordreset;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 
 import com.authentication.demo.user.User;
 
@@ -16,7 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity()
-@Table(name  = "password_reset")
+@Table(name = "password_reset")
 public class PasswordReset {
 
     @Id
