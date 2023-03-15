@@ -70,7 +70,8 @@ public class UserService {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getRole(),
-                user.getAbbreviation());
+                user.getAbbreviation(),
+                user.getEmployer() == null ? null : user.getEmployer().getId());
         return userDto;
 
     }

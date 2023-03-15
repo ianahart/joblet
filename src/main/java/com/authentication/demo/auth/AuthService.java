@@ -66,7 +66,8 @@ public class AuthService {
                 MyUtils.capitalize(request.getLastName()),
                 request.getEmail(),
                 this.passwordEncoder.encode(request.getPassword()),
-                request.getRole().equals("USER") ? Role.USER : Role.EMPLOYER);
+                request.getRole().equals("USER") ? Role.USER : Role.EMPLOYER,
+                null);
 
         Optional<User> exists = this.userRepository.findByEmail(request.getEmail());
 
@@ -125,7 +126,8 @@ public class AuthService {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getRole(),
-                user.getAbbreviation());
+                user.getAbbreviation(),
+                user.getEmployer() == null ? null : user.getEmployer().getId());
         return new LoginResponse(jwtToken, refreshToken.getRefreshToken(), userDto);
     }
 }

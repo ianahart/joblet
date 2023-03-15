@@ -3,6 +3,7 @@ package com.authentication.demo.user;
 import java.util.Collection;
 import java.util.List;
 
+import com.authentication.demo.employer.Employer;
 import com.authentication.demo.passwordreset.PasswordReset;
 import com.authentication.demo.profile.Profile;
 import com.authentication.demo.refreshtoken.RefreshToken;
@@ -51,6 +52,10 @@ public class User implements UserDetails {
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private Profile profile;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "employer_id", referencedColumnName = "id")
+    private Employer employer;
+
     @OneToMany(mappedBy = "user")
     private List<RefreshToken> refreshTokens;
 
@@ -64,8 +69,10 @@ public class User implements UserDetails {
 
     }
 
-    public User(Long id, Profile profile, String firstName, String lastName, String email, String password, Role role) {
+    public User(Long id, Profile profile, String firstName, String lastName, String email,
+            String password, Role role, Employer employer) {
         this.id = id;
+        this.employer = employer;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -74,7 +81,9 @@ public class User implements UserDetails {
         this.profile = profile;
     }
 
-    public User(String firstName, Profile profile, String lastName, String email, String password, Role role) {
+    public User(String firstName, Profile profile, String lastName, String email, String password,
+            Role role, Employer employer) {
+        this.employer = employer;
         this.profile = profile;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -83,7 +92,8 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public User(Profile profile, String firstName, String lastName, String email) {
+    public User(Profile profile, String firstName, String lastName, String email, Employer employer) {
+        this.employer = employer;
         this.profile = profile;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -91,11 +101,15 @@ public class User implements UserDetails {
     }
 
     public String getAbbreviation() {
-        return firstName.substring(0, 1).toUpperCase() + lastName.substring(0,  1).toUpperCase();
+        return firstName.substring(0, 1).toUpperCase() + lastName.substring(0, 1).toUpperCase();
     }
 
     public Long getId() {
         return id;
+    }
+
+    public Employer getEmployer() {
+        return employer;
     }
 
     public List<RefreshToken> getRefreshTokens() {
@@ -146,6 +160,10 @@ public class User implements UserDetails {
 
     public void setAbbreviation(String abbreviation) {
         this.abbreviation = abbreviation;
+    }
+
+    public void setEmployer(Employer employer) {
+        this.employer = employer;
     }
 
     public void setEmail(String email) {
@@ -218,6 +236,8 @@ public class User implements UserDetails {
                 ", email=" + email +
                 ", role=" + role +
                 ", profile_id=" + profile +
+                ", employer_id=" + employer +
+
                 '}';
     }
 

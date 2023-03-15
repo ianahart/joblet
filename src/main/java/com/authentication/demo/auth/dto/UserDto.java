@@ -10,9 +10,10 @@ public class UserDto {
     private Role role;
     private Long profileId;
     private String abbreviation;
+    private Long employerId;
 
     public UserDto(Long id, Long profileId, String email, String firstName, String lastName, Role role,
-            String abbreviation) {
+            String abbreviation, Long employerId) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -20,10 +21,15 @@ public class UserDto {
         this.role = role;
         this.profileId = profileId;
         this.abbreviation = abbreviation;
+        this.employerId = employerId;
     }
 
     public String getAbbreviation() {
         return abbreviation;
+    }
+
+    public Long getEmployerId() {
+        return employerId;
     }
 
     public Long getId() {
@@ -52,6 +58,10 @@ public class UserDto {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public void setEmployerId(Long employerId) {
+        this.employerId = employerId;
     }
 
     public void setEmail(String email) {
