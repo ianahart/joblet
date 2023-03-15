@@ -37,6 +37,8 @@ public class Employer {
     @CreationTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
+    @Column(name = "location")
+    private String location;
 
     @JsonIgnore
     @OneToOne(mappedBy = "employer")
@@ -51,27 +53,33 @@ public class Employer {
     }
 
     public Employer(Long id, String email, String companyName, String firstName, String lastName,
-            Integer numOfEmployees) {
+            Integer numOfEmployees, String location) {
         this.id = id;
         this.email = email;
         this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.numOfEmployees = numOfEmployees;
+        this.location = location;
     }
 
     public Employer(String email, String companyName, String firstName, String lastName,
-            Integer numOfEmployees) {
+            Integer numOfEmployees, String location) {
         this.email = email;
         this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.numOfEmployees = numOfEmployees;
+        this.location = location;
 
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getLocation() {
+        return location;
     }
 
     public Date getCreatedAt() {
@@ -142,6 +150,10 @@ public class Employer {
         this.email = email;
     }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     @Override
     public String toString() {
         return "Employer{" +
@@ -151,6 +163,7 @@ public class Employer {
                 ", firstName=" + firstName +
                 ", lastName=" + lastName +
                 ", numOfEmployees=" + numOfEmployees +
+                ", location=" + location +
                 '}';
     }
 

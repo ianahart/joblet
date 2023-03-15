@@ -3,26 +3,38 @@ package com.authentication.demo.employer.response;
 import java.sql.Date;
 
 public class CreateEmployerResponse {
-
+    private Long id;
     private String companyName;
     private Integer numOfEmployees;
     private String firstName;
     private String lastName;
     private String email;
     private Date createdAt;
+    private String location;
 
     public CreateEmployerResponse() {
 
     }
 
-    public CreateEmployerResponse(String companyName, Integer numOfEmployees, String firstName, String lastName,
-            String email, Date createdAt) {
+    public CreateEmployerResponse(Long id, String companyName, Integer numOfEmployees, String firstName,
+            String lastName,
+            String email, Date createdAt, String location) {
+        this.id = id;
         this.companyName = companyName;
         this.numOfEmployees = numOfEmployees;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.createdAt = createdAt;
+        this.location = location;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getEmail() {
@@ -51,6 +63,14 @@ public class CreateEmployerResponse {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public void setLastName(String lastName) {

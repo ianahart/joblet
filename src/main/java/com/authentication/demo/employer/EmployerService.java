@@ -29,7 +29,8 @@ public class EmployerService {
                 request.getCompanyName(),
                 request.getFirstName(),
                 request.getLastName(),
-                request.getNumOfEmployees());
+                request.getNumOfEmployees(),
+                request.getLocation());
 
         Employer newEmployer = this.employerRepository.save(employer);
 
