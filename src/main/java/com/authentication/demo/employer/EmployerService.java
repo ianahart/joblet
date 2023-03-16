@@ -3,8 +3,10 @@ package com.authentication.demo.employer;
 import com.authentication.demo.advice.NotFoundException;
 import com.authentication.demo.employer.request.CreateEmployerRequest;
 import com.authentication.demo.employer.request.UpdateEmployerRequest;
+import com.authentication.demo.user.Role;
 import com.authentication.demo.user.User;
 import com.authentication.demo.user.UserRepository;
+import com.authentication.demo.util.MyUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,11 +27,12 @@ public class EmployerService {
     }
 
     public Employer createEmployer(CreateEmployerRequest request) {
+
         Employer employer = new Employer(
                 request.getEmail(),
-                request.getCompanyName(),
-                request.getFirstName(),
-                request.getLastName(),
+                MyUtils.titleCase(request.getCompanyName()),
+                MyUtils.titleCase(request.getFirstName()),
+                MyUtils.titleCase(request.getLastName()),
                 request.getNumOfEmployees(),
                 request.getLocation());
 
@@ -57,6 +60,7 @@ public class EmployerService {
         System.out.println(user);
 
         user.setEmployer(employer);
+        user.setRole(Role.EMPLOYER);
         this.userRepository.save(user);
     }
 
