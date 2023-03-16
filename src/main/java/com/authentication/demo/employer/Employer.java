@@ -1,8 +1,10 @@
 package com.authentication.demo.employer;
 
+import com.authentication.demo.job.Job;
 import com.authentication.demo.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.sql.Date;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -10,6 +12,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -43,6 +46,9 @@ public class Employer {
     @JsonIgnore
     @OneToOne(mappedBy = "employer")
     private User user;
+
+    @OneToMany(mappedBy = "employer")
+    private List<Job> jobs;
 
     public Employer(User user) {
         this.user = user;
@@ -106,6 +112,11 @@ public class Employer {
         return firstName;
     }
 
+
+    public List<Job> getJobs() {
+        return jobs;
+    }
+
     public String getCompanyName() {
         return companyName;
     }
@@ -120,6 +131,10 @@ public class Employer {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setJobs(List<Job> jobs) {
+        this.jobs = jobs;
     }
 
     public void setCreatedAt(Date createdAt) {

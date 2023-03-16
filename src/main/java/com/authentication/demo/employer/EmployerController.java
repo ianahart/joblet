@@ -50,16 +50,14 @@ public class EmployerController {
         Employer employer = this.employerService.updateEmployer(request, id);
 
         return ResponseEntity.status(HttpStatus.OK).body(new UpdateEmployerResponse(
-            employer.getId(),
-            employer.getCompanyName(),
-            employer.getNumOfEmployees(),
-            employer.getFirstName(),
-            employer.getLastName(),
-            employer.getEmail(),
-            employer.getCreatedAt(),
-            employer.getLocation()
-        ));
+                employer.getId(),
+                employer.getCompanyName(),
+                employer.getNumOfEmployees(),
+                employer.getFirstName(),
+                employer.getLastName(),
+                employer.getEmail(),
+                employer.getCreatedAt(),
+                employer.getLocation()));
+
     }
-
 }
-
