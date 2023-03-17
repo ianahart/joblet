@@ -27,7 +27,7 @@ public class Employer {
     @Column(name = "company_name")
     private String companyName;
     @Column(name = "num_of_employees")
-    private Integer numOfEmployees;
+    private String numOfEmployees;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
@@ -59,7 +59,7 @@ public class Employer {
     }
 
     public Employer(Long id, String email, String companyName, String firstName, String lastName,
-            Integer numOfEmployees, String location) {
+            String numOfEmployees, String location) {
         this.id = id;
         this.email = email;
         this.companyName = companyName;
@@ -70,7 +70,7 @@ public class Employer {
     }
 
     public Employer(String email, String companyName, String firstName, String lastName,
-            Integer numOfEmployees, String location) {
+            String numOfEmployees, String location) {
         this.email = email;
         this.companyName = companyName;
         this.firstName = firstName;
@@ -121,7 +121,7 @@ public class Employer {
         return companyName;
     }
 
-    public Integer getNumOfEmployees() {
+    public String getNumOfEmployees() {
         return numOfEmployees;
     }
 
@@ -145,7 +145,7 @@ public class Employer {
         this.updatedAt = updatedAt;
     }
 
-    public void setNumOfEmployees(Integer numOfEmployees) {
+    public void setNumOfEmployees(String numOfEmployees) {
         this.numOfEmployees = numOfEmployees;
     }
 

@@ -8,8 +8,8 @@ public class UpdateEmployerRequest {
 
     @Size(max = 175, message = "Pleae keep company name under 175 characters.")
     private String companyName;
-    @Max(value = 1000000, message = "Please keep number of employees under 1 million.")
-    private Integer numOfEmployees;
+    @Size(max = 175, message = "Pleae keep first name under 175 characters.")
+    private String numOfEmployees;
     @Size(max = 175, message = "Pleae keep first name under 175 characters.")
     private String firstName;
     @Size(max = 175, message = "Pleae keep last name under 175 characters.")
@@ -23,7 +23,7 @@ public class UpdateEmployerRequest {
 
     }
 
-    public UpdateEmployerRequest(String companyName, Integer numOfEmployees, String firstName, String lastName,
+    public UpdateEmployerRequest(String companyName, String numOfEmployees, String firstName, String lastName,
             String email, String location) {
         this.companyName = companyName;
         this.numOfEmployees = numOfEmployees;
@@ -54,7 +54,7 @@ public class UpdateEmployerRequest {
         return companyName;
     }
 
-    public Integer getNumOfEmployees() {
+    public String getNumOfEmployees() {
         return numOfEmployees;
     }
 
@@ -78,7 +78,7 @@ public class UpdateEmployerRequest {
         this.location = location;
     }
 
-    public void setNumOfEmployees(Integer numOfEmployees) {
+    public void setNumOfEmployees(String numOfEmployees) {
         this.numOfEmployees = numOfEmployees;
     }
 }
