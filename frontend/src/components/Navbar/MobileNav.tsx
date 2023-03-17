@@ -104,6 +104,14 @@ const MobileNav = ({ handleSetMobileNavOpen, triggerRef }: IMobileNavProps) => {
             to={`profile/${user.id}`}
           />
         )}
+        {user.id !== 0 && (
+          <NavigationLink
+            handleSetMobileNavOpen={handleSetMobileNavOpen}
+            theme="dark"
+            text="Employers"
+            to={`create-employer`}
+          />
+        )}
 
         {user.id !== 0 && (
           <Text

@@ -3,11 +3,48 @@ export interface ILoginResponse {
   token: string;
   userDto: IUser;
 }
+
+export interface ICreateEmployerResponse {
+  companyName: string;
+  createdAt: Date;
+  email: string;
+  firstName: string;
+  id: number;
+  lastName: string;
+  location: string;
+  numOfEmployees: string;
+}
+
+export interface IAvailability {
+  name: string;
+  id: number;
+  show: boolean;
+}
+
 export interface ICreateAccountForm {
   firstName: { name: string; value: string; error: string; type: string };
   lastName: { name: string; value: string; error: string; type: string };
   email: { name: string; value: string; error: string; type: string };
   password: { name: string; value: string; error: string; type: string };
+}
+
+export interface ICreateEmployerForm {
+  companyName: { name: string; value: string; error: string; type: string };
+  numOfEmployees: { name: string; value: string; error: string; type: string };
+  firstName: { name: string; value: string; error: string; type: string };
+  lastName: { name: string; value: string; error: string; type: string };
+  email: { name: string; value: string; error: string; type: string };
+  location: { name: string; value: string; error: string; type: string };
+}
+
+export interface IJobForm {
+  position: { name: string; value: string; error: string; type: string };
+  perHour: { name: string; value: string; error: string; type: string };
+  employerId: { name: string; value: string; error: string; type: string };
+  availability: { name: string; value: string; error: string; type: string };
+  urgentlyHiring: { name: string; value: boolean; error: string; type: string };
+  multipleCandidates: { name: string; value: boolean; error: string; type: string };
+  body: { name: string; value: string; error: string; type: string };
 }
 
 export interface ILoginForm {
@@ -33,6 +70,8 @@ export interface IEditProfileForm {
 export interface IDropdownData {
   name: string;
   id: number;
+  subTitle?: string;
+  question?: string;
 }
 
 export interface IProfile {
@@ -59,6 +98,13 @@ export interface IUser {
 export interface ITokens {
   refreshToken: string;
   token: string;
+}
+
+export interface ILocation {
+  name: string;
+  id: number;
+  subTitle: string;
+  question: string;
 }
 
 export interface IUserContext {

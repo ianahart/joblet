@@ -21,6 +21,7 @@ export const theme = extendTheme({
     },
     light: {
       primary: '#e4e3e3',
+      secondary: '#f2efef',
     },
     blue: {
       primary: '#22577a',

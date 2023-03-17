@@ -10,6 +10,30 @@ export const loginState = {
   password: { name: 'password', value: '', error: '', type: 'password' },
 };
 
+export const createEmployerState = {
+  companyName: { name: 'companyName', value: '', error: '', type: 'text' },
+  numOfEmployees: { name: 'numOfEmployees', value: '', error: '', type: 'text' },
+  firstName: { name: 'firstName', value: '', error: '', type: 'text' },
+  lastName: { name: 'lastName', value: '', error: '', type: 'text' },
+  email: { name: 'email', value: '', error: '', type: 'text' },
+  location: { name: 'location', value: '', error: '', type: 'text' },
+};
+
+export const jobFormState = {
+  position: { name: 'position', value: '', error: '', type: 'text' },
+  perHour: { name: 'perHour', value: '', error: '', type: 'text' },
+  employerId: { name: 'employerId', value: '', error: '', type: 'text' },
+  availability: { name: 'availability', value: '', error: '', type: 'text' },
+  urgentlyHiring: { name: 'urgentlyHiring', value: false, error: '', type: 'text' },
+  multipleCandidates: {
+    name: 'multipleCandidates',
+    value: false,
+    error: '',
+    type: 'text',
+  },
+  body: { name: 'body', value: '', error: '', type: 'text' },
+};
+
 export const profileState = {
   city: '',
   country: '',
@@ -20,6 +44,13 @@ export const profileState = {
   state: '',
   fileName: '',
 };
+
+export const availabilityState = [
+  { name: 'Part time', id: 1, show: true },
+  { name: 'Full time', id: 2, show: true },
+  { name: 'Monday to Friday', id: 3, show: true },
+  { name: 'Only Weekends', id: 4, show: true },
+];
 
 export const passwordResetState = {
   oldPassword: { name: 'oldPassword', value: '', error: '', type: 'password' },
@@ -51,6 +82,35 @@ export const userState = {
   profileId: 0,
   abbreviation: '',
 };
+
+export const numOfEmployees = [
+  { name: 'Between 1 and 49', id: 1 },
+  { name: 'Between 50 and 99', id: 2 },
+  { name: 'Between 100 and 499', id: 3 },
+  { name: 'Between 500 and 999', id: 4 },
+  { name: 'over 1000', id: 5 },
+];
+
+export const locationState = [
+  {
+    name: 'In-person, precise location',
+    subTitle: 'The job is performed at a specific address.',
+    question: 'What is the street address for this location?',
+    id: 1,
+  },
+  {
+    name: 'General location, within a limited area',
+    subTitle: "The job address can't be specified.",
+    question: 'What is the job location?',
+    id: 2,
+  },
+  {
+    name: 'Remote',
+    subTitle: 'The job is performed remotely. No on-site work required.',
+    question: 'Are employees required to reside in a specific location?',
+    id: 3,
+  },
+];
 
 export const countries = [
   { name: 'Afghanistan', id: 1 },

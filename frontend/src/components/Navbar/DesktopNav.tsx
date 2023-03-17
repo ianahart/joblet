@@ -18,6 +18,10 @@ const DesktopNav = () => {
 
   return (
     <Flex display={['none', 'none', 'flex']} alignItems="center">
+      <NavigationLink theme="light" text="Company Reviews" to="company-reviews" />
+      {user.id === 0 && (
+        <NavigationLink theme="light" text="Create Account" to="register" />
+      )}
       {user.id !== 0 && (
         <Box
           mx="1rem"
@@ -36,11 +40,13 @@ const DesktopNav = () => {
         </Box>
       )}
 
-      <NavigationLink theme="light" text="Company Reviews" to="company-reviews" />
-      {user.id === 0 && (
-        <NavigationLink theme="light" text="Create Account" to="register" />
-      )}
       {user.id === 0 && <NavigationLink theme="light" text="Sign in" to="login" />}
+      {user.id !== 0 && (
+        <Box display="flex" alignItems="center">
+          <Box height="30px" width="2px" bg="light.primary"></Box>
+          <NavigationLink theme="light" text="Employers/Post Job" to="create-employer" />
+        </Box>
+      )}
     </Flex>
   );
 };

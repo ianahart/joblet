@@ -23,6 +23,8 @@ import PasswordReset from './pages/Auth/PasswordReset';
 import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import DocumentView from './components/Profile/DocumentView';
+import CreateEmployer from './pages/CreateEmployer';
+import CreateJob from './pages/CreateJob';
 function App() {
   const { setUser, user } = useContext(UserContext) as IUserContext;
 
@@ -131,6 +133,22 @@ function App() {
                 element={
                   <RequireAuth>
                     <DocumentView />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="create-employer"
+                element={
+                  <RequireAuth>
+                    <CreateEmployer />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="create-job"
+                element={
+                  <RequireAuth>
+                    <CreateJob />
                   </RequireAuth>
                 }
               />

@@ -3,17 +3,30 @@ import { useRef, useState, useEffect, useCallback } from 'react';
 import { useEffectOnce } from '../../hooks/UseEffectOnce';
 import { BsChevronDown } from 'react-icons/bs';
 import { IDropdownData } from '../../interfaces';
+import { nanoid } from 'nanoid';
 
 interface IFormDropdownProps {
   updateField: (name: string, value: string, attribute: string) => void;
-  data: { name: string; id: number }[];
+  updateObject?: (data: IDropdownData) => void;
+  data: { name: string; id: number; subTitle?: string; question?: string }[];
   label: string;
   name: string;
 }
 
-const FormDropdown = ({ updateField, data, label, name }: IFormDropdownProps) => {
+const FormDropdown = ({
+  updateField,
+  data,
+  label,
+  name,
+  updateObject,
+}: IFormDropdownProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selected, setSelected] = useState<IDropdownData>({ name: '', id: 0 });
+  const [selected, setSelected] = useState<IDropdownData>({
+    subTitle: '',
+    name: '',
+    id: 0,
+    question: '',
+  });
   const menuRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
 
@@ -23,14 +36,15 @@ const FormDropdown = ({ updateField, data, label, name }: IFormDropdownProps) =>
     }
   });
 
-  const handleOnSelected = (
-    e: React.MouseEvent<HTMLParagraphElement>,
-    data: IDropdownData
-  ) => {
+  const handleOnSelected = (e: React.MouseEvent<HTMLDivElement>, data: IDropdownData) => {
     e.stopPropagation();
     setSelected(data);
     setIsDropdownOpen(false);
     updateField(name, data.name, 'value');
+    if (data?.question) {
+      updateField(name, '', 'value');
+      updateObject?.(data);
+    }
   };
 
   const clickAway = useCallback(
@@ -89,16 +103,19 @@ const FormDropdown = ({ updateField, data, label, name }: IFormDropdownProps) =>
           >
             {data.map((item) => {
               return (
-                <Text
-                  role="button"
-                  _hover={{ background: '#57cc99', opacity: 0.4 }}
-                  cursor="pointer"
-                  p="0.5rem"
+                <Box
                   onClick={(e) => handleOnSelected(e, item)}
-                  key={item.id}
+                  p="0.5rem"
+                  _hover={{ background: '#57cc99', opacity: 0.4 }}
+                  key={nanoid()}
                 >
-                  {item.name}
-                </Text>
+                  <Text role="button" cursor="pointer">
+                    {item.name}
+                  </Text>
+                  <Text color="text.primary" fontSize="0.8rem">
+                    {item?.subTitle}
+                  </Text>
+                </Box>
               );
             })}
           </Box>

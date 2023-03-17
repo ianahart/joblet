@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Input, Text } from '@chakra-ui/react';
 import { useContext, useState } from 'react';
 import FormDropdown from '../components/Form/FormDropdown';
 import StandardFormInput from '../components/Form/StandardFormInput';
@@ -11,6 +11,7 @@ import { AxiosError } from 'axios';
 import { http } from '../helpers/utils';
 import { useEffectOnce } from '../hooks/UseEffectOnce';
 import { useParams } from 'react-router-dom';
+import InputContainer from '../components/Form/InputContainer';
 
 const EditProfile = () => {
   const { id: profileId } = useParams();
@@ -95,7 +96,7 @@ const EditProfile = () => {
   });
 
   return (
-    <Box minH="100vh">
+    <Box bg="light.secondary" minH="100vh">
       <Box
         minH="500px"
         display="flex"
@@ -127,7 +128,7 @@ const EditProfile = () => {
               </Text>
             </Box>
           )}
-          <Flex justifyContent="center" width="100%" my="1.5rem" mx="auto">
+          <InputContainer>
             <StandardFormInput
               htmlFor="email"
               errorField="Email"
@@ -139,8 +140,8 @@ const EditProfile = () => {
               updateField={updateField}
               label="Email"
             />
-          </Flex>
-          <Flex justifyContent="center" width="100%" my="1.5rem" mx="auto">
+          </InputContainer>
+          <InputContainer>
             <StandardFormInput
               htmlFor="phoneNumber"
               errorField="Phone number"
@@ -152,8 +153,8 @@ const EditProfile = () => {
               updateField={updateField}
               label="Phone"
             />
-          </Flex>
-          <Flex justifyContent="center" width="100%" my="1.5rem" mx="auto">
+          </InputContainer>
+          <InputContainer>
             <StandardFormInput
               htmlFor="city"
               errorField="City"
@@ -165,24 +166,32 @@ const EditProfile = () => {
               updateField={updateField}
               label="City"
             />
-          </Flex>
-          <Flex justifyContent="center" width="100%" my="1.5rem" mx="auto">
+          </InputContainer>
+          <InputContainer>
             <FormDropdown
               updateField={updateField}
               name={form.country.name}
               label="Country"
               data={countries}
             />
-          </Flex>
-          <Flex justifyContent="center" width="100%" my="1.5rem" mx="auto">
+          </InputContainer>
+          <InputContainer>
             <FormDropdown
               updateField={updateField}
               name={form.state.name}
               label="State"
               data={states}
             />
-          </Flex>
-          <Box my="1.5rem" display="flex" justifyContent="center">
+          </InputContainer>
+          <Box
+            bg="#fff"
+            borderRadius="8px"
+            boxShadow="rgba(149, 157, 165, 0.2) 0px 8px 24px"
+            p="1.5rem"
+            my="1.5rem"
+            display="flex"
+            justifyContent="center"
+          >
             <Button type="submit" colorScheme="teal" width="80%">
               Edit
             </Button>

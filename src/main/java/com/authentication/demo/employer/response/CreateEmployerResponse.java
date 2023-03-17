@@ -5,7 +5,7 @@ import java.sql.Date;
 public class CreateEmployerResponse {
     private Long id;
     private String companyName;
-    private Integer numOfEmployees;
+    private String numOfEmployees;
     private String firstName;
     private String lastName;
     private String email;
@@ -16,7 +16,7 @@ public class CreateEmployerResponse {
 
     }
 
-    public CreateEmployerResponse(Long id, String companyName, Integer numOfEmployees, String firstName,
+    public CreateEmployerResponse(Long id, String companyName, String numOfEmployees, String firstName,
             String lastName,
             String email, Date createdAt, String location) {
         this.id = id;
@@ -28,6 +28,11 @@ public class CreateEmployerResponse {
         this.createdAt = createdAt;
         this.location = location;
     }
+
+
+
+
+
 
     public String getLocation() {
         return location;
@@ -57,7 +62,7 @@ public class CreateEmployerResponse {
         return companyName;
     }
 
-    public Integer getNumOfEmployees() {
+    public String getNumOfEmployees() {
         return numOfEmployees;
     }
 
@@ -85,7 +90,7 @@ public class CreateEmployerResponse {
         this.companyName = companyName;
     }
 
-    public void setNumOfEmployees(Integer numOfEmployees) {
+    public void setNumOfEmployees(String numOfEmployees) {
         this.numOfEmployees = numOfEmployees;
     }
 
