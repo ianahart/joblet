@@ -1,14 +1,17 @@
 package com.authentication.demo.employer;
 
+import com.amazonaws.services.xray.model.Http;
 import com.authentication.demo.employer.request.CreateEmployerRequest;
 import com.authentication.demo.employer.request.UpdateEmployerRequest;
 import com.authentication.demo.employer.response.CreateEmployerResponse;
 import com.authentication.demo.employer.response.UpdateEmployerResponse;
+import com.authentication.demo.employer.response.GetEmployerResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +32,22 @@ public class EmployerController {
         this.employerService = employerService;
     }
 
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<GetEmployerResponse> getEmployer(@PathVariable("id") Long id) {
+        Employer employer = this.employerService.getEmployer(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new GetEmployerResponse(
+
+                        employer.getCompanyName(),
+                        employer.getNumOfEmployees(),
+                        employer.getFirstName(),
+                        employer.getLastName(),
+                        employer.getEmail(),
+                        employer.getLocation(),
+                        employer.getLocationQuestionId()));
+    }
+
     @PostMapping(path = "/")
     public ResponseEntity<CreateEmployerResponse> createEmployer(@Valid @RequestBody CreateEmployerRequest request) {
         Employer employer = this.employerService.createEmployer(request);
@@ -41,7 +60,8 @@ public class EmployerController {
                         employer.getLastName(),
                         employer.getEmail(),
                         employer.getCreatedAt(),
-                        employer.getLocation()));
+                        employer.getLocation(),
+                        employer.getLocationQuestionId()));
     }
 
     @PatchMapping(path = "/{id}")

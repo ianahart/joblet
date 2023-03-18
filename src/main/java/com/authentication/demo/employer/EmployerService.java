@@ -26,6 +26,11 @@ public class EmployerService {
         this.employerRepository = employerRepository;
     }
 
+
+    public Employer getEmployer(Long id) {
+        return this.employerRepository.getLatestEmployer(id);
+    }
+
     public Employer createEmployer(CreateEmployerRequest request) {
 
         Employer employer = new Employer(
@@ -34,7 +39,8 @@ public class EmployerService {
                 MyUtils.titleCase(request.getFirstName()),
                 MyUtils.titleCase(request.getLastName()),
                 request.getNumOfEmployees(),
-                request.getLocation());
+                request.getLocation(),
+                request.getLocationQuestionId());
 
         Employer newEmployer = this.employerRepository.save(employer);
 

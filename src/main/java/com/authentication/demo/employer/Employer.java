@@ -42,6 +42,8 @@ public class Employer {
     private Date updatedAt;
     @Column(name = "location")
     private String location;
+    @Column(name = "location_question_id")
+    private Integer locationQuestionId;
 
     @JsonIgnore
     @OneToOne(mappedBy = "employer")
@@ -59,7 +61,7 @@ public class Employer {
     }
 
     public Employer(Long id, String email, String companyName, String firstName, String lastName,
-            String numOfEmployees, String location) {
+            String numOfEmployees, String location, Integer locationQuestionId) {
         this.id = id;
         this.email = email;
         this.companyName = companyName;
@@ -67,16 +69,18 @@ public class Employer {
         this.lastName = lastName;
         this.numOfEmployees = numOfEmployees;
         this.location = location;
+        this.locationQuestionId = locationQuestionId;
     }
 
     public Employer(String email, String companyName, String firstName, String lastName,
-            String numOfEmployees, String location) {
+            String numOfEmployees, String location, Integer locationQuestionId) {
         this.email = email;
         this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.numOfEmployees = numOfEmployees;
         this.location = location;
+            this.locationQuestionId = locationQuestionId;
 
     }
 
@@ -86,6 +90,10 @@ public class Employer {
 
     public String getLocation() {
         return location;
+    }
+
+    public Integer getLocationQuestionId() {
+        return locationQuestionId;
     }
 
     public Date getCreatedAt() {
@@ -131,6 +139,10 @@ public class Employer {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setLocationQuestionId(Integer locationQuestionId) {
+        this.locationQuestionId = locationQuestionId;
     }
 
     public void setJobs(List<Job> jobs) {

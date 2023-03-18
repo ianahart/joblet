@@ -1,31 +1,20 @@
-package com.authentication.demo.employer.request;
+package com.authentication.demo.employer.response;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-
-public class CreateEmployerRequest {
-
-    @Size(max = 175, message = "Pleae keep company name under 175 characters.")
+public class GetEmployerResponse {
     private String companyName;
-    @Size(max = 175, message = "Pleae keep first name under 175 characters.")
     private String numOfEmployees;
-    @Size(max = 175, message = "Pleae keep first name under 175 characters.")
     private String firstName;
-    @Size(max = 175, message = "Pleae keep last name under 175 characters.")
     private String lastName;
-    @Email(message = "Please provide a valid email address.")
     private String email;
-    @Size(max = 175, message = "Pleae keep location under 175 characters.")
     private String location;
     private Integer locationQuestionId;
 
-    public CreateEmployerRequest() {
+    public GetEmployerResponse() {
 
     }
 
-    public CreateEmployerRequest(String companyName, String numOfEmployees, String firstName, String lastName,
+    public GetEmployerResponse(String companyName, String numOfEmployees, String firstName,
+            String lastName,
             String email, String location, Integer locationQuestionId) {
         this.companyName = companyName;
         this.numOfEmployees = numOfEmployees;
@@ -38,7 +27,6 @@ public class CreateEmployerRequest {
 
     public String getLocation() {
         return location;
-
     }
 
     public Integer getLocationQuestionId() {
@@ -69,12 +57,16 @@ public class CreateEmployerRequest {
         this.email = email;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public void setLocationQuestionId(Integer locationQuestionId) {
         this.locationQuestionId = locationQuestionId;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public void setFirstName(String firstName) {
@@ -85,11 +77,8 @@ public class CreateEmployerRequest {
         this.companyName = companyName;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public void setNumOfEmployees(String numOfEmployees) {
         this.numOfEmployees = numOfEmployees;
     }
+
 }

@@ -11,6 +11,7 @@ public class CreateEmployerResponse {
     private String email;
     private Date createdAt;
     private String location;
+    private Integer locationQuestionId;
 
     public CreateEmployerResponse() {
 
@@ -18,7 +19,7 @@ public class CreateEmployerResponse {
 
     public CreateEmployerResponse(Long id, String companyName, String numOfEmployees, String firstName,
             String lastName,
-            String email, Date createdAt, String location) {
+            String email, Date createdAt, String location, Integer locationQuestionId) {
         this.id = id;
         this.companyName = companyName;
         this.numOfEmployees = numOfEmployees;
@@ -27,15 +28,15 @@ public class CreateEmployerResponse {
         this.email = email;
         this.createdAt = createdAt;
         this.location = location;
+        this.locationQuestionId = locationQuestionId;
     }
-
-
-
-
-
 
     public String getLocation() {
         return location;
+    }
+
+    public Integer getLocationQuestionId() {
+        return locationQuestionId;
     }
 
     public Long getId() {
@@ -68,6 +69,10 @@ public class CreateEmployerResponse {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setLocationQuestionId(Integer locationQuestionId) {
+        this.locationQuestionId = locationQuestionId;
     }
 
     public void setId(Long id) {

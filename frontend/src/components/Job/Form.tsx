@@ -1,18 +1,30 @@
 import { IAvailability, IJobForm } from '../../interfaces';
 import { useState } from 'react';
-import { Text, Box, Flex, Switch } from '@chakra-ui/react';
+import { Text, Box, Flex, Switch, Heading, Image, Button } from '@chakra-ui/react';
 import StandardFormInput from '../Form/StandardFormInput';
+import createJobImg from '../../images/create-job.jpg';
 import InputContainer from '../Form/InputContainer';
 import { availabilityState, jobFormState } from '../../data';
 import ReactQuill from 'react-quill';
+import { AiOutlineFullscreen, AiOutlineFullscreenExit } from 'react-icons/ai';
 import 'react-quill/dist/quill.snow.css';
+import { Axios, AxiosError } from 'axios';
+import { http } from '../../helpers/utils';
+import { useNavigate } from 'react-router-dom';
 
 interface IFormProps {
   employerId: number;
+  type: string;
+  title: string;
+  btnText: string;
+  endpoint: string;
 }
 
-const Form = ({ employerId }: IFormProps) => {
+const Form = ({ employerId, type, title, btnText, endpoint }: IFormProps) => {
+  const navigate = useNavigate();
+  const [editorValue, setEditorValue] = useState('');
   const [availability, setAvailability] = useState(availabilityState);
+  const [editorFullScreen, setEditorFullScreen] = useState(false);
   const [form, setForm] = useState(jobFormState);
 
   const updateField = (name: string, value: string | boolean, attribute: string) => {
@@ -24,7 +36,7 @@ const Form = ({ employerId }: IFormProps) => {
 
   const applyErrors = <T,>(errors: T) => {
     for (let prop in errors) {
-      updateField(prop, errors[prop] as string, 'error');
+      updateField(prop, errors[prop] as any, 'error');
     }
   };
 
@@ -49,20 +61,70 @@ const Form = ({ employerId }: IFormProps) => {
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
-    console.log(e.target.checked);
     updateField(name, e.target.checked, 'value');
   };
+
+  const checkForErrors = () => {
+    let errors = false;
+    for (const [_, field] of Object.entries(form)) {
+      const { value, error } = field;
+      if (error.length) {
+        errors = true;
+      }
+    }
+    return errors;
+  };
+
+  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (checkForErrors()) return;
+    if (type === 'create') {
+      createJob(endpoint);
+    } else {
+      updateJob(endpoint);
+    }
+  };
+
+  const createJob = (endpoint: string) => {
+    try {
+      const response = http.post(endpoint, {
+        position: form.position.value,
+        perHour: form.perHour.value,
+        employerId,
+        availability: form.availability.value,
+        urgentlyHiring: form.urgentlyHiring.value,
+        multipleCandidates: form.multipleCandidates.value,
+        body: editorValue,
+      });
+      navigate('/joblet');
+    } catch (err: unknown | AxiosError) {
+      if (err instanceof AxiosError && err.response) {
+        applyErrors(err.response.data);
+      }
+    }
+  };
+
+  const updateJob = (endpoint: string) => {};
 
   return (
     <Box
       minH="100vh"
-      bg="light.secondary"
+      bg={editorFullScreen ? 'rgba(0, 0, 0, 0.7)' : '#f2efef'}
       display="flex"
+      width="100%"
       justifyContent="center"
       pt="5rem"
     >
       <Box minH="500px" width={['95%', '95%', '550px']}>
-        <form>
+        <form onSubmit={handleOnSubmit}>
+          <InputContainer>
+            <Box>
+              <Heading color="text.primary" as="h1">
+                {title}
+              </Heading>
+              <Image src={createJobImg} alt="person working on a computer" />
+            </Box>
+          </InputContainer>
           <InputContainer>
             <StandardFormInput
               htmlFor="position"
@@ -150,6 +212,46 @@ const Form = ({ employerId }: IFormProps) => {
                 size="lg"
               />
             </>
+          </InputContainer>
+          <Box
+            className={editorFullScreen ? 'expand-editor' : ''}
+            bg="#fff"
+            alignItems="center"
+            boxShadow="rgba(149, 157, 165, 0.2) 0px 8px 24px"
+            borderRadius="8px"
+            p="1.5rem"
+            justifyContent="center"
+            my="1.5rem"
+            mx="auto"
+          >
+            <Flex justifyContent="flex-end">
+              {editorFullScreen ? (
+                <Box
+                  onClick={() => setEditorFullScreen(false)}
+                  fontSize="2rem"
+                  cursor="pointer"
+                  color="green.primary"
+                >
+                  <AiOutlineFullscreenExit />
+                </Box>
+              ) : (
+                <Box
+                  cursor="pointer"
+                  onClick={() => setEditorFullScreen(true)}
+                  fontSize="2rem"
+                  color="green.primary"
+                >
+                  <AiOutlineFullscreen />
+                </Box>
+              )}
+            </Flex>
+            <Text color="text.primary">Description of Job</Text>
+            <ReactQuill theme="snow" value={editorValue} onChange={setEditorValue} />
+          </Box>
+          <InputContainer>
+            <Button type="submit" colorScheme="teal" width="90%">
+              {btnText}
+            </Button>
           </InputContainer>
         </form>
       </Box>

@@ -8,6 +8,7 @@ import { IUserContext } from '../../interfaces';
 import ProfileNavigationLink from './ProfileNavigationLink';
 import { CgFileDocument } from 'react-icons/cg';
 import { AiOutlineLogout } from 'react-icons/ai';
+import { HiOutlineDocumentDuplicate } from 'react-icons/hi';
 
 interface IProfileNavProps {
   triggerRef: RefObject<HTMLDivElement>;
@@ -73,6 +74,12 @@ const ProfileNav = ({ triggerRef, setShowProfile }: IProfileNavProps) => {
         text="Profile"
         setShowProfile={setShowProfile}
         icon={<CgFileDocument />}
+      />
+      <ProfileNavigationLink
+        to={`employer-jobs`}
+        text="Employer Jobs"
+        setShowProfile={setShowProfile}
+        icon={<HiOutlineDocumentDuplicate />}
       />
 
       <Flex

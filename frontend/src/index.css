@@ -26,6 +26,44 @@ body {
   animation: rise 0.5s forwards;
 }
 
+.ql-toolbar {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.ql-container {
+  min-height: 500px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-color: #e4e4e6;
+}
+
+.expand-editor {
+  position: absolute;
+  width: 80%;
+  top: 100px;
+  left: 170px;
+  height: 85%;
+  animation: expand 0.5s forwards;
+}
+
+@media (max-width: 868px) {
+  .expand-editor {
+    left: 50px;
+  }
+}
+
+@keyframes expand {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @keyframes rise {
   0% {
     opacity: 0;

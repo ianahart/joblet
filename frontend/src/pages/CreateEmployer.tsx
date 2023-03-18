@@ -1,11 +1,22 @@
-import { Box, Button, Flex, Heading, Image } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Image,
+  Radio,
+  RadioGroup,
+  Stack,
+} from '@chakra-ui/react';
 import {
   ICreateEmployerForm,
   ICreateEmployerResponse,
   IDropdownData,
+  IGetEmployerResponse,
+  IUserContext,
 } from '../interfaces';
 import { createEmployerState, locationState, numOfEmployees } from '../data';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import createEmployerImg from '../images/create-employer.jpg';
 import StandardFormInput from '../components/Form/StandardFormInput';
 import InputContainer from '../components/Form/InputContainer';
@@ -13,8 +24,11 @@ import FormDropdown from '../components/Form/FormDropdown';
 import { AxiosError } from 'axios';
 import { http } from '../helpers/utils';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/user';
 const CreateEmployer = () => {
   const navigate = useNavigate();
+  const { user } = useContext(UserContext) as IUserContext;
+  const [radioValue, setRadioValue] = useState('2');
   const [form, setForm] = useState(createEmployerState);
   const [location, setLocation] = useState<IDropdownData>();
 
@@ -55,6 +69,7 @@ const CreateEmployer = () => {
         lastName: form.lastName.value,
         email: form.email.value,
         location: form.location.value,
+        locationQuestionId: location?.id,
       });
 
       navigate('/create-job', { state: { id: response.data.id } });
@@ -67,7 +82,45 @@ const CreateEmployer = () => {
 
   const applyErrors = <T,>(errors: T) => {
     for (let prop in errors) {
-      updateField(prop, errors[prop] as string, 'error');
+      updateField(prop, errors[prop] as any, 'error');
+    }
+  };
+
+  const syncPrevEmployerInfo = async () => {
+    try {
+      const response = await http.get<IGetEmployerResponse>(
+        `/employers/${user.employerId}`
+      );
+      console.log(response);
+      for (let prop in response.data) {
+        if (prop !== 'locationQuestionId') {
+          updateField(
+            prop,
+            response.data[prop as keyof IGetEmployerResponse] as string,
+            'value'
+          );
+        }
+        const prevLocation = locationState.find(
+          (item) => item.id === response.data.locationQuestionId
+        );
+        setLocation(prevLocation);
+      }
+    } catch (err: unknown | AxiosError) {
+      if (err instanceof AxiosError && err.response) {
+        return;
+      }
+    }
+  };
+
+  const handleRadioChange = (nextValue: string) => {
+    setRadioValue(nextValue);
+
+    if (nextValue === '1') {
+      syncPrevEmployerInfo();
+    } else {
+      for (const [_, field] of Object.entries(form)) {
+        updateField(field.name, '', 'value');
+      }
     }
   };
 
@@ -97,6 +150,16 @@ const CreateEmployer = () => {
             </Heading>
             <Image width="200px" src={createEmployerImg} />
           </Flex>
+          {user.employerId !== null && (
+            <InputContainer>
+              <RadioGroup onChange={handleRadioChange} value={radioValue}>
+                <Stack direction="row">
+                  <Radio value="1">Previous Employer Information</Radio>
+                  <Radio value="2">Start new</Radio>
+                </Stack>
+              </RadioGroup>
+            </InputContainer>
+          )}
 
           <InputContainer>
             <StandardFormInput
@@ -156,6 +219,7 @@ const CreateEmployer = () => {
               updateField={updateField}
               name={form.numOfEmployees.name}
               label="Number of Employees"
+              value={form.numOfEmployees.value}
               data={numOfEmployees}
             />
           </InputContainer>
@@ -166,6 +230,7 @@ const CreateEmployer = () => {
                 updateField={updateField}
                 updateObject={updateLocation}
                 name={form.location.name}
+                location={location}
                 label="Which option best describes this job's location?"
                 data={locationState}
               />

@@ -47,7 +47,7 @@ const EditProfile = () => {
 
   const applyErrors = <T,>(data: T) => {
     for (let prop in data) {
-      updateField(prop, data[prop] as string, 'error');
+      updateField(prop, data[prop] as any, 'error');
     }
   };
 
@@ -172,6 +172,7 @@ const EditProfile = () => {
               updateField={updateField}
               name={form.country.name}
               label="Country"
+              value={form.country.value}
               data={countries}
             />
           </InputContainer>
@@ -180,6 +181,7 @@ const EditProfile = () => {
               updateField={updateField}
               name={form.state.name}
               label="State"
+              value={form.state.value}
               data={states}
             />
           </InputContainer>

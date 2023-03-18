@@ -11,9 +11,16 @@ const CreateJob = () => {
       bg="light.secondary"
       display="flex"
       justifyContent="center"
+      position="relative"
       pt="5rem"
     >
-      <Form employerId={location.state.id} />
+      <Form
+        title="Create job"
+        type="create"
+        endpoint="/jobs/"
+        btnText="Create"
+        employerId={location.state.id}
+      />
     </Box>
   );
 };

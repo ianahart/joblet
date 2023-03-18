@@ -9,6 +9,8 @@ interface IFormDropdownProps {
   updateField: (name: string, value: string, attribute: string) => void;
   updateObject?: (data: IDropdownData) => void;
   data: { name: string; id: number; subTitle?: string; question?: string }[];
+  location?: IDropdownData;
+  value?: string;
   label: string;
   name: string;
 }
@@ -16,9 +18,11 @@ interface IFormDropdownProps {
 const FormDropdown = ({
   updateField,
   data,
+  location,
   label,
   name,
   updateObject,
+  value,
 }: IFormDropdownProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selected, setSelected] = useState<IDropdownData>({
@@ -30,11 +34,24 @@ const FormDropdown = ({
   const menuRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
 
-  useEffectOnce(() => {
+  useEffect(() => {
     if (data.length) {
-      setSelected(data[0]);
+      if (value === '') {
+        setSelected(data[0]);
+      } else {
+        const selected = data.find((item) => item.name === value);
+        if (selected) {
+          setSelected(selected);
+        }
+      }
     }
-  });
+  }, [data, value]);
+
+  useEffect(() => {
+    if (updateObject !== undefined && location !== undefined) {
+      setSelected(location);
+    }
+  }, [location, updateObject]);
 
   const handleOnSelected = (e: React.MouseEvent<HTMLDivElement>, data: IDropdownData) => {
     e.stopPropagation();

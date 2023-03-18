@@ -13,6 +13,17 @@ export interface ICreateEmployerResponse {
   lastName: string;
   location: string;
   numOfEmployees: string;
+  locationQuestionId: number;
+}
+
+export interface IGetEmployerResponse {
+  companyName: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  location: string;
+  numOfEmployees: string;
+  locationQuestionId: number;
 }
 
 export interface IAvailability {
@@ -93,6 +104,7 @@ export interface IUser {
   email: string;
   role: string;
   abbreviation: string;
+  employerId: number;
 }
 
 export interface ITokens {

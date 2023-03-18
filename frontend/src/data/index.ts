@@ -81,6 +81,7 @@ export const userState = {
   role: '',
   profileId: 0,
   abbreviation: '',
+  employerId: 0,
 };
 
 export const numOfEmployees = [

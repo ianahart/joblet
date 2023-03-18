@@ -112,7 +112,14 @@ const MobileNav = ({ handleSetMobileNavOpen, triggerRef }: IMobileNavProps) => {
             to={`create-employer`}
           />
         )}
-
+        {user.id !== 0 && user.employerId !== null && (
+          <NavigationLink
+            handleSetMobileNavOpen={handleSetMobileNavOpen}
+            theme="dark"
+            text="Employer Jobs"
+            to={`employer-jobs`}
+          />
+        )}
         {user.id !== 0 && (
           <Text
             onClick={handleOnLogout}
