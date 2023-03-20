@@ -1,37 +1,60 @@
-package com.authentication.demo.job.response;
+package com.authentication.demo.job.dto;
 
-public class UpdateJobResponse {
+import java.sql.Date;
+
+public class JobDto {
     private Long id;
     private String position;
     private Integer perHour;
     private String availability;
     private Boolean urgentlyHiring;
     private Boolean multipleCandidates;
+    private Date createdAt;
     private String body;
+    private Long employerId;
+    private String companyName;
 
-    public UpdateJobResponse() {
+    public JobDto() {
     }
 
-    public UpdateJobResponse(
-            Long id,
+    public JobDto(Long id,
             String position,
             Integer perHour,
-            String availability,
-            Boolean urgentlyHiring,
+            String body,
+            Date createdAt,
             Boolean multipleCandidates,
-            String body) {
+            Boolean urgentlyHiring,
+            String availability,
+            Long employerId,
+            String companyName
+
+    ) {
         this.id = id;
         this.position = position;
         this.perHour = perHour;
         this.availability = availability;
         this.urgentlyHiring = urgentlyHiring;
         this.multipleCandidates = multipleCandidates;
+        this.createdAt = createdAt;
         this.body = body;
+        this.employerId = employerId;
+        this.companyName = companyName;
+    }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getCompanyName() {
+        return companyName;
     }
 
     public String getBody() {
         return body;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
     public Integer getPerHour() {
@@ -42,20 +65,20 @@ public class UpdateJobResponse {
         return position;
     }
 
-    public Boolean getMultipleCandidates() {
-        return multipleCandidates;
+    public String getAvailability() {
+        return availability;
+    }
+
+    public Long getEmployerId() {
+        return employerId;
     }
 
     public Boolean getUrgentlyHiring() {
         return urgentlyHiring;
     }
 
-    public String getAvailability() {
-        return availability;
-    }
-
-    public Long getId() {
-        return id;
+    public Boolean getMultipleCandidates() {
+        return multipleCandidates;
     }
 
     public void setId(Long id) {
@@ -66,12 +89,20 @@ public class UpdateJobResponse {
         this.body = body;
     }
 
+    public void setEmployerId(Long employerId) {
+        this.employerId = employerId;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
     public void setPerHour(Integer perHour) {
         this.perHour = perHour;
     }
 
-    public void setPosition(String position) {
-        this.position = position;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public void setAvailability(String availability) {
@@ -84,6 +115,10 @@ public class UpdateJobResponse {
 
     public void setMultipleCandidates(Boolean multipleCandidates) {
         this.multipleCandidates = multipleCandidates;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 
 }

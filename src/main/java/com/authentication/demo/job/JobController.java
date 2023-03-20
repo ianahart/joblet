@@ -1,19 +1,27 @@
 package com.authentication.demo.job;
 
+import java.util.List;
+import java.util.Map;
+
+import com.authentication.demo.job.dto.JobDto;
+import com.authentication.demo.job.dto.JobPaginationDto;
 import com.authentication.demo.job.request.CreateJobRequest;
 import com.authentication.demo.job.request.UpdateJobRequest;
 import com.authentication.demo.job.response.UpdateJobResponse;
 import com.authentication.demo.job.response.CreateJobResponse;
+import com.authentication.demo.job.response.GetJobsResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -28,6 +36,26 @@ public class JobController {
 
     public JobController(JobService jobService) {
         this.jobService = jobService;
+    }
+
+    @GetMapping("/owner")
+    public ResponseEntity<GetJobsResponse> getJobs(@RequestParam("employerId") String employerId,
+            @RequestParam("page") String page, @RequestParam("size") String size,
+            @RequestParam("direction") String direction) {
+
+        JobPaginationDto jobPagination = this.jobService
+                .getJobs(Long.parseLong(employerId), Integer.valueOf(page),
+                        Integer.valueOf(size), direction);
+
+        if (jobPagination.getJobDto().size() > 0) {
+            page = page + 1;
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new GetJobsResponse(
+                        jobPagination.getPage(),
+                        Integer.valueOf(size),
+                        jobPagination.getJobDto(),
+                        jobPagination.getTotalPages()));
     }
 
     @PostMapping("/")

@@ -2,6 +2,7 @@ package com.authentication.demo.employer;
 
 import com.authentication.demo.job.Job;
 import com.authentication.demo.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.sql.Date;
 import java.util.List;
@@ -80,7 +81,7 @@ public class Employer {
         this.lastName = lastName;
         this.numOfEmployees = numOfEmployees;
         this.location = location;
-            this.locationQuestionId = locationQuestionId;
+        this.locationQuestionId = locationQuestionId;
 
     }
 
@@ -119,7 +120,6 @@ public class Employer {
     public String getFirstName() {
         return firstName;
     }
-
 
     public List<Job> getJobs() {
         return jobs;

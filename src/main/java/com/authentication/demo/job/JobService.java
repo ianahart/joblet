@@ -2,6 +2,8 @@ package com.authentication.demo.job;
 
 import com.authentication.demo.employer.Employer;
 import com.authentication.demo.employer.EmployerRepository;
+import com.authentication.demo.job.dto.JobDto;
+import com.authentication.demo.job.dto.JobPaginationDto;
 import com.authentication.demo.job.request.CreateJobRequest;
 import com.authentication.demo.job.request.UpdateJobRequest;
 import com.authentication.demo.util.MyUtils;
@@ -9,7 +11,15 @@ import com.authentication.demo.advice.NotFoundException;
 
 import com.authentication.demo.advice.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Arrays;
 
 @Service
 public class JobService {
@@ -24,6 +34,27 @@ public class JobService {
         this.jobRepository = jobRepository;
         this.employerRepository = employerRepository;
 
+    }
+
+    public JobPaginationDto getJobs(Long employerId, Integer page, Integer size, String direction) {
+
+        Pageable paging = PageRequest.of(page, size, Sort.by("id"));
+        Page<JobDto> pagedResult = this.jobRepository.findJobsByEmployerId(employerId, paging);
+        if (pagedResult.getContent().size() > 0) {
+            if (direction.equals("next") && page < pagedResult.getTotalPages()) {
+                page = page + 1;
+            } else if (direction.equals("prev") && page > 1) {
+                page = page - 1;
+            }
+        }
+        if (pagedResult.hasContent()) {
+
+            System.out.println(pagedResult.getNumber());
+            return new JobPaginationDto(pagedResult.getContent(), pagedResult.getTotalPages(), page);
+
+        } else {
+            return new JobPaginationDto(pagedResult.getContent(), 0, page);
+        }
     }
 
     public void createJob(CreateJobRequest request) {
