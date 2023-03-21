@@ -27,10 +27,16 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/user';
 const CreateEmployer = () => {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext) as IUserContext;
+  const { user, setUser } = useContext(UserContext) as IUserContext;
   const [radioValue, setRadioValue] = useState('2');
   const [form, setForm] = useState(createEmployerState);
   const [location, setLocation] = useState<IDropdownData>();
+
+  useEffect(() => {
+    if (user.employerId !== null) {
+      navigate('/create-job', { state: { id: user.employerId } });
+    }
+  }, [navigate, user.employerId]);
 
   const updateField = (name: string, value: string, attribute: string) => {
     setForm((prevState) => ({
@@ -71,6 +77,11 @@ const CreateEmployer = () => {
         location: form.location.value,
         locationQuestionId: location?.id,
       });
+      //@ts-ignoree
+      setUser((prevState) => ({
+        ...prevState,
+        employerId: response.data.id,
+      }));
 
       navigate('/create-job', { state: { id: response.data.id } });
     } catch (err: unknown | AxiosError) {

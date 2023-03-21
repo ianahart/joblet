@@ -16,6 +16,27 @@ export interface ICreateEmployerResponse {
   locationQuestionId: number;
 }
 
+export interface IEmployerJob {
+  id: number;
+  position: string;
+  perHour: number;
+  availability: string;
+  urgentlyHiring: boolean;
+  multipleCandidates: boolean;
+  employerId: number;
+  createdAt: Date;
+  companyName: string;
+  body: string;
+  location: string;
+}
+
+export interface IGetEmployerJobResponse {
+  page: number;
+  size: number;
+  totalPages: number;
+  jobs: IEmployerJob[];
+}
+
 export interface IGetEmployerResponse {
   companyName: string;
   email: string;

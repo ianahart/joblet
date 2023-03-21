@@ -34,6 +34,20 @@ export const jobFormState = {
   body: { name: 'body', value: '', error: '', type: 'text' },
 };
 
+export const employerJobState = {
+  id: 0,
+  position: '',
+  perHour: 0,
+  availability: '',
+  urgentlyHiring: false,
+  multipleCandidates: false,
+  employerId: 0,
+  createdAt: new Date(),
+  companyName: '',
+  body: '',
+  location: '',
+};
+
 export const profileState = {
   city: '',
   country: '',

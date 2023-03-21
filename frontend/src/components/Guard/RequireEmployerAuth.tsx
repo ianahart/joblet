@@ -11,7 +11,6 @@ const RequireEmployerAuth: React.FC<Props> = ({ children }): JSX.Element => {
   const { user } = useContext(UserContext) as IUserContext;
   const location = useLocation();
 
-  console.log(user.employerId);
   if (retreiveTokens()?.token && user.employerId !== null) {
     return children;
   } else {

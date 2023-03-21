@@ -1,5 +1,6 @@
 package com.authentication.demo.employer;
 
+import com.authentication.demo.advice.BadRequestException;
 import com.authentication.demo.advice.NotFoundException;
 import com.authentication.demo.employer.request.CreateEmployerRequest;
 import com.authentication.demo.employer.request.UpdateEmployerRequest;
@@ -26,12 +27,18 @@ public class EmployerService {
         this.employerRepository = employerRepository;
     }
 
-
     public Employer getEmployer(Long id) {
         return this.employerRepository.getLatestEmployer(id);
     }
 
     public Employer createEmployer(CreateEmployerRequest request) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = this.userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User not found."));
+
+        if (user.getEmployer() != null) {
+            throw new BadRequestException("You are already an employer.");
+        }
 
         Employer employer = new Employer(
                 request.getEmail(),
@@ -63,7 +70,6 @@ public class EmployerService {
         User user = this.userRepository
                 .findByEmail(userName)
                 .orElseThrow(() -> new NotFoundException("User not found."));
-        System.out.println(user);
 
         user.setEmployer(employer);
         user.setRole(Role.EMPLOYER);

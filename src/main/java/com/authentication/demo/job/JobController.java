@@ -38,13 +38,19 @@ public class JobController {
         this.jobService = jobService;
     }
 
+    @GetMapping("/owner/{id}")
+    public ResponseEntity<JobDto> getEmployerJob(@PathVariable("id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                this.jobService.getEmployerJob(id));
+    }
+
     @GetMapping("/owner")
-    public ResponseEntity<GetJobsResponse> getJobs(@RequestParam("employerId") String employerId,
+    public ResponseEntity<GetJobsResponse> getEmployerJobs(@RequestParam("employerId") String employerId,
             @RequestParam("page") String page, @RequestParam("size") String size,
             @RequestParam("direction") String direction) {
 
         JobPaginationDto jobPagination = this.jobService
-                .getJobs(Long.parseLong(employerId), Integer.valueOf(page),
+                .getEmployerJobs(Long.parseLong(employerId), Integer.valueOf(page),
                         Integer.valueOf(size), direction);
 
         if (jobPagination.getJobDto().size() > 0) {

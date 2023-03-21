@@ -6,6 +6,8 @@ import com.authentication.demo.job.dto.JobDto;
 import com.authentication.demo.job.dto.JobPaginationDto;
 import com.authentication.demo.job.request.CreateJobRequest;
 import com.authentication.demo.job.request.UpdateJobRequest;
+import com.authentication.demo.user.User;
+import com.authentication.demo.user.UserRepository;
 import com.authentication.demo.util.MyUtils;
 import com.authentication.demo.advice.NotFoundException;
 
@@ -15,14 +17,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Arrays;
 
 @Service
 public class JobService {
+
+    @Autowired
+    private final UserRepository userRepository;
 
     @Autowired
     private final JobRepository jobRepository;
@@ -30,37 +32,50 @@ public class JobService {
     @Autowired
     final EmployerRepository employerRepository;
 
-    public JobService(JobRepository jobRepository, EmployerRepository employerRepository) {
+    public JobService(JobRepository jobRepository, EmployerRepository employerRepository,
+            UserRepository userRepository) {
         this.jobRepository = jobRepository;
         this.employerRepository = employerRepository;
+        this.userRepository = userRepository;
 
     }
 
-    public JobPaginationDto getJobs(Long employerId, Integer page, Integer size, String direction) {
+    public JobDto getEmployerJob(Long id) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        Pageable paging = PageRequest.of(page, size, Sort.by("id"));
+        User user = this.userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User not found."));
+        JobDto employerJob = this.jobRepository.findJobByEmployerId(id);
+        if (user.getEmployer().getId() != employerJob.getEmployerId()) {
+            throw new ForbiddenException("Cannot view another employer's job listing.");
+        }
+        return employerJob;
+    }
+
+    public JobPaginationDto getEmployerJobs(Long employerId, Integer page, Integer size, String direction) {
+
+        Integer currentPage = page;
+
+        if (direction.equals("prev") && currentPage > 0) {
+            currentPage = currentPage - 1;
+        }
+        if (direction.equals("next")) {
+            currentPage = currentPage + 1;
+        }
+
+        Pageable paging = PageRequest.of(currentPage, size, Sort.by("id"));
         Page<JobDto> pagedResult = this.jobRepository.findJobsByEmployerId(employerId, paging);
-        if (pagedResult.getContent().size() > 0) {
-            if (direction.equals("next") && page < pagedResult.getTotalPages()) {
-                page = page + 1;
-            } else if (direction.equals("prev") && page > 1) {
-                page = page - 1;
-            }
-        }
-        if (pagedResult.hasContent()) {
 
-            System.out.println(pagedResult.getNumber());
-            return new JobPaginationDto(pagedResult.getContent(), pagedResult.getTotalPages(), page);
+        return new JobPaginationDto(pagedResult.getContent(), pagedResult.getTotalPages(), currentPage);
 
-        } else {
-            return new JobPaginationDto(pagedResult.getContent(), 0, page);
-        }
     }
 
     public void createJob(CreateJobRequest request) {
         Employer employer = this.employerRepository.findById(request.getEmployerId())
                 .orElseThrow(() -> new NotFoundException("Employer not found."));
 
+        System.out.println(employer.getId());
+        System.out.println(request);
         Job job = new Job(MyUtils.titleCase(request.getPosition()), request.getPerHour(),
                 MyUtils.titleCase(request.getAvailability()),
                 request.getUrgentlyHiring(), request.getMultipleCandidates(), request.getBody(), employer);

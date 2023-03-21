@@ -13,6 +13,7 @@ public class JobDto {
     private String body;
     private Long employerId;
     private String companyName;
+    private String location;
 
     public JobDto() {
     }
@@ -26,7 +27,8 @@ public class JobDto {
             Boolean urgentlyHiring,
             String availability,
             Long employerId,
-            String companyName
+            String companyName,
+            String location
 
     ) {
         this.id = id;
@@ -39,6 +41,7 @@ public class JobDto {
         this.body = body;
         this.employerId = employerId;
         this.companyName = companyName;
+        this.location = location;
     }
 
     public Long getId() {
@@ -81,6 +84,11 @@ public class JobDto {
         return multipleCandidates;
     }
 
+
+    public String getLocation() {
+        return location;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -121,4 +129,7 @@ public class JobDto {
         this.position = position;
     }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }
