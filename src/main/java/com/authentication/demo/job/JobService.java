@@ -4,6 +4,7 @@ import com.authentication.demo.employer.Employer;
 import com.authentication.demo.employer.EmployerRepository;
 import com.authentication.demo.job.dto.JobDto;
 import com.authentication.demo.job.dto.JobPaginationDto;
+import com.authentication.demo.job.dto.ViewJobDto;
 import com.authentication.demo.job.request.CreateJobRequest;
 import com.authentication.demo.job.request.UpdateJobRequest;
 import com.authentication.demo.user.User;
@@ -40,12 +41,12 @@ public class JobService {
 
     }
 
-    public JobDto getEmployerJob(Long id) {
+    public ViewJobDto getEmployerJob(Long id) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
         User user = this.userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User not found."));
-        JobDto employerJob = this.jobRepository.findJobByEmployerId(id);
+        ViewJobDto employerJob = this.jobRepository.findJobByEmployerId(id);
         if (user.getEmployer().getId() != employerJob.getEmployerId()) {
             throw new ForbiddenException("Cannot view another employer's job listing.");
         }

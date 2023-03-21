@@ -75,12 +75,13 @@ const ProfileNav = ({ triggerRef, setShowProfile }: IProfileNavProps) => {
         setShowProfile={setShowProfile}
         icon={<CgFileDocument />}
       />
+    {user.employerId !== 0 && user.employerId !== null &&
       <ProfileNavigationLink
         to={`employer-jobs`}
         text="Employer Jobs"
         setShowProfile={setShowProfile}
         icon={<HiOutlineDocumentDuplicate />}
-      />
+      />}
 
       <Flex
         _hover={{ opacity: 0.8, backgroundColor: '#57cc99' }}

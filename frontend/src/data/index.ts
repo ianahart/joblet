@@ -46,6 +46,10 @@ export const employerJobState = {
   companyName: '',
   body: '',
   location: '',
+  email: '',
+  firstName: '',
+  lastName: '',
+  numOfEmployees: '',
 };
 
 export const profileState = {

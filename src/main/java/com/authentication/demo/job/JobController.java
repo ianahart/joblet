@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.authentication.demo.job.dto.JobDto;
 import com.authentication.demo.job.dto.JobPaginationDto;
+import com.authentication.demo.job.dto.ViewJobDto;
 import com.authentication.demo.job.request.CreateJobRequest;
 import com.authentication.demo.job.request.UpdateJobRequest;
 import com.authentication.demo.job.response.UpdateJobResponse;
@@ -39,7 +40,7 @@ public class JobController {
     }
 
     @GetMapping("/owner/{id}")
-    public ResponseEntity<JobDto> getEmployerJob(@PathVariable("id") Long id) {
+    public ResponseEntity<ViewJobDto> getEmployerJob(@PathVariable("id") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 this.jobService.getEmployerJob(id));
     }

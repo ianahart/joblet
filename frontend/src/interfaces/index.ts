@@ -30,6 +30,13 @@ export interface IEmployerJob {
   location: string;
 }
 
+export interface IEmployerFullJob extends IEmployerJob {
+  email: string;
+  firstName: string;
+  lastName: string;
+  numOfEmployees: string;
+}
+
 export interface IGetEmployerJobResponse {
   page: number;
   size: number;

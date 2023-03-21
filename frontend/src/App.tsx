@@ -28,6 +28,7 @@ import CreateJob from './pages/CreateJob';
 import EmployerJobs from './pages/EmployerJobs';
 import RequireEmployerAuth from './components/Guard/RequireEmployerAuth';
 import ViewEmployerJob from './pages/ViewEmployerJob';
+import UpdateEmployer from './pages/UpdateEmployer';
 function App() {
   const { setUser, user } = useContext(UserContext) as IUserContext;
 
@@ -169,6 +170,14 @@ function App() {
                 element={
                   <RequireEmployerAuth>
                     <ViewEmployerJob />
+                  </RequireEmployerAuth>
+                }
+              />
+              <Route
+                path="update-employer/:id"
+                element={
+                  <RequireEmployerAuth>
+                    <UpdateEmployer />
                   </RequireEmployerAuth>
                 }
               />
