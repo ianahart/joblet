@@ -8,6 +8,7 @@ import com.authentication.demo.job.dto.SyncJobDto;
 import com.authentication.demo.job.dto.ViewJobDto;
 import com.authentication.demo.job.request.CreateJobRequest;
 import com.authentication.demo.job.request.UpdateJobRequest;
+import com.authentication.demo.job.response.DeleteJobResponse;
 import com.authentication.demo.user.User;
 import com.authentication.demo.user.UserRepository;
 import com.authentication.demo.util.MyUtils;
@@ -46,12 +47,30 @@ public class JobService {
         return this.jobRepository.syncJob(id);
     }
 
+    public DeleteJobResponse deleteEmployerJob(Long id) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = this.userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User not found."));
+
+        Job job = this.jobRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Job not found."));
+
+        if (job.getEmployer().getId() != user.getEmployer().getId()) {
+            throw new ForbiddenException("Cannot delete a job that is not yours.");
+        }
+
+        this.jobRepository.deleteById(id);
+        return new DeleteJobResponse("Success");
+    }
+
     public ViewJobDto getEmployerJob(Long id) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
         User user = this.userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User not found."));
         ViewJobDto employerJob = this.jobRepository.findJobByEmployerId(id);
+
         if (user.getEmployer().getId() != employerJob.getEmployerId()) {
             throw new ForbiddenException("Cannot view another employer's job listing.");
         }

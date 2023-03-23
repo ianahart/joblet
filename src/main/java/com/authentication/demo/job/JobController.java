@@ -11,12 +11,14 @@ import com.authentication.demo.job.request.CreateJobRequest;
 import com.authentication.demo.job.request.UpdateJobRequest;
 import com.authentication.demo.job.response.UpdateJobResponse;
 import com.authentication.demo.job.response.CreateJobResponse;
+import com.authentication.demo.job.response.DeleteJobResponse;
 import com.authentication.demo.job.response.GetJobsResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +40,11 @@ public class JobController {
 
     public JobController(JobService jobService) {
         this.jobService = jobService;
+    }
+
+    @DeleteMapping("owner/{id}")
+    public ResponseEntity<DeleteJobResponse> DeleteJob(@PathVariable("id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.jobService.deleteEmployerJob(id));
     }
 
     @GetMapping("owner/{id}/sync")

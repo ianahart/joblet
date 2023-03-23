@@ -11,7 +11,7 @@ export interface IEmployerJobMin {
   perHour: number;
   position: string;
   urgentlyHiring: boolean;
-    employerId: number;
+  employerId: number;
 }
 
 export interface ICreateEmployerResponse {

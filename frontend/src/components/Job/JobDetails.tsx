@@ -46,7 +46,11 @@ const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
       borderColor="border.primary"
     >
       {detailsType === 'employer' && (
-        <EmployerActions employerId={job.employerId} jobId={job.id} />
+        <EmployerActions
+          employerId={job.employerId}
+          jobId={job.id}
+          jobPosition={job.position}
+        />
       )}
       <Box pt="5rem">
         <Box>
