@@ -1,6 +1,6 @@
 import { Box, Flex, Spacer, Text } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
-import { RefObject, useCallback, useContext, useEffect, useRef } from 'react';
+import { RefObject, useCallback, useContext, useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/user';
 import { http } from '../../helpers/utils';
@@ -8,7 +8,8 @@ import { IUserContext } from '../../interfaces';
 import ProfileNavigationLink from './ProfileNavigationLink';
 import { CgFileDocument } from 'react-icons/cg';
 import { AiOutlineLogout } from 'react-icons/ai';
-import { HiOutlineDocumentDuplicate } from 'react-icons/hi';
+import EmployerLinks from './EmployerLinks';
+import { MdWorkOutline } from 'react-icons/md';
 
 interface IProfileNavProps {
   triggerRef: RefObject<HTMLDivElement>;
@@ -18,6 +19,7 @@ interface IProfileNavProps {
 const ProfileNav = ({ triggerRef, setShowProfile }: IProfileNavProps) => {
   const { logout, user } = useContext(UserContext) as IUserContext;
   const menuRef = useRef<HTMLDivElement>(null);
+  const [showEmployer, setShowEmployer] = useState(false);
   const navigate = useNavigate();
 
   const handleOnLogout = async () => {
@@ -75,13 +77,21 @@ const ProfileNav = ({ triggerRef, setShowProfile }: IProfileNavProps) => {
         setShowProfile={setShowProfile}
         icon={<CgFileDocument />}
       />
-    {user.employerId !== 0 && user.employerId !== null &&
-      <ProfileNavigationLink
-        to={`employer-jobs`}
-        text="Employer Jobs"
-        setShowProfile={setShowProfile}
-        icon={<HiOutlineDocumentDuplicate />}
-      />}
+      {user.employerId !== 0 && user.employerId !== null && (
+        <>
+          <Flex
+            onClick={() => setShowEmployer((prevState) => !prevState)}
+            p="1rem"
+            alignItems="center"
+          >
+            <Box>
+              <MdWorkOutline />
+            </Box>
+            <Text ml="0.5rem">Employers</Text>
+          </Flex>
+          {showEmployer && <EmployerLinks setShowProfile={setShowProfile} />}
+        </>
+      )}
 
       <Flex
         _hover={{ opacity: 0.8, backgroundColor: '#57cc99' }}

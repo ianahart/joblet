@@ -4,6 +4,16 @@ export interface ILoginResponse {
   userDto: IUser;
 }
 
+export interface IEmployerJobMin {
+  availability: string;
+  body: string;
+  multipleCandidates: boolean;
+  perHour: number;
+  position: string;
+  urgentlyHiring: boolean;
+    employerId: number;
+}
+
 export interface ICreateEmployerResponse {
   companyName: string;
   createdAt: Date;

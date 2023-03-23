@@ -244,3 +244,8 @@ body {
   background: lightgray;
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
 }
+
+.leaflet-container {
+  width: 100wh;
+  height: 100vh;
+}

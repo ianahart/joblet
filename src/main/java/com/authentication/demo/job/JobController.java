@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.authentication.demo.job.dto.JobDto;
 import com.authentication.demo.job.dto.JobPaginationDto;
+import com.authentication.demo.job.dto.SyncJobDto;
 import com.authentication.demo.job.dto.ViewJobDto;
 import com.authentication.demo.job.request.CreateJobRequest;
 import com.authentication.demo.job.request.UpdateJobRequest;
@@ -37,6 +38,12 @@ public class JobController {
 
     public JobController(JobService jobService) {
         this.jobService = jobService;
+    }
+
+    @GetMapping("owner/{id}/sync")
+    public ResponseEntity<SyncJobDto> getSyncJob(@PathVariable("id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                this.jobService.syncJob(id));
     }
 
     @GetMapping("/owner/{id}")

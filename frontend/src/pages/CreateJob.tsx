@@ -20,6 +20,7 @@ const CreateJob = () => {
         endpoint="/jobs/"
         btnText="Create"
         employerId={location.state.id}
+                jobId={undefined}
       />
     </Box>
   );

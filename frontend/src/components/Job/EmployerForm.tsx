@@ -23,9 +23,8 @@ import InputContainer from '../Form/InputContainer';
 import FormDropdown from '../Form/FormDropdown';
 import { AxiosError } from 'axios';
 import { http } from '../../helpers/utils';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/user';
-import UpdateEmployer from '../../pages/UpdateEmployer';
 
 interface ICreateEmployerFormProps {
   endpoint: string;
@@ -35,10 +34,21 @@ interface ICreateEmployerFormProps {
 
 const EmployerForm = ({ endpoint, title, formType }: ICreateEmployerFormProps) => {
   const navigate = useNavigate();
+  const locationUrl = useLocation();
   const { user, setUser } = useContext(UserContext) as IUserContext;
   const [radioValue, setRadioValue] = useState('1');
   const [form, setForm] = useState(createEmployerState);
   const [location, setLocation] = useState<IDropdownData>();
+
+  useEffect(() => {
+    if (
+      user.employerId !== 0 &&
+      user.employerId !== null &&
+      locationUrl.pathname === '/create-employer'
+    ) {
+      navigate('/create-job', { state: { id: user.employerId } });
+    }
+  }, [user.employerId]);
 
   const updateField = (name: string, value: string, attribute: string) => {
     setForm((prevState) => ({
@@ -137,7 +147,6 @@ const EmployerForm = ({ endpoint, title, formType }: ICreateEmployerFormProps) =
       const response = await http.get<IGetEmployerResponse>(
         `/employers/${user.employerId}`
       );
-      console.log(response);
       for (let prop in response.data) {
         if (prop !== 'locationQuestionId') {
           updateField(
@@ -196,7 +205,7 @@ const EmployerForm = ({ endpoint, title, formType }: ICreateEmployerFormProps) =
             </Heading>
             <Image width="200px" src={createEmployerImg} />
           </Flex>
-          {user.employerId !== null && (
+          {user.employerId !== null && formType === 'update' && (
             <InputContainer>
               <RadioGroup onChange={handleRadioChange} value={radioValue}>
                 <Stack direction="row">
@@ -298,7 +307,7 @@ const EmployerForm = ({ endpoint, title, formType }: ICreateEmployerFormProps) =
           <InputContainer>
             <Flex justifyContent="center" width="100%">
               <Button width="80%" colorScheme="teal" type="submit">
-                                { formType === 'update' ? 'Update' : 'Save & Continue' }
+                {formType === 'update' ? 'Update' : 'Save & Continue'}
               </Button>
             </Flex>
           </InputContainer>

@@ -4,16 +4,19 @@ import { AxiosError } from 'axios';
 import { useParams } from 'react-router-dom';
 import { http } from '../helpers/utils';
 import { useEffectOnce } from '../hooks/UseEffectOnce';
+import { employerJobState } from '../data';
+import { IEmployerJob } from '../interfaces';
+import JobDetails from '../components/Job/JobDetails';
 const ViewEmployerJob = () => {
   const params = useParams();
+  const [job, setJob] = useState<IEmployerJob>(employerJobState);
 
   const retrieveEmployerJob = async (id: string) => {
     try {
-      const response = await http.get(`/jobs/owner/${id}`);
-      console.log(response);
+      const response = await http.get<IEmployerJob>(`/jobs/owner/${id}`);
+      setJob(response.data);
     } catch (err: unknown | AxiosError) {
       if (err instanceof AxiosError && err.response) {
-        console.log(err.response);
       }
     }
   };
@@ -24,7 +27,11 @@ const ViewEmployerJob = () => {
     }
   });
 
-  return <Box>View Employer Job</Box>;
+  return (
+    <Box display="flex" justifyContent="center" mt="5rem" minH="100vh">
+      <JobDetails job={job} detailsType="employer" />
+    </Box>
+  );
 };
 
 export default ViewEmployerJob;

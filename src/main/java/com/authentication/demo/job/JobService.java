@@ -4,6 +4,7 @@ import com.authentication.demo.employer.Employer;
 import com.authentication.demo.employer.EmployerRepository;
 import com.authentication.demo.job.dto.JobDto;
 import com.authentication.demo.job.dto.JobPaginationDto;
+import com.authentication.demo.job.dto.SyncJobDto;
 import com.authentication.demo.job.dto.ViewJobDto;
 import com.authentication.demo.job.request.CreateJobRequest;
 import com.authentication.demo.job.request.UpdateJobRequest;
@@ -39,6 +40,10 @@ public class JobService {
         this.employerRepository = employerRepository;
         this.userRepository = userRepository;
 
+    }
+
+    public SyncJobDto syncJob(Long id) {
+        return this.jobRepository.syncJob(id);
     }
 
     public ViewJobDto getEmployerJob(Long id) {

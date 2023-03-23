@@ -1,5 +1,5 @@
-import { IAvailability, IJobForm } from '../../interfaces';
-import { useState } from 'react';
+import { IAvailability, IEmployerJobMin, IJobForm, IUserContext } from '../../interfaces';
+import { useContext, useEffect, useState } from 'react';
 import { Text, Box, Flex, Switch, Heading, Image, Button } from '@chakra-ui/react';
 import StandardFormInput from '../Form/StandardFormInput';
 import createJobImg from '../../images/create-job.jpg';
@@ -11,6 +11,7 @@ import 'react-quill/dist/quill.snow.css';
 import { Axios, AxiosError } from 'axios';
 import { http } from '../../helpers/utils';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../context/user';
 
 interface IFormProps {
   employerId: number;
@@ -18,14 +19,41 @@ interface IFormProps {
   title: string;
   btnText: string;
   endpoint: string;
+  jobId: string | undefined;
 }
 
-const Form = ({ employerId, type, title, btnText, endpoint }: IFormProps) => {
+const Form = ({ employerId, type, title, btnText, endpoint, jobId }: IFormProps) => {
   const navigate = useNavigate();
+  const { user } = useContext(UserContext) as IUserContext;
   const [editorValue, setEditorValue] = useState('');
   const [availability, setAvailability] = useState(availabilityState);
   const [editorFullScreen, setEditorFullScreen] = useState(false);
   const [form, setForm] = useState(jobFormState);
+
+  useEffect(() => {
+    if (jobId !== undefined) {
+      const syncForm = async () => {
+        try {
+          const response = await http.get<IEmployerJobMin>(`jobs/owner/${jobId}/sync`);
+          console.log(response);
+          setEditorValue(response.data.body);
+          const { data } = response;
+          for (let prop in data) {
+            console.log(prop);
+            //@ts-ignore
+            updateField(prop, data[prop as keyof IJobForm], 'value');
+          }
+          console.log(form);
+        } catch (err: unknown | AxiosError) {
+          if (err instanceof AxiosError && err.response) {
+            console.log(err);
+            return;
+          }
+        }
+      };
+      syncForm();
+    }
+  }, [jobId]);
 
   const updateField = (name: string, value: string | boolean, attribute: string) => {
     setForm((prevState) => ({
@@ -195,6 +223,7 @@ const Form = ({ employerId, type, title, btnText, endpoint }: IFormProps) => {
                 Urgently Hiring
               </Text>
               <Switch
+                isChecked={form.urgentlyHiring.value ? true : false}
                 colorScheme="teal"
                 onChange={(e) => handleOnChange(e, 'urgentlyHiring')}
                 size="lg"
@@ -208,6 +237,7 @@ const Form = ({ employerId, type, title, btnText, endpoint }: IFormProps) => {
               </Text>
               <Switch
                 colorScheme="teal"
+                isChecked={form.multipleCandidates.value ? true : false}
                 onChange={(e) => handleOnChange(e, 'multipleCandidates')}
                 size="lg"
               />
