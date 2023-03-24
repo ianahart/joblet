@@ -65,19 +65,21 @@ const EmployerJobs = () => {
             return <EmployerJob key={job.id} job={job} />;
           })}
         </Flex>
-        <Flex justifyContent="center" mt="3rem" alignItems="center">
-          {page + 1 > 1 && (
-            <Button onClick={() => paginateEmployerJobs('prev')}>Prev</Button>
-          )}
-          <Box>
-            <Text mx="1rem">
-              {page + 1} of {totalPages}
-            </Text>
-          </Box>
-          {page + 1 !== totalPages && (
-            <Button onClick={() => paginateEmployerJobs('next')}>Next</Button>
-          )}
-        </Flex>
+        {jobs.length > 0 && (
+          <Flex justifyContent="center" mt="3rem" alignItems="center">
+            {page + 1 > 1 && (
+              <Button onClick={() => paginateEmployerJobs('prev')}>Prev</Button>
+            )}
+            <Box>
+              <Text mx="1rem">
+                {page + 1} of {totalPages}
+              </Text>
+            </Box>
+            {page + 1 !== totalPages && (
+              <Button onClick={() => paginateEmployerJobs('next')}>Next</Button>
+            )}
+          </Flex>
+        )}
       </Box>
     </Box>
   );
