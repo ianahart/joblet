@@ -42,7 +42,23 @@ public class JobController {
         this.jobService = jobService;
     }
 
-    @DeleteMapping("owner/{id}")
+    @GetMapping("/")
+    public ResponseEntity<GetJobsResponse> getJobs(
+            @RequestParam("page") String page, @RequestParam("size") String size,
+            @RequestParam("direction") String direction) {
+
+        JobPaginationDto jobPagination = this.jobService
+                .getJobs(Integer.valueOf(page),
+                        Integer.valueOf(size), direction);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new GetJobsResponse(
+                        jobPagination.getPage(),
+                        Integer.valueOf(size),
+                        jobPagination.getJobDto(),
+                        jobPagination.getTotalPages()));
+    }
+
     public ResponseEntity<DeleteJobResponse> DeleteJob(@PathVariable("id") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(this.jobService.deleteEmployerJob(id));
     }
@@ -103,4 +119,10 @@ public class JobController {
 
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ViewJobDto> getJob(@PathVariable("id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            this.jobService.getJob(id)
+        );
+    }
 }

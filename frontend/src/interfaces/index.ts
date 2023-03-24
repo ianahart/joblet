@@ -41,6 +41,8 @@ export interface IEmployerJob {
   readableDate: string;
 }
 
+export interface IJob extends IEmployerJob {}
+
 export interface IEmployerFullJob extends IEmployerJob {
   email: string;
   firstName: string;
