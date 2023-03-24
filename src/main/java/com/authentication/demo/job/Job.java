@@ -1,6 +1,7 @@
 package com.authentication.demo.job;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import com.authentication.demo.employer.Employer;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -14,9 +15,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,7 +27,8 @@ import jakarta.persistence.Table;
 public class Job {
 
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "job_sequence", sequenceName = "job_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "job_sequence")
     @Column(name = "id")
     private Long id;
     @Column(name = "position")
@@ -39,7 +43,7 @@ public class Job {
     private Boolean multipleCandidates;
     @CreationTimestamp
     @Column(name = "created_at")
-    private Date createdAt;
+    private Timestamp createdAt;
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
@@ -101,7 +105,7 @@ public class Job {
         return body;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
@@ -165,7 +169,7 @@ public class Job {
         this.multipleCandidates = multipleCandidates;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 

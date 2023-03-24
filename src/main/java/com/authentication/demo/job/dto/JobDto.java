@@ -1,6 +1,7 @@
 package com.authentication.demo.job.dto;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class JobDto {
     private Long id;
@@ -9,7 +10,7 @@ public class JobDto {
     private String availability;
     private Boolean urgentlyHiring;
     private Boolean multipleCandidates;
-    private Date createdAt;
+    private Timestamp createdAt;
     private String body;
     private Long employerId;
     private String companyName;
@@ -22,7 +23,7 @@ public class JobDto {
             String position,
             Integer perHour,
             String body,
-            Date createdAt,
+            Timestamp createdAt,
             Boolean multipleCandidates,
             Boolean urgentlyHiring,
             String availability,
@@ -56,7 +57,7 @@ public class JobDto {
         return body;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
@@ -84,7 +85,6 @@ public class JobDto {
         return multipleCandidates;
     }
 
-
     public String getLocation() {
         return location;
     }
@@ -109,7 +109,7 @@ public class JobDto {
         this.perHour = perHour;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 

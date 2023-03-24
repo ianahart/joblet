@@ -71,6 +71,7 @@ public class JobService {
                 .orElseThrow(() -> new NotFoundException("User not found."));
         ViewJobDto employerJob = this.jobRepository.findJobByEmployerId(id);
 
+        employerJob.setReadableDate(MyUtils.makeReadableDate(employerJob.getCreatedAt()));
         if (user.getEmployer().getId() != employerJob.getEmployerId()) {
             throw new ForbiddenException("Cannot view another employer's job listing.");
         }
@@ -99,8 +100,6 @@ public class JobService {
         Employer employer = this.employerRepository.findById(request.getEmployerId())
                 .orElseThrow(() -> new NotFoundException("Employer not found."));
 
-        System.out.println(employer.getId());
-        System.out.println(request);
         Job job = new Job(MyUtils.titleCase(request.getPosition()), request.getPerHour(),
                 MyUtils.titleCase(request.getAvailability()),
                 request.getUrgentlyHiring(), request.getMultipleCandidates(), request.getBody(), employer);

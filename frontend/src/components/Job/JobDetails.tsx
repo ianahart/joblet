@@ -64,6 +64,11 @@ const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
             <Text>${job.perHour.toString()} per hour</Text>
             <Text ml="0.5rem">{job.availability}</Text>
           </Flex>
+          <Box>
+            <Text color="text.primary" my="0.5rem" fontStyle="italic" fontSize="0.85rem">
+              Posted {job.readableDate}.
+            </Text>
+          </Box>
         </Box>
         <Box
           my="0.5rem"

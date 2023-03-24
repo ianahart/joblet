@@ -38,6 +38,7 @@ export interface IEmployerJob {
   companyName: string;
   body: string;
   location: string;
+  readableDate: string;
 }
 
 export interface IEmployerFullJob extends IEmployerJob {

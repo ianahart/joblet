@@ -50,6 +50,7 @@ export const employerJobState = {
   firstName: '',
   lastName: '',
   numOfEmployees: '',
+  readableDate: '',
 };
 
 export const profileState = {

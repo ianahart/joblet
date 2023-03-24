@@ -1,7 +1,9 @@
 package com.authentication.demo.util;
 
 import java.util.List;
+import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Date;
 
 public final class MyUtils {
 
@@ -21,4 +23,26 @@ public final class MyUtils {
         return String.join(" ", titleCased);
     }
 
+    public static String makeReadableDate(Date createdAt) {
+        Date currentDate = new Date();
+        String readableDate = "";
+        System.out.println(createdAt.toLocaleString());
+        long elapsed = (currentDate.getTime() / 1000) - (createdAt.getTime() / 1000);
+        System.out.println(elapsed);
+
+        System.out.println(createdAt);
+        if (elapsed <= 60) {
+            readableDate = elapsed + " seconds ago";
+        } else if (elapsed <= 60 * 60) {
+            readableDate = Math.round((elapsed / 60)) + " minutes ago";
+        } else if (elapsed > 60 * 60 && elapsed < 60 * 60 * 24) {
+            readableDate = Math.round((elapsed / 60 / 60)) + " hours ago";
+        } else if (elapsed > 60 * 60 * 24) {
+            readableDate = Math.round((elapsed / 60 / 60 / 24)) + " day(s) ago";
+        } else {
+            readableDate = "";
+        }
+
+        return readableDate;
+    }
 }

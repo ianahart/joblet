@@ -35,18 +35,14 @@ const Form = ({ employerId, type, title, btnText, endpoint, jobId }: IFormProps)
       const syncForm = async () => {
         try {
           const response = await http.get<IEmployerJobMin>(`jobs/owner/${jobId}/sync`);
-          console.log(response);
           setEditorValue(response.data.body);
           const { data } = response;
           for (let prop in data) {
-            console.log(prop);
             //@ts-ignore
             updateField(prop, data[prop as keyof IJobForm], 'value');
           }
-          console.log(form);
         } catch (err: unknown | AxiosError) {
           if (err instanceof AxiosError && err.response) {
-            console.log(err);
             return;
           }
         }

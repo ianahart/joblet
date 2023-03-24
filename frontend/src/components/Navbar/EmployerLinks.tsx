@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { UserContext } from '../../context/user';
 import { IUserContext } from '../../interfaces';
@@ -13,7 +14,7 @@ const EmployerLinks = ({ setShowProfile }: IEmployerlinks) => {
   const { user } = useContext(UserContext) as IUserContext;
 
   return (
-    <>
+    <Box ml="1rem">
       {user.employerId !== 0 && user.employerId !== null && (
         <ProfileNavigationLink
           to={`employer-jobs`}
@@ -31,7 +32,7 @@ const EmployerLinks = ({ setShowProfile }: IEmployerlinks) => {
           icon={<AiOutlineUser />}
         />
       )}
-    </>
+    </Box>
   );
 };
 
