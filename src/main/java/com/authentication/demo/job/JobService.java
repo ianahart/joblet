@@ -69,7 +69,7 @@ public class JobService {
 
         User user = this.userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User not found."));
-        ViewJobDto employerJob = this.jobRepository.findJobByEmployerId(id);
+        ViewJobDto employerJob = this.jobRepository.findJobById(id);
 
         employerJob.setReadableDate(MyUtils.makeReadableDate(employerJob.getCreatedAt()));
         if (user.getEmployer().getId() != employerJob.getEmployerId()) {

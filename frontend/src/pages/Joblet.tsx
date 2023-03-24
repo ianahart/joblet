@@ -17,7 +17,7 @@ const Joblet = () => {
 
   useEffect(() => {
     if (user.employerId !== 0) {
-      const retrieveEmployerJobs = async () => {
+      const retrieveJobs = async () => {
         try {
           const response = await http.get(`/jobs/?page=-1&size=3&direction=next`);
           setPage(response.data.page);
@@ -29,11 +29,11 @@ const Joblet = () => {
           }
         }
       };
-      retrieveEmployerJobs();
+      retrieveJobs();
     }
   }, [user.employerId]);
 
-  const paginateEmployerJobs = async (dir: string) => {
+  const paginateJobs = async (dir: string) => {
     try {
       if (page === totalPages && dir !== 'prev') {
         return;
@@ -58,21 +58,19 @@ const Joblet = () => {
       <Box width={['95%', '95%', '590px']} mx="auto">
         <Flex alignItems="center" flexDir="column">
           {jobs.map((job) => {
-            return <Job key={job.id} job={job} />;
+            return <Job key={job.id} job={job} link={`/jobs/${job.id}`} />;
           })}
         </Flex>
         {jobs.length > 0 && (
           <Flex justifyContent="center" mt="3rem" alignItems="center">
-            {page + 1 > 1 && (
-              <Button onClick={() => paginateEmployerJobs('prev')}>Prev</Button>
-            )}
+            {page + 1 > 1 && <Button onClick={() => paginateJobs('prev')}>Prev</Button>}
             <Box>
               <Text mx="1rem">
                 {page + 1} of {totalPages}
               </Text>
             </Box>
             {page + 1 !== totalPages && (
-              <Button onClick={() => paginateEmployerJobs('next')}>Next</Button>
+              <Button onClick={() => paginateJobs('next')}>Next</Button>
             )}
           </Flex>
         )}

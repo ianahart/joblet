@@ -1,14 +1,15 @@
 import { Box, Heading, Text, Flex } from '@chakra-ui/react';
-import { IEmployerJob } from '../../interfaces';
+import { IJob } from '../../interfaces';
 import { AiOutlineCheck, AiOutlineClockCircle } from 'react-icons/ai';
 import { HiInformationCircle, HiUserGroup } from 'react-icons/hi';
 import { Link as RouterLink } from 'react-router-dom';
 
-interface IEmployerJobProps {
-  job: IEmployerJob;
+interface IJobProps {
+  job: IJob;
+  link: string;
 }
 
-const Job = ({ job }: IEmployerJobProps) => {
+const Job = ({ job, link }: IJobProps) => {
   return (
     <Box
       width="100%"
@@ -56,7 +57,7 @@ const Job = ({ job }: IEmployerJobProps) => {
       <Flex fontSize="0.85rem" alignItems="center">
         <HiInformationCircle />
 
-        <RouterLink to={`/jobs/${job.id}`}>View Details</RouterLink>
+        <RouterLink to={link}>View Details</RouterLink>
       </Flex>
     </Box>
   );

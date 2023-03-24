@@ -6,7 +6,7 @@ import { UserContext } from '../context/user';
 import { http } from '../helpers/utils';
 import { IEmployerJob, IGetEmployerJobResponse, IUserContext } from '../interfaces';
 import Header from '../components/Header';
-import EmployerJob from '../components/Job/EmployerJob';
+import Job from '../components/Job/Job';
 
 const EmployerJobs = () => {
   const { user } = useContext(UserContext) as IUserContext;
@@ -62,7 +62,7 @@ const EmployerJobs = () => {
       <Box width={['95%', '95%', '590px']} mx="auto">
         <Flex alignItems="center" flexDir="column">
           {jobs.map((job) => {
-            return <EmployerJob key={job.id} job={job} />;
+            return <Job key={job.id} job={job} link={`/employer-jobs/${job.id}`} />;
           })}
         </Flex>
         {jobs.length > 0 && (
