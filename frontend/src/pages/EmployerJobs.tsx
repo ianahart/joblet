@@ -62,7 +62,14 @@ const EmployerJobs = () => {
       <Box width={['95%', '95%', '590px']} mx="auto">
         <Flex alignItems="center" flexDir="column">
           {jobs.map((job) => {
-            return <Job key={job.id} job={job} link={`/employer-jobs/${job.id}`} />;
+            return (
+              <Job
+                detailsType="employer"
+                key={job.id}
+                job={job}
+                link={`/employer-jobs/${job.id}`}
+              />
+            );
           })}
         </Flex>
         {jobs.length > 0 && (

@@ -3,13 +3,15 @@ import { IJob } from '../../interfaces';
 import { AiOutlineCheck, AiOutlineClockCircle } from 'react-icons/ai';
 import { HiInformationCircle, HiUserGroup } from 'react-icons/hi';
 import { Link as RouterLink } from 'react-router-dom';
+import SaveJobActions from '../Job/SaveJobActions';
 
 interface IJobProps {
   job: IJob;
   link: string;
+  detailsType: string;
 }
 
-const Job = ({ job, link }: IJobProps) => {
+const Job = ({ job, link, detailsType }: IJobProps) => {
   return (
     <Box
       width="100%"
@@ -19,6 +21,7 @@ const Job = ({ job, link }: IJobProps) => {
       borderRadius="8px"
       my="1.5rem"
     >
+      {/* {detailsType === 'user' && <SaveJobActions jobId={job.id} />}*/}
       <Heading my="1rem" fontSize="1.1rem">
         {job.position}
       </Heading>

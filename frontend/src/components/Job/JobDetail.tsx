@@ -1,5 +1,4 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
-import { AiOutlineCheck } from 'react-icons/ai';
 
 interface IJobDetailProps {
   iconOne: JSX.Element;

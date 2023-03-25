@@ -10,6 +10,7 @@ import ReactQuill from 'react-quill';
 import EmployerActions from './EmployerActions';
 import { AiOutlineCheck } from 'react-icons/ai';
 import { useEffect, useState, useMemo } from 'react';
+import UserActions from './UserActions';
 interface IJobDetailsProps {
   job: IEmployerJob;
   detailsType: string;
@@ -45,12 +46,14 @@ const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
       p="0.5rem"
       borderColor="border.primary"
     >
-      {detailsType === 'employer' && (
+      {detailsType === 'employer' ? (
         <EmployerActions
           employerId={job.employerId}
           jobId={job.id}
           jobPosition={job.position}
         />
+      ) : (
+        <UserActions jobId={job.id} />
       )}
       <Box pt="5rem">
         <Box>
