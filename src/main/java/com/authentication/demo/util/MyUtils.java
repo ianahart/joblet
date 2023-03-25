@@ -26,11 +26,8 @@ public final class MyUtils {
     public static String makeReadableDate(Date createdAt) {
         Date currentDate = new Date();
         String readableDate = "";
-        System.out.println(createdAt.toLocaleString());
         long elapsed = (currentDate.getTime() / 1000) - (createdAt.getTime() / 1000);
-        System.out.println(elapsed);
 
-        System.out.println(createdAt);
         if (elapsed <= 60) {
             readableDate = elapsed + " seconds ago";
         } else if (elapsed <= 60 * 60) {

@@ -2,23 +2,23 @@ package com.authentication.demo.job;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 import com.authentication.demo.employer.Employer;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.authentication.demo.savedjob.SavedJob;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -53,6 +53,9 @@ public class Job {
     @JoinColumn(name = "employer_id", referencedColumnName = "id")
     @ManyToOne()
     private Employer employer;
+
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
+    private List<SavedJob> savedJobs;
 
     public Job() {
     }
@@ -103,6 +106,10 @@ public class Job {
 
     public String getBody() {
         return body;
+    }
+
+    public List<SavedJob> getSavedJobs() {
+        return savedJobs;
     }
 
     public Timestamp getCreatedAt() {
@@ -175,6 +182,10 @@ public class Job {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public void setSavedJobs(List<SavedJob> savedJobs) {
+        this.savedJobs = savedJobs;
     }
 
     @Override

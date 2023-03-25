@@ -6,6 +6,7 @@ import java.util.List;
 import com.authentication.demo.employer.Employer;
 import com.authentication.demo.passwordreset.PasswordReset;
 import com.authentication.demo.profile.Profile;
+import com.authentication.demo.savedjob.SavedJob;
 import com.authentication.demo.refreshtoken.RefreshToken;
 import com.authentication.demo.token.Token;
 
@@ -68,6 +69,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<PasswordReset> passwordResets;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<SavedJob> savedJobs;
+
     public User() {
 
     }
@@ -113,6 +117,10 @@ public class User implements UserDetails {
 
     public Employer getEmployer() {
         return employer;
+    }
+
+    public List<SavedJob> getSavedJobs() {
+        return savedJobs;
     }
 
     public List<RefreshToken> getRefreshTokens() {
@@ -203,6 +211,10 @@ public class User implements UserDetails {
 
     public void setPasswordResets(List<PasswordReset> passwordResets) {
         this.passwordResets = passwordResets;
+    }
+
+    public void setSavedJobs(List<SavedJob> savedJobs) {
+        this.savedJobs = savedJobs;
     }
 
     @Override
