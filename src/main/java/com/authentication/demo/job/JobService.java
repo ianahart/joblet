@@ -79,7 +79,7 @@ public class JobService {
     }
 
     public JobPaginationDto getJobs(Integer page, Integer size, String direction) {
-        Integer currentPage = paginate(page, direction);
+        Integer currentPage = MyUtils.paginate(page, direction);
 
         Pageable paging = PageRequest.of(currentPage, size, Sort.by("id"));
         Page<JobDto> pagedResult = this.jobRepository.findJobs(paging);
@@ -88,22 +88,9 @@ public class JobService {
 
     }
 
-    private Integer paginate(Integer page, String direction) {
-        Integer currentPage = page;
-
-        if (direction.equals("prev") && currentPage > 0) {
-            currentPage = currentPage - 1;
-        }
-        if (direction.equals("next")) {
-            currentPage = currentPage + 1;
-        }
-
-        return currentPage;
-    }
-
     public JobPaginationDto getEmployerJobs(Long employerId, Integer page, Integer size, String direction) {
 
-        Integer currentPage = paginate(page, direction);
+        Integer currentPage = MyUtils.paginate(page, direction);
 
         Pageable paging = PageRequest.of(currentPage, size, Sort.by("id"));
         Page<JobDto> pagedResult = this.jobRepository.findJobsByEmployerId(employerId, paging);

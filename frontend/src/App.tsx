@@ -31,6 +31,7 @@ import ViewEmployerJob from './pages/ViewEmployerJob';
 import UpdateEmployer from './pages/UpdateEmployer';
 import UpdateJob from './pages/UpdateJob';
 import ViewJob from './pages/ViewJob';
+import SavedJobs from './pages/SavedJobs';
 function App() {
   const { setUser, user } = useContext(UserContext) as IUserContext;
 
@@ -180,6 +181,14 @@ function App() {
                 element={
                   <RequireAuth>
                     <ViewJob />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="saved-jobs"
+                element={
+                  <RequireAuth>
+                    <SavedJobs />
                   </RequireAuth>
                 }
               />

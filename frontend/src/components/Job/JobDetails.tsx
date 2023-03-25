@@ -53,7 +53,7 @@ const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
           jobPosition={job.position}
         />
       ) : (
-        <UserActions jobId={job.id} />
+        <UserActions employerId={job.employerId} jobId={job.id} />
       )}
       <Box pt="5rem">
         <Box>

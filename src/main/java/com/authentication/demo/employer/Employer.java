@@ -2,6 +2,7 @@ package com.authentication.demo.employer;
 
 import com.authentication.demo.job.Job;
 import com.authentication.demo.user.User;
+import com.authentication.demo.savedjob.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.sql.Date;
@@ -56,6 +57,9 @@ public class Employer {
     @OneToMany(mappedBy = "employer")
     private List<Job> jobs;
 
+    @OneToMany(mappedBy = "employer")
+    private List<SavedJob> savedJobs;
+
     public Employer(User user) {
         this.user = user;
     }
@@ -94,6 +98,11 @@ public class Employer {
 
     public String getLocation() {
         return location;
+    }
+
+
+    public List<SavedJob> getSavedJobs() {
+        return savedJobs;
     }
 
     public Integer getLocationQuestionId() {
@@ -142,6 +151,10 @@ public class Employer {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setSavedJobs(List<SavedJob> savedJobs) {
+        this.savedJobs = savedJobs;
     }
 
     public void setLocationQuestionId(Integer locationQuestionId) {

@@ -11,6 +11,19 @@ public final class MyUtils {
 
     }
 
+    public static Integer paginate(Integer page, String direction) {
+        Integer currentPage = page;
+
+        if (direction.equals("prev") && currentPage > 0) {
+            currentPage = currentPage - 1;
+        }
+        if (direction.equals("next")) {
+            currentPage = currentPage + 1;
+        }
+
+        return currentPage;
+    }
+
     public static String capitalize(String text) {
         return text.substring(0, 1).toUpperCase() + text.substring(1).toLowerCase();
     }

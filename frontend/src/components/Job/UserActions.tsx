@@ -12,20 +12,24 @@ import {
   PopoverBody,
   Text,
 } from '@chakra-ui/react';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/user';
-import { IUserContext } from '../../interfaces';
+import { ISyncSavedJobResponse, IUserContext } from '../../interfaces';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { AxiosError } from 'axios';
+import { Axios, AxiosError } from 'axios';
 import { http } from '../../helpers/utils';
+import { useEffectOnce } from '../../hooks/UseEffectOnce';
 
 interface IUserActionProps {
   jobId: number;
+  employerId: number;
 }
 
-const UserActions = ({ jobId }: IUserActionProps) => {
+const UserActions = ({ jobId, employerId }: IUserActionProps) => {
   const { user } = useContext(UserContext) as IUserContext;
+  const [isSaved, setIsSaved] = useState(false);
+  const [savedJobId, setSavedJobId] = useState(0);
 
   const saveJob = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -33,11 +37,37 @@ const UserActions = ({ jobId }: IUserActionProps) => {
       const response = await http.post('/saved-jobs/', {
         userId: user.id,
         jobId,
+        employerId,
       });
-      console.log(response);
+      setIsSaved(true);
     } catch (err: unknown | AxiosError) {
       if (err instanceof AxiosError && err.response) {
-        console.log(err.response);
+        return;
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (jobId !== 0) {
+      const syncSavedJob = async () => {
+        const response = await http.get<ISyncSavedJobResponse>(
+          `/saved-jobs/sync/?jobId=${jobId}`
+        );
+        setIsSaved(response.data.isSaved);
+        setSavedJobId(response.data.savedJobId);
+      };
+
+      syncSavedJob();
+    }
+  }, [jobId]);
+
+  const unSaveJob = async () => {
+    try {
+      const response = await http.delete(`/saved-jobs/${savedJobId}`);
+      setIsSaved(false);
+    } catch (err: unknown | AxiosError) {
+      if (err instanceof AxiosError && err.response) {
+        return;
       }
     }
   };
@@ -53,13 +83,23 @@ const UserActions = ({ jobId }: IUserActionProps) => {
         <PopoverContent>
           <PopoverArrow />
           <PopoverBody width="50px">
-            <Box cursor="pointer" onClick={saveJob}>
-              <Tooltip label="Save job" fontSize="md">
-                <Box as="span">
-                  <AiOutlineHeart color="red" />
-                </Box>
-              </Tooltip>
-            </Box>
+            {isSaved ? (
+              <Box cursor="pointer" onClick={unSaveJob}>
+                <Tooltip label="Unsave job" fontSize="md">
+                  <Box as="span">
+                    <AiFillHeart color="red" />
+                  </Box>
+                </Tooltip>
+              </Box>
+            ) : (
+              <Box cursor="pointer" onClick={saveJob}>
+                <Tooltip label="Save job" fontSize="md">
+                  <Box as="span">
+                    <AiOutlineHeart color="red" />
+                  </Box>
+                </Tooltip>
+              </Box>
+            )}
           </PopoverBody>
           <PopoverCloseButton />
         </PopoverContent>

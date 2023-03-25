@@ -1,5 +1,6 @@
 package com.authentication.demo.savedjob;
 
+import com.authentication.demo.employer.Employer;
 import com.authentication.demo.job.Job;
 import com.authentication.demo.user.User;
 
@@ -30,18 +31,24 @@ public class SavedJob {
     @ManyToOne()
     private Job job;
 
+    @JoinColumn(name = "employer_id", referencedColumnName = "id")
+    @ManyToOne()
+    private Employer employer;
+
     public SavedJob() {
     }
 
-    public SavedJob(User user, Job job) {
+    public SavedJob(User user, Job job, Employer employer) {
         this.user = user;
         this.job = job;
+        this.employer = employer;
     }
 
-    public SavedJob(Long id, User user, Job job) {
+    public SavedJob(Long id, User user, Job job, Employer employer) {
         this.id = id;
         this.user = user;
         this.job = job;
+        this.employer = employer;
     }
 
     public Long getId() {
@@ -50,6 +57,10 @@ public class SavedJob {
 
     public Job getJob() {
         return job;
+    }
+
+    public Employer getEmployer() {
+        return employer;
     }
 
     public User getUser() {
@@ -66,5 +77,9 @@ public class SavedJob {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setEmployer(Employer employer) {
+        this.employer = employer;
     }
 }

@@ -1,12 +1,12 @@
 import { Box, Heading, Text, Flex } from '@chakra-ui/react';
-import { IJob } from '../../interfaces';
+import { IJob, ISavedJob } from '../../interfaces';
 import { AiOutlineCheck, AiOutlineClockCircle } from 'react-icons/ai';
 import { HiInformationCircle, HiUserGroup } from 'react-icons/hi';
 import { Link as RouterLink } from 'react-router-dom';
 import SaveJobActions from '../Job/SaveJobActions';
 
 interface IJobProps {
-  job: IJob;
+  job: IJob | ISavedJob;
   link: string;
   detailsType: string;
 }
@@ -49,13 +49,20 @@ const Job = ({ job, link, detailsType }: IJobProps) => {
             </Text>
             <AiOutlineCheck />
           </Flex>
-          {!job.multipleCandidates && (
+          {job.multipleCandidates && (
             <Flex mx="0.5rem" alignItems="center">
               <HiUserGroup />
               <Text mx="0.5rem">Hiring multiple candidates</Text>
             </Flex>
           )}
         </Flex>
+        {job.urgentlyHiring && (
+          <Box ml="0.5rem" mb="1rem">
+            <Text fontSize="0.85rem" color="text.primary">
+              Urgently Hiring
+            </Text>
+          </Box>
+        )}
       </Flex>
       <Flex fontSize="0.85rem" alignItems="center">
         <HiInformationCircle />

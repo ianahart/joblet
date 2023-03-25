@@ -7,7 +7,7 @@ import { http } from '../../helpers/utils';
 import { IUserContext } from '../../interfaces';
 import ProfileNavigationLink from './ProfileNavigationLink';
 import { CgFileDocument } from 'react-icons/cg';
-import { AiOutlineLogout } from 'react-icons/ai';
+import { AiOutlineLogout, AiOutlineHeart } from 'react-icons/ai';
 import EmployerLinks from './EmployerLinks';
 import { MdWorkOutline } from 'react-icons/md';
 
@@ -77,6 +77,13 @@ const ProfileNav = ({ triggerRef, setShowProfile }: IProfileNavProps) => {
         setShowProfile={setShowProfile}
         icon={<CgFileDocument />}
       />
+      <ProfileNavigationLink
+        to={`/saved-jobs`}
+        text="Saved Jobs"
+        setShowProfile={setShowProfile}
+        icon={<AiOutlineHeart />}
+      />
+
       {user.employerId !== 0 && user.employerId !== null && (
         <>
           <Flex

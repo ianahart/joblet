@@ -4,6 +4,30 @@ export interface ILoginResponse {
   userDto: IUser;
 }
 
+export interface ISyncSavedJobResponse {
+  isSaved: boolean;
+  savedJobId: number;
+}
+
+export interface ISavedJob {
+  availability: string;
+  id: number;
+  jobId: number;
+  multipleCandidates: boolean;
+  position: string;
+  urgentlyHiring: boolean;
+  userId: number;
+  location: string;
+  companyName: string;
+}
+
+export interface IGetSavedJobsResponse {
+  jobs: ISavedJob[];
+  page: number;
+  size: number;
+  totalPages: number;
+}
+
 export interface IEmployerJobMin {
   availability: string;
   body: string;
