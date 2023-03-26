@@ -34,7 +34,8 @@ public class SavedJobController {
     public ResponseEntity<SyncSavedJobResponse> syncSavedJob(@RequestParam("jobId") Long jobId) {
         SavedJob savedJob = this.savedJobService.syncSavedJob(jobId);
         Boolean savedJobExists = savedJob == null ? false : true;
-        return ResponseEntity.status(HttpStatus.OK).body(new SyncSavedJobResponse(savedJobExists, savedJob.getId()));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new SyncSavedJobResponse(savedJobExists, savedJob != null ? savedJob.getId() : null));
     }
 
     @PostMapping("/")

@@ -62,7 +62,7 @@ public class SavedJobService {
             SavedJob exists = this.savedJobRepository.checkIfSavedJobExists(jobId, user.getId());
             return exists;
         }
-        return new SavedJob();
+        return null;
     }
 
     public SavedJobPaginationDto getSavedJobs(Long userId, Integer page, Integer size, String direction) {
