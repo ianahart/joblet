@@ -8,7 +8,7 @@ import { MapContainer, TileLayer, Popup, Marker } from 'react-leaflet';
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import ReactQuill from 'react-quill';
 import EmployerActions from './EmployerActions';
-import { AiOutlineCheck } from 'react-icons/ai';
+import { AiFillMail, AiOutlineCheck, AiOutlineMail } from 'react-icons/ai';
 import { useEffect, useState, useMemo } from 'react';
 import UserActions from './UserActions';
 interface IJobDetailsProps {
@@ -37,6 +37,7 @@ const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
     }
   }, [job.location, provider]);
 
+  console.log(job);
   return (
     <Box
       minH="500px"
@@ -68,8 +69,13 @@ const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
             <Text ml="0.5rem">{job.availability}</Text>
           </Flex>
           <Box>
+            <Text color="text.primary" my="0.5rem" fontSize="0.85rem">
+              Posted by {job.firstName} {job.lastName}
+            </Text>
+          </Box>
+          <Box>
             <Text color="text.primary" my="0.5rem" fontStyle="italic" fontSize="0.85rem">
-              Posted {job.readableDate}.
+              Posted {job.readableDate}
             </Text>
           </Box>
         </Box>
@@ -102,6 +108,12 @@ const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
               iconTwo={<AiOutlineCheck />}
               iconOne={<BsFillClockFill />}
             />
+          </Box>
+          <Box my="1rem">
+            <Flex alignItems="center">
+              <AiFillMail />
+              <Text ml="1rem">{job.email}</Text>
+            </Flex>
           </Box>
         </Box>
         <Box

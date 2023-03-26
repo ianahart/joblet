@@ -63,6 +63,9 @@ export interface IEmployerJob {
   body: string;
   location: string;
   readableDate: string;
+  firstName: string;
+  lastName: string;
+  email: string;
 }
 
 export interface IJob extends IEmployerJob {}
