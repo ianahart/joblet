@@ -54,7 +54,7 @@ const EditProfile = () => {
   const getProfile = async () => {
     try {
       const response = await http.get(`/profiles/${profileId}`);
-      preFillForm(response.data.profile);
+      preFillForm(response.data);
     } catch (err: unknown | AxiosError) {
       if (err instanceof AxiosError && err.response) {
         return;
@@ -63,7 +63,7 @@ const EditProfile = () => {
   };
 
   const preFillForm = (data: IProfile) => {
-    const exclude = ['id', 'fileName'];
+    const exclude = ['id', 'fileName', 'resume'];
     for (let prop in data) {
       if (exclude.includes(prop)) {
         continue;

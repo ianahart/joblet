@@ -39,9 +39,19 @@ public class ProfileController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProfileResponse> getProfile(@PathVariable("id") Long id) {
+        Profile profile = this.profileService.getProfile(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ProfileResponse(this.profileService.getProfile(id)));
+                .body(new ProfileResponse(
+                        profile.getCity(),
+                        profile.getCountry(),
+                        profile.getEmail(),
+                        profile.getPhoneNumber(),
+                        profile.getResume(),
+                        profile.getState(),
+                        profile.getId(),
+                        profile.getFileName()));
+
     }
 
     @GetMapping("/download/{id}")

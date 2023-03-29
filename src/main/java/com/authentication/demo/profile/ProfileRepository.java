@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
     @Query(value = """
-               SELECT * FROM profile 
-               WHERE resume IS NULL
+               SELECT * FROM profile p
+               WHERE p.id = :profileId
             """, nativeQuery = true)
-    Profile checkForNullProfile(@Param("profileId") Long profileId);
+    Profile getProfile(@Param("profileId") Long profileId);
 
 }

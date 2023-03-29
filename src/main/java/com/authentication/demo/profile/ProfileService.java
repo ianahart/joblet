@@ -67,8 +67,7 @@ public class ProfileService {
 
     public Profile getProfile(Long id) {
         checkOwnerShip(id, "You can only view your own profile.");
-        Profile profile = this.profileRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Profile not found."));
+        Profile profile = this.profileRepository.getProfile(id);
         return profile;
     }
 

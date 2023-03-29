@@ -22,7 +22,7 @@ const Profile = () => {
   const getProfile = async () => {
     try {
       const response = await http.get(`/profiles/${profileId}`);
-      setProfile(response.data.profile);
+      setProfile(response.data);
     } catch (err: unknown | AxiosError) {
       if (err instanceof AxiosError && err.response) {
         console.log(err.response);
@@ -49,12 +49,12 @@ const Profile = () => {
   });
 
   const getFileName = () => {
-    if (file === null && profile.fileName === null) {
+    if (file === null && profile?.fileName === null) {
       return '';
     } else if (file !== null) {
       return file.name;
     } else {
-      return profile.fileName;
+      return profile?.fileName;
     }
   };
 
@@ -103,12 +103,12 @@ const Profile = () => {
           </Flex>
         </Flex>
         <BasicInformation
-          email={profile.email}
-          phone={profile.phoneNumber}
-          city={profile.city}
-          country={profile.country}
-          state={profile.state}
-          profileId={profile.id}
+          email={profile?.email}
+          phone={profile?.phoneNumber}
+          city={profile?.city}
+          country={profile?.country}
+          state={profile?.state}
+          profileId={profile?.id}
         />
         <Box>
           <Heading fontSize="1.5rem" color="black.primary">
@@ -125,7 +125,7 @@ const Profile = () => {
           >
             <FileUploader handleFileUpload={handleFileUpload} fileName={getFileName()} />
             <Box position="relative">
-              {profile.resume && (
+              {profile?.resume && (
                 <Box ref={triggerRef} cursor="pointer" onClick={handleResumeOptionsClick}>
                   <BsThreeDotsVertical />
                 </Box>
