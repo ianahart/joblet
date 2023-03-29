@@ -72,7 +72,7 @@ const ProfileNav = ({ triggerRef, setShowProfile }: IProfileNavProps) => {
         <Text fontWeight="bold">{user.email}</Text>
       </Box>
       <ProfileNavigationLink
-        to={`profile/${user.id}`}
+        to={`profile/${user.profileId}`}
         text="Profile"
         setShowProfile={setShowProfile}
         icon={<CgFileDocument />}

@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.authentication.demo.application.Application;
 import com.authentication.demo.employer.Employer;
 import com.authentication.demo.savedjob.SavedJob;
 
@@ -19,6 +20,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -56,6 +58,9 @@ public class Job {
 
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     private List<SavedJob> savedJobs;
+
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
+    private List<Application> applications;
 
     public Job() {
     }
@@ -104,6 +109,10 @@ public class Job {
         return id;
     }
 
+    public List<Application> getApplications() {
+        return applications;
+    }
+
     public String getBody() {
         return body;
     }
@@ -146,6 +155,10 @@ public class Job {
 
     public void setEmployer(Employer employer) {
         this.employer = employer;
+    }
+
+    public void setApplications(List<Application> applications) {
+        this.applications = applications;
     }
 
     public void setId(Long id) {

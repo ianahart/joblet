@@ -32,7 +32,7 @@ const EditProfile = () => {
   const checkForErrors = () => {
     let errors = false;
     for (const [_, field] of Object.entries(form)) {
-      if (field.error.length) {
+      if (field?.error?.length) {
         errors = true;
       }
     }

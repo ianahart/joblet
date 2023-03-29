@@ -3,6 +3,7 @@ package com.authentication.demo.user;
 import java.util.Collection;
 import java.util.List;
 
+import com.authentication.demo.application.Application;
 import com.authentication.demo.employer.Employer;
 import com.authentication.demo.passwordreset.PasswordReset;
 import com.authentication.demo.profile.Profile;
@@ -61,6 +62,9 @@ public class User implements UserDetails {
     private Employer employer;
 
     @OneToMany(mappedBy = "user")
+    private List<Application> applications;
+
+    @OneToMany(mappedBy = "user")
     private List<RefreshToken> refreshTokens;
 
     @OneToMany(mappedBy = "user")
@@ -113,6 +117,10 @@ public class User implements UserDetails {
 
     public Long getId() {
         return id;
+    }
+
+    public List<Application> getApplications() {
+        return applications;
     }
 
     public Employer getEmployer() {
@@ -191,6 +199,10 @@ public class User implements UserDetails {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    public void setApplications(List<Application> applications) {
+        this.applications = applications;
     }
 
     public void setPassword(String password) {

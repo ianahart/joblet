@@ -1,5 +1,6 @@
 package com.authentication.demo.employer;
 
+import com.authentication.demo.application.Application;
 import com.authentication.demo.job.Job;
 import com.authentication.demo.user.User;
 import com.authentication.demo.savedjob.*;
@@ -55,6 +56,9 @@ public class Employer {
     private User user;
 
     @OneToMany(mappedBy = "employer")
+    private List<Application> applications;
+
+    @OneToMany(mappedBy = "employer")
     private List<Job> jobs;
 
     @OneToMany(mappedBy = "employer")
@@ -100,6 +104,9 @@ public class Employer {
         return location;
     }
 
+    public List<Application> getApplications() {
+        return applications;
+    }
 
     public List<SavedJob> getSavedJobs() {
         return savedJobs;
@@ -151,6 +158,10 @@ public class Employer {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setApplications(List<Application> applications) {
+        this.applications = applications;
     }
 
     public void setSavedJobs(List<SavedJob> savedJobs) {

@@ -1,5 +1,5 @@
-import { Box, Flex, Heading, Text } from '@chakra-ui/react';
-import { IEmployerJob } from '../../interfaces';
+import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
+import { IEmployerJob, IUserContext } from '../../interfaces';
 import { FaMoneyBill } from 'react-icons/fa';
 import { BsFillClockFill } from 'react-icons/bs';
 
@@ -9,15 +9,19 @@ import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import ReactQuill from 'react-quill';
 import EmployerActions from './EmployerActions';
 import { AiFillMail, AiOutlineCheck, AiOutlineMail } from 'react-icons/ai';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useContext } from 'react';
 import UserActions from './UserActions';
+import { AxiosError } from 'axios';
+import { http } from '../../helpers/utils';
+import { UserContext } from '../../context/user';
 interface IJobDetailsProps {
   job: IEmployerJob;
   detailsType: string;
 }
-// if detailsType === user show apply now, favorite, not interested
 
 const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
+  const { user } = useContext(UserContext) as IUserContext;
+  const [error, setError] = useState('');
   const modules = { toolbar: [] };
   const [locationCoords, setLocationCoords] = useState<any>([]);
   const provider = useMemo(() => new OpenStreetMapProvider(), []);
@@ -37,7 +41,23 @@ const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
     }
   }, [job.location, provider]);
 
-  console.log(job);
+  const applyToJob = async () => {
+    try {
+      setError('');
+      const response = await http.post('/applications/', {
+        profileId: user.profileId,
+        userId: user.id,
+        jobId: job.id,
+        employerId: job.employerId,
+      });
+    } catch (err: unknown | AxiosError) {
+      if (err instanceof AxiosError && err.response) {
+        console.log(err.response);
+        setError(err.response.data.message);
+      }
+    }
+  };
+
   return (
     <Box
       minH="500px"
@@ -142,9 +162,7 @@ const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <Marker position={locationCoords[0]}>
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
+              <Popup>{job.location}</Popup>
             </Marker>
           </MapContainer>
         )}
@@ -154,6 +172,18 @@ const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
           borderColor="border.primary"
           height="1px"
         ></Box>
+        {error && (
+          <Text color="red" my="1rem" fontSize="0.85rem">
+            {error}
+          </Text>
+        )}
+        {detailsType === 'user' && (
+          <Box>
+            <Button onClick={applyToJob} colorScheme="teal">
+              Apply Now
+            </Button>
+          </Box>
+        )}
       </Box>
     </Box>
   );

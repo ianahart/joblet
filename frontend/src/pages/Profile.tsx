@@ -25,6 +25,7 @@ const Profile = () => {
       setProfile(response.data.profile);
     } catch (err: unknown | AxiosError) {
       if (err instanceof AxiosError && err.response) {
+        console.log(err.response);
         return;
       }
     }
@@ -101,7 +102,6 @@ const Profile = () => {
             </Text>
           </Flex>
         </Flex>
-
         <BasicInformation
           email={profile.email}
           phone={profile.phoneNumber}
@@ -125,9 +125,11 @@ const Profile = () => {
           >
             <FileUploader handleFileUpload={handleFileUpload} fileName={getFileName()} />
             <Box position="relative">
-              <Box ref={triggerRef} cursor="pointer" onClick={handleResumeOptionsClick}>
-                <BsThreeDotsVertical />
-              </Box>
+              {profile.resume && (
+                <Box ref={triggerRef} cursor="pointer" onClick={handleResumeOptionsClick}>
+                  <BsThreeDotsVertical />
+                </Box>
+              )}
               {resumeOptionsOpen && (
                 <Box
                   ref={menuRef}
