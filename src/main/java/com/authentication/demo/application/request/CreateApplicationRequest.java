@@ -1,26 +1,34 @@
 package com.authentication.demo.application.request;
 
-import com.authentication.demo.employer.Employer;
-import com.authentication.demo.job.Job;
-import com.authentication.demo.profile.Profile;
-import com.authentication.demo.user.User;
-
 public class CreateApplicationRequest {
 
     private Long jobId;
     private Long employerId;
     private Long userId;
     private Long profileId;
+    private String jobCompany;
+    private String jobPosition;
 
-    public CreateApplicationRequest(Long profileId, Long userId, Long jobId, Long employerId) {
+    public CreateApplicationRequest(Long profileId, Long userId, Long jobId, Long employerId, String jobCompany,
+            String jobPosition) {
         this.profileId = profileId;
         this.userId = userId;
         this.jobId = jobId;
         this.employerId = employerId;
+        this.jobCompany = jobCompany;
+        this.jobPosition = jobPosition;
     }
 
     public Long getJobId() {
         return jobId;
+    }
+
+    public String getJobCompany() {
+        return jobCompany;
+    }
+
+    public String getJobPosition() {
+        return jobPosition;
     }
 
     public Long getUserId() {
@@ -37,6 +45,18 @@ public class CreateApplicationRequest {
 
     public void setJob(Long jobId) {
         this.jobId = jobId;
+    }
+
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
+    }
+
+    public void setJobCompany(String jobCompany) {
+        this.jobCompany = jobCompany;
+    }
+
+    public void setJobPosition(String jobPosition) {
+        this.jobPosition = jobPosition;
     }
 
     public void setUserId(Long userId) {

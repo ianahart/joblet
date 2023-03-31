@@ -32,6 +32,8 @@ import UpdateEmployer from './pages/UpdateEmployer';
 import UpdateJob from './pages/UpdateJob';
 import ViewJob from './pages/ViewJob';
 import SavedJobs from './pages/SavedJobs';
+import EmployerInbox from './pages/EmployerInbox';
+import EmployerApplication from './pages/EmployerApplication';
 function App() {
   const { setUser, user } = useContext(UserContext) as IUserContext;
 
@@ -205,6 +207,22 @@ function App() {
                 element={
                   <RequireEmployerAuth>
                     <UpdateJob />
+                  </RequireEmployerAuth>
+                }
+              />
+              <Route
+                path="employers/inbox"
+                element={
+                  <RequireEmployerAuth>
+                    <EmployerInbox />
+                  </RequireEmployerAuth>
+                }
+              />
+              <Route
+                path="applications/:id"
+                element={
+                  <RequireEmployerAuth>
+                    <EmployerApplication />
                   </RequireEmployerAuth>
                 }
               />

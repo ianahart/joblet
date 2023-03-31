@@ -1,9 +1,13 @@
 package com.authentication.demo.application;
 
+import java.sql.Timestamp;
+
 import com.authentication.demo.employer.Employer;
 import com.authentication.demo.job.Job;
 import com.authentication.demo.profile.Profile;
 import com.authentication.demo.user.User;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,6 +29,12 @@ public class Application {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "job_company")
+    private String jobCompany;
+
+    @Column(name = "job_position")
+    private String jobPosition;
+
     @OneToOne()
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private Profile profile;
@@ -41,26 +51,39 @@ public class Application {
     @JoinColumn(name = "employer_id", referencedColumnName = "id")
     private Employer employer;
 
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+
     public Application() {
     }
 
-    public Application(Profile profile, User user, Job job, Employer employer) {
+    public Application(Profile profile, User user, Job job, Employer employer, String jobCompany, String jobPosition) {
         this.profile = profile;
         this.user = user;
         this.job = job;
         this.employer = employer;
+        this.jobCompany = jobCompany;
+        this.jobPosition = jobPosition;
     }
 
-    public Application(Long id, Profile profile, User user, Job job, Employer employer) {
+    public Application(Long id, Profile profile, User user, Job job, Employer employer, String jobCompany,
+            String jobPosition) {
         this.id = id;
         this.profile = profile;
         this.user = user;
         this.job = job;
         this.employer = employer;
+        this.jobCompany = jobCompany;
+        this.jobPosition = jobPosition;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
     public Job getJob() {
@@ -69,6 +92,14 @@ public class Application {
 
     public User getUser() {
         return user;
+    }
+
+    public String getJobCompany() {
+        return jobCompany;
+    }
+
+    public String getJobPosition() {
+        return jobPosition;
     }
 
     public Profile getProfile() {
@@ -91,8 +122,20 @@ public class Application {
         this.user = user;
     }
 
+    public void setJobCompany(String jobCompany) {
+        this.jobCompany = jobCompany;
+    }
+
+    public void setJobPosition(String jobPosition) {
+        this.jobPosition = jobPosition;
+    }
+
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public void setEmployer(Employer employer) {

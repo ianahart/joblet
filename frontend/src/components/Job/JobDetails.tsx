@@ -48,6 +48,8 @@ const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
         profileId: user.profileId,
         userId: user.id,
         jobId: job.id,
+        jobPosition: job.position,
+        jobCompany: job.companyName,
         employerId: job.employerId,
       });
     } catch (err: unknown | AxiosError) {

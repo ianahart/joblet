@@ -4,7 +4,7 @@ import { UserContext } from '../../context/user';
 import { IUserContext } from '../../interfaces';
 import ProfileNavigationLink from './ProfileNavigationLink';
 import { HiOutlineDocumentDuplicate } from 'react-icons/hi';
-import { AiOutlineUser } from 'react-icons/ai';
+import { AiOutlineMail, AiOutlineUser } from 'react-icons/ai';
 
 interface IEmployerlinks {
   setShowProfile: (open: boolean) => void;
@@ -30,6 +30,15 @@ const EmployerLinks = ({ setShowProfile }: IEmployerlinks) => {
           text="Update Employer"
           setShowProfile={setShowProfile}
           icon={<AiOutlineUser />}
+        />
+      )}
+
+      {user.employerId !== 0 && user.employerId !== null && (
+        <ProfileNavigationLink
+          to={`employers/inbox`}
+          text="Inbox"
+          setShowProfile={setShowProfile}
+          icon={<AiOutlineMail />}
         />
       )}
     </Box>

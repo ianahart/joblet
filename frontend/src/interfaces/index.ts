@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface ILoginResponse {
   refreshToken: string;
   token: string;
@@ -7,6 +9,38 @@ export interface ILoginResponse {
 export interface ISyncSavedJobResponse {
   isSaved: boolean;
   savedJobId: number;
+}
+
+export interface IApplication {
+  createdAt: ReactNode;
+  employerId: number;
+  id: number;
+  jobCompany: string;
+  jobId: number;
+  jobPosition: string;
+  profileId: number;
+  userId: number;
+}
+
+export interface IApplicationSingleView {
+  city: string;
+  country: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  resume: string;
+  state: string;
+}
+
+export interface IRetrieveApplicationResponse {
+  applicationDetailsDto: IApplicationSingleView;
+}
+
+export interface IRetrieveApplicationResponse {
+  page: number;
+  totalPages: number;
+  applications: IApplication[];
 }
 
 export interface ISavedJob {

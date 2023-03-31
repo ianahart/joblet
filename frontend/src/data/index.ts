@@ -19,6 +19,17 @@ export const createEmployerState = {
   location: { name: 'location', value: '', error: '', type: 'text' },
 };
 
+export const applicationState = {
+  state: '',
+  country: '',
+  city: '',
+  resume: '',
+  firstName: '',
+  lastName: '',
+  email: '',
+  phoneNumber: '',
+};
+
 export const jobFormState = {
   position: { name: 'position', value: '', error: '', type: 'text' },
   perHour: { name: 'perHour', value: '', error: '', type: 'text' },

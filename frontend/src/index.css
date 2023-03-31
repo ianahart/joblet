@@ -6,6 +6,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
 .active {
   transition: all 0.25s ease-out;
   border-bottom: 2px solid #57cc99;

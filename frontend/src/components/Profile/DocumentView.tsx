@@ -4,7 +4,7 @@ import { Document } from 'react-pdf';
 
 const DocumentView = () => {
   const location = useLocation();
-  console.log(location?.state.resume);
+  console.log(location);
   return (
     <Box minH="100vh">
       <object
