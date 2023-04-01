@@ -33,10 +33,21 @@ const EmployerApplication = () => {
     retrieveApplication();
   });
 
-  const viewApplication = () => {
+  const viewApplication = (e: React.MouseEvent<HTMLDivElement>) => {
     navigate('/document-view/', { state: { resume: application.resume } });
   };
-  console.log(application);
+
+  const deleteApplication = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    try {
+      e.stopPropagation();
+      const response = await http.delete(`/applications/${id}`);
+      navigate('/employers/inbox');
+    } catch (err: unknown | AxiosError) {
+      if (err instanceof AxiosError && err.response) {
+        console.log(err.response);
+      }
+    }
+  };
 
   return (
     <Box minH="100vh">
@@ -62,7 +73,22 @@ const EmployerApplication = () => {
           <Flex justifyContent="space-evenly">
             <TextBox label="Phone Number" value={application.phoneNumber} width="90%" />
           </Flex>
-          <Flex justifyContent="space-evenly" cursor="pointer" onClick={viewApplication}>
+          <Flex
+            my="1rem"
+            justifyContent="space-evenly"
+            cursor="pointer"
+            onClick={viewApplication}
+          >
+            <Button onClick={(e) => deleteApplication(e)} colorScheme="red" width="90%">
+              Delete
+            </Button>
+          </Flex>
+          <Flex
+            my="1rem"
+            justifyContent="space-evenly"
+            cursor="pointer"
+            onClick={(e) => viewApplication(e)}
+          >
             <Button colorScheme="teal" width="90%">
               View Application
             </Button>

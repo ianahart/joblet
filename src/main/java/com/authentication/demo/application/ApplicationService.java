@@ -53,6 +53,10 @@ public class ApplicationService {
         this.userRepository = userRepository;
     }
 
+    public void deleteApplication(Long id) {
+        this.applicationRepository.deleteById(id);
+    }
+
     public ApplicationDetailsDto getApplication(Long id, Long jobId, Long profileId, Long userId) {
 
         return this.applicationRepository.getApplication(id, profileId, userId);
