@@ -10,6 +10,7 @@ import ReactQuill from 'react-quill';
 import EmployerActions from './EmployerActions';
 import { AiFillMail, AiOutlineCheck, AiOutlineMail } from 'react-icons/ai';
 import { useEffect, useState, useMemo, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import UserActions from './UserActions';
 import { AxiosError } from 'axios';
 import { http } from '../../helpers/utils';
@@ -20,6 +21,7 @@ interface IJobDetailsProps {
 }
 
 const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
+  const navigate = useNavigate();
   const { user } = useContext(UserContext) as IUserContext;
   const [error, setError] = useState('');
   const modules = { toolbar: [] };
@@ -58,6 +60,10 @@ const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
         setError(err.response.data.message);
       }
     }
+  };
+
+  const navigateToWriteReview = () => {
+    navigate('/write-review', { state: { employerId: job.employerId } });
   };
 
   return (
@@ -100,6 +106,16 @@ const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
               Posted {job.readableDate}
             </Text>
           </Box>
+          <Flex justifyContent="flex-end">
+            <Text
+              onClick={navigateToWriteReview}
+              cursor="pointer"
+              color="text.primary"
+              role="button"
+            >
+              Write a review
+            </Text>
+          </Flex>
         </Box>
         <Box
           my="0.5rem"

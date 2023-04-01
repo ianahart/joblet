@@ -9,6 +9,7 @@ import com.authentication.demo.passwordreset.PasswordReset;
 import com.authentication.demo.profile.Profile;
 import com.authentication.demo.savedjob.SavedJob;
 import com.authentication.demo.refreshtoken.RefreshToken;
+import com.authentication.demo.review.Review;
 import com.authentication.demo.token.Token;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -76,6 +77,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<SavedJob> savedJobs;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Review> reviews;
+
     public User() {
 
     }
@@ -117,6 +121,10 @@ public class User implements UserDetails {
 
     public Long getId() {
         return id;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
     }
 
     public List<Application> getApplications() {
@@ -191,6 +199,10 @@ public class User implements UserDetails {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public void setLastName(String lastName) {

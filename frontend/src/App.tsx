@@ -34,6 +34,7 @@ import ViewJob from './pages/ViewJob';
 import SavedJobs from './pages/SavedJobs';
 import EmployerInbox from './pages/EmployerInbox';
 import EmployerApplication from './pages/EmployerApplication';
+import WriteReview from './pages/WriteReview';
 function App() {
   const { setUser, user } = useContext(UserContext) as IUserContext;
 
@@ -94,6 +95,15 @@ function App() {
                   </RequireAuth>
                 }
               />
+              <Route
+                path="write-review"
+                element={
+                  <RequireAuth>
+                    <WriteReview />
+                  </RequireAuth>
+                }
+              />
+
               <Route
                 path="forgot-password"
                 element={
