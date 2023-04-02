@@ -87,14 +87,7 @@ function App() {
                   </RequireGuest>
                 }
               />
-              <Route
-                path="company-reviews"
-                element={
-                  <RequireAuth>
-                    <CompanyReviews />
-                  </RequireAuth>
-                }
-              />
+              <Route path="company-reviews" element={<CompanyReviews />} />
               <Route
                 path="write-review"
                 element={

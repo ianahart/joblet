@@ -22,6 +22,21 @@ export interface IApplication {
   userId: number;
 }
 
+export interface IReview {
+  companyName: string;
+  firstName: string;
+  id: number;
+  lastName: string;
+  rating: number;
+  text: string;
+}
+
+export interface IRetrieveReviewsResponse {
+  page: number;
+  reviewDtos: IReview[];
+  totalPages: number;
+}
+
 export interface IApplicationSingleView {
   city: string;
   country: string;

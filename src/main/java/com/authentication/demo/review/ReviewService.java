@@ -6,11 +6,18 @@ import com.authentication.demo.advice.NotFoundException;
 import com.authentication.demo.advice.BadRequestException;
 import com.authentication.demo.employer.Employer;
 import com.authentication.demo.employer.EmployerRepository;
+import com.authentication.demo.review.dto.ReviewDto;
+import com.authentication.demo.review.dto.ReviewPaginationDto;
 import com.authentication.demo.review.request.CreateReviewRequest;
 import com.authentication.demo.user.User;
 import com.authentication.demo.user.UserRepository;
+import com.authentication.demo.util.MyUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,6 +37,17 @@ public class ReviewService {
         this.reviewRepository = reviewRepository;
         this.userRepository = userRepository;
         this.employerRepository = employerRepository;
+    }
+
+    public ReviewPaginationDto getReviews(Integer page, Integer size, String direction) {
+        Integer currentPage = MyUtils.paginate(page, direction);
+
+        Pageable paging = PageRequest.of(currentPage, size, Sort.by("id"));
+        Page<ReviewDto> pagedResult = this.reviewRepository.getReviews(paging);
+
+        return new ReviewPaginationDto(pagedResult.getContent(),
+                pagedResult.getTotalPages(), currentPage);
+
     }
 
     public void createReview(CreateReviewRequest request) {
