@@ -50,6 +50,10 @@ public class ReviewService {
 
     }
 
+    public void deleteReview(Long id) {
+        this.reviewRepository.deleteById(id);
+    }
+
     public void createReview(CreateReviewRequest request) {
         User user = this.userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new NotFoundException("User not found."));

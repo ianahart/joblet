@@ -3,12 +3,15 @@ package com.authentication.demo.review;
 import com.authentication.demo.review.dto.ReviewPaginationDto;
 import com.authentication.demo.review.request.CreateReviewRequest;
 import com.authentication.demo.review.response.CreateReviewResponse;
+import com.authentication.demo.review.response.DeleteReviewResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +26,12 @@ public class ReviewController {
 
     public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<DeleteReviewResponse> deleteReview(@PathVariable("id") Long id) {
+        this.reviewService.deleteReview(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new DeleteReviewResponse("Success"));
     }
 
     @GetMapping("/")

@@ -29,6 +29,7 @@ export interface IReview {
   lastName: string;
   rating: number;
   text: string;
+  userId: number;
 }
 
 export interface IRetrieveReviewsResponse {

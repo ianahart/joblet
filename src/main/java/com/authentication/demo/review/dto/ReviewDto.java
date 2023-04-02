@@ -7,18 +7,26 @@ public class ReviewDto {
     private String firstName;
     private String lastName;
     private String companyName;
+    private Long userId;
 
-    public ReviewDto(String text, Long id, Integer rating, String firstName, String lastName, String companyName) {
+    public ReviewDto(String text, Long id, Integer rating, String firstName, String lastName, String companyName,
+
+            Long userId) {
         this.text = text;
         this.id = id;
         this.rating = rating;
         this.firstName = firstName;
         this.lastName = lastName;
         this.companyName = companyName;
+        this.userId = userId;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public Long getUserId() {
+        return userId;
     }
 
     public String getFirstName() {
@@ -43,6 +51,10 @@ public class ReviewDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public void setFirstName(String firstName) {

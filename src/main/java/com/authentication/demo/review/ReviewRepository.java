@@ -16,7 +16,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query(value = """
             SELECT new com.authentication.demo.review.dto.ReviewDto(
-            r.text, r.id, r.rating, u.firstName, u.lastName, e.companyName)
+            r.text, r.id, r.rating, u.firstName, u.lastName, e.companyName, u.id as userId)
             FROM Review r
             INNER JOIN r.user u
             INNER JOIN r.employer e

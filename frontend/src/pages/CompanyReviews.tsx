@@ -7,6 +7,7 @@ import { http } from '../helpers/utils';
 import { IRetrieveReviewsResponse, IReview, IUserContext } from '../interfaces';
 import Header from '../components/Header';
 import Review from '../components/Review';
+import { nanoid } from 'nanoid';
 
 const CompanyReviews = () => {
   const { user } = useContext(UserContext) as IUserContext;
@@ -14,6 +15,12 @@ const CompanyReviews = () => {
   const [direction, setDirection] = useState('next');
   const [totalPages, setTotalPages] = useState(0);
   const [reviews, setReviews] = useState<IReview[]>([]);
+
+  const deleteReviewItem = (id: number) => {
+    const filtered = [...reviews].filter((review) => review.id !== id);
+
+    setReviews(filtered);
+  };
 
   useEffect(() => {
     const retrieveReviews = async () => {
@@ -65,7 +72,13 @@ const CompanyReviews = () => {
       <Box width={['95%', '95%', '590px']} mx="auto">
         <Flex alignItems="center" flexDir="column">
           {reviews.map((review) => {
-            return <Review key={review.id} review={review} />;
+            return (
+              <Review
+                deleteReviewItem={deleteReviewItem}
+                key={review.id}
+                review={review}
+              />
+            );
           })}
         </Flex>
         {reviews.length > 0 && (
