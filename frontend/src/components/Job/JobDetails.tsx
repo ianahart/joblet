@@ -8,7 +8,7 @@ import { MapContainer, TileLayer, Popup, Marker } from 'react-leaflet';
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import ReactQuill from 'react-quill';
 import EmployerActions from './EmployerActions';
-import { AiFillMail, AiOutlineCheck, AiOutlineMail } from 'react-icons/ai';
+import { AiFillMail, AiFillStar, AiOutlineCheck, AiOutlineMail } from 'react-icons/ai';
 import { useEffect, useState, useMemo, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserActions from './UserActions';
@@ -24,6 +24,7 @@ const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext) as IUserContext;
   const [error, setError] = useState('');
+  const [rating, setRating] = useState(0);
   const modules = { toolbar: [] };
   const [locationCoords, setLocationCoords] = useState<any>([]);
   const provider = useMemo(() => new OpenStreetMapProvider(), []);
@@ -42,6 +43,22 @@ const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
       geocode();
     }
   }, [job.location, provider]);
+
+  useEffect(() => {
+    if (job.employerId !== 0) {
+      const fetchAvgReview = async () => {
+        try {
+          const response = await http.get(`/reviews/avg?employerId=${job.employerId}`);
+          setRating(response.data.avgRating);
+        } catch (err: unknown | AxiosError) {
+          if (err instanceof AxiosError && err.response) {
+            return;
+          }
+        }
+      };
+      fetchAvgReview();
+    }
+  }, [job.employerId]);
 
   const applyToJob = async () => {
     try {
@@ -106,6 +123,11 @@ const JobDetails = ({ job, detailsType }: IJobDetailsProps) => {
               Posted {job.readableDate}
             </Text>
           </Box>
+          <Flex>
+            {[...Array(5)].map((star, index) => {
+              return <AiFillStar color={rating > index ? 'orange' : 'black'} />;
+            })}
+          </Flex>
           <Flex justifyContent="flex-end">
             <Text
               onClick={navigateToWriteReview}

@@ -39,6 +39,11 @@ public class ReviewService {
         this.employerRepository = employerRepository;
     }
 
+    public Integer getAvgReviewRating(Long employerId) {
+        Integer avgRating = this.reviewRepository.getAvgReviewRating(employerId);
+        return avgRating;
+    }
+
     public ReviewPaginationDto getReviews(Integer page, Integer size, String direction) {
         Integer currentPage = MyUtils.paginate(page, direction);
 

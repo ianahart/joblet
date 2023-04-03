@@ -4,6 +4,7 @@ import com.authentication.demo.review.dto.ReviewPaginationDto;
 import com.authentication.demo.review.request.CreateReviewRequest;
 import com.authentication.demo.review.response.CreateReviewResponse;
 import com.authentication.demo.review.response.DeleteReviewResponse;
+import com.authentication.demo.review.response.GetAverageRatingResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,12 @@ public class ReviewController {
 
     public ReviewController(ReviewService reviewService) {
         this.reviewService = reviewService;
+    }
+
+    @GetMapping("/avg")
+    public ResponseEntity<GetAverageRatingResponse> getAvgReviewRating(@RequestParam("employerId") Long employerId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new GetAverageRatingResponse(this.reviewService.getAvgReviewRating(employerId)));
     }
 
     @DeleteMapping("/{id}")

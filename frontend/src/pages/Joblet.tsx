@@ -84,10 +84,7 @@ const Joblet = () => {
       </Box>
       <Box width={['95%', '95%', '590px']} mx="auto">
         <Box display="flex">
-          <Input
-            onChange={handleOnChange}
-            placeholder="Search job positions"
-          />
+          <Input onChange={handleOnChange} placeholder="Search job positions" />
         </Box>
         <Flex alignItems="center" flexDir="column">
           {jobs.map((job) => {
