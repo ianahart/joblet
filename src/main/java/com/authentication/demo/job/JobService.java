@@ -78,6 +78,16 @@ public class JobService {
         return employerJob;
     }
 
+    public JobPaginationDto getJobsSearch(Integer page, Integer size, String direction, String q) {
+        Integer currentPage = MyUtils.paginate(page, direction);
+
+        Pageable paging = PageRequest.of(currentPage, size, Sort.by("id"));
+        Page<JobDto> pagedResult = this.jobRepository.findJobsSearch(q.toLowerCase(), paging);
+
+        return new JobPaginationDto(pagedResult.getContent(), pagedResult.getTotalPages(), currentPage);
+
+    }
+
     public JobPaginationDto getJobs(Integer page, Integer size, String direction) {
         Integer currentPage = MyUtils.paginate(page, direction);
 

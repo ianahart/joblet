@@ -42,6 +42,23 @@ public class JobController {
         this.jobService = jobService;
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<GetJobsResponse> getJobsSearch(
+            @RequestParam("page") String page, @RequestParam("size") String size,
+            @RequestParam("direction") String direction, @RequestParam("q") String q) {
+
+        JobPaginationDto jobPagination = this.jobService
+                .getJobsSearch(Integer.valueOf(page),
+                        Integer.valueOf(size), direction, q);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new GetJobsResponse(
+                        jobPagination.getPage(),
+                        Integer.valueOf(size),
+                        jobPagination.getJobDto(),
+                        jobPagination.getTotalPages()));
+    }
+
     @GetMapping("/")
     public ResponseEntity<GetJobsResponse> getJobs(
             @RequestParam("page") String page, @RequestParam("size") String size,
@@ -122,7 +139,6 @@ public class JobController {
     @GetMapping("/{id}")
     public ResponseEntity<ViewJobDto> getJob(@PathVariable("id") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(
-            this.jobService.getJob(id)
-        );
+                this.jobService.getJob(id));
     }
 }

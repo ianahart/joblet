@@ -30,6 +30,13 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     Page<JobDto> findJobs(Pageable pageable);
 
     @Query(value = """
+             SELECT new com.authentication.demo.job.dto.JobDto(j.id, j.position,
+             j.perHour, j.body, j.createdAt, j.multipleCandidates, j.urgentlyHiring, j.availability, e.id,
+             e.companyName, e.location) from Job j INNER JOIN j.employer e
+            WHERE LOWER(j.position) LIKE %:q% ORDER BY e.createdAt""")
+    Page<JobDto> findJobsSearch(@Param("q") String q, Pageable pageable);
+
+    @Query(value = """
                SELECT new com.authentication.demo.job.dto.ViewJobDto(
             j.id, j.position, j.perHour, j.body, j.createdAt, j.multipleCandidates, j.urgentlyHiring, j.availability, e.id, e.companyName, e.location,
             e.email, e.firstName, e.lastName, e.numOfEmployees) from Job j INNER JOIN j.employer e WHERE j.id = :jobId ORDER BY j.createdAt""")

@@ -30,7 +30,7 @@ const Review = ({ review, deleteReviewItem }: IReviewProps) => {
       setIsPopUpShowing(false);
 
       const response = await http.delete(`/reviews/${review.id}`);
-            deleteReviewItem(review.id);
+      deleteReviewItem(review.id);
     } catch (err: unknown | AxiosError) {
       if (err instanceof AxiosError && err.response) {
         console.log(err.response);

@@ -1,7 +1,8 @@
-import { Box, Text, Flex, Button } from '@chakra-ui/react';
+import { Box, Text, Flex, Button, Input } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
 import { http } from '../helpers/utils';
-import { useState, useEffect, useContext } from 'react';
+import { debounce } from 'lodash';
+import { useCallback, useState, useEffect, useContext } from 'react';
 import { UserContext } from '../context/user';
 import { IJob, IUserContext } from '../interfaces';
 import { MdWork } from 'react-icons/md';
@@ -12,6 +13,7 @@ const Joblet = () => {
   const { user } = useContext(UserContext) as IUserContext;
   const [page, setPage] = useState(0);
   const [direction, setDirection] = useState('next');
+  const [searchInput, setSearchInput] = useState('');
   const [totalPages, setTotalPages] = useState(0);
   const [jobs, setJobs] = useState<IJob[]>([]);
 
@@ -50,12 +52,43 @@ const Joblet = () => {
     }
   };
 
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+    debouncedSearch(e.target.value);
+  };
+
+  const debouncedSearch = useCallback(
+    debounce((value) => search(value), 200),
+    []
+  );
+
+  const search = async (value: string) => {
+    try {
+      const response = await http.get(
+        `/jobs/search?page=-1&size=2&direction=next&q=${value}`
+      );
+      setPage(response.data.page);
+      setTotalPages(response.data.totalPages);
+      setJobs(response.data.jobs);
+    } catch (err: unknown | AxiosError) {
+      if (err instanceof AxiosError && err.response) {
+        console.log(err.response);
+      }
+    }
+  };
+
   return (
     <Box>
       <Box mt="5rem">
         <Header icon={<MdWork />} title="Joblet" text="Explore the job feed" />
       </Box>
       <Box width={['95%', '95%', '590px']} mx="auto">
+        <Box display="flex">
+          <Input
+            onChange={handleOnChange}
+            placeholder="Search job positions"
+          />
+        </Box>
         <Flex alignItems="center" flexDir="column">
           {jobs.map((job) => {
             return (
