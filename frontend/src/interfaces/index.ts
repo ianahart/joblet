@@ -32,6 +32,16 @@ export interface IReview {
   userId: number;
 }
 
+export interface ISearch {
+  id: number;
+  userId: number;
+  term: string;
+}
+
+export interface IGetSearchesResponse {
+  searches: ISearch[];
+}
+
 export interface IRetrieveReviewsResponse {
   page: number;
   reviewDtos: IReview[];

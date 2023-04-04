@@ -4,16 +4,19 @@ import { http } from '../helpers/utils';
 import { debounce } from 'lodash';
 import { useCallback, useState, useEffect, useContext } from 'react';
 import { UserContext } from '../context/user';
-import { IJob, IUserContext } from '../interfaces';
+import { IGetSearchesResponse, IJob, ISearch, IUserContext } from '../interfaces';
 import { MdWork } from 'react-icons/md';
 import Header from '../components/Header';
 import Job from '../components/Job/Job';
+import Jobs from '../components/Joblet/Jobs';
+import Searches from '../components/Joblet/Searches';
 
 const Joblet = () => {
   const { user } = useContext(UserContext) as IUserContext;
   const [page, setPage] = useState(0);
   const [direction, setDirection] = useState('next');
-  const [searchInput, setSearchInput] = useState('');
+  const [searches, setSearches] = useState<ISearch[]>([]);
+  const [active, setActive] = useState('jobs');
   const [totalPages, setTotalPages] = useState(0);
   const [jobs, setJobs] = useState<IJob[]>([]);
 
@@ -47,20 +50,10 @@ const Joblet = () => {
       setJobs(response.data.jobs);
     } catch (err: unknown | AxiosError) {
       if (err instanceof AxiosError && err.response) {
-        console.log(err.response);
+        return;
       }
     }
   };
-
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value);
-    debouncedSearch(e.target.value);
-  };
-
-  const debouncedSearch = useCallback(
-    debounce((value) => search(value), 200),
-    []
-  );
 
   const search = async (value: string) => {
     try {
@@ -70,6 +63,50 @@ const Joblet = () => {
       setPage(response.data.page);
       setTotalPages(response.data.totalPages);
       setJobs(response.data.jobs);
+    } catch (err: unknown | AxiosError) {
+      if (err instanceof AxiosError && err.response) {
+        return;
+      }
+    }
+  };
+
+  const resetJobs = async () => {
+    try {
+      setPage(0);
+      setTotalPages(0);
+      setJobs([]);
+      const response = await http.get(`/jobs/?page=-1&size=3&direction=next`);
+      setPage(response.data.page);
+      setTotalPages(response.data.totalPages);
+      setJobs(response.data.jobs);
+    } catch (err: unknown | AxiosError) {
+      if (err instanceof AxiosError && err.response) {
+        console.log(err.response);
+      }
+    }
+  };
+
+  const fetchSearches = async () => {
+    try {
+      setActive('searches');
+      const response = await http.get<IGetSearchesResponse>(`/searches/`);
+      setSearches(response.data.searches);
+    } catch (err: unknown | AxiosError) {
+      if (err instanceof AxiosError && err.response) {
+        console.log(err.response);
+      }
+    }
+  };
+
+  const research = async (value: string) => {
+    await search(value);
+    setActive('jobs');
+  };
+
+  const removeSearch = async (id: number) => {
+    try {
+      setSearches((prevState) => prevState.filter((search) => search.id !== id));
+      await http.delete(`/searches/${id}`);
     } catch (err: unknown | AxiosError) {
       if (err instanceof AxiosError && err.response) {
         console.log(err.response);
@@ -82,31 +119,29 @@ const Joblet = () => {
       <Box mt="5rem">
         <Header icon={<MdWork />} title="Joblet" text="Explore the job feed" />
       </Box>
-      <Box width={['95%', '95%', '590px']} mx="auto">
-        <Box display="flex">
-          <Input onChange={handleOnChange} placeholder="Search job positions" />
+      <Flex my="2rem" justifyContent="center">
+        <Box onClick={() => setActive('jobs')} mx="1rem" cursor="pointer">
+          <Text fontWeight="bold">Job Feed</Text>
+          <Box className={active === 'jobs' ? 'slide-right-div' : ''}></Box>
         </Box>
-        <Flex alignItems="center" flexDir="column">
-          {jobs.map((job) => {
-            return (
-              <Job detailsType="user" key={job.id} job={job} link={`/jobs/${job.id}`} />
-            );
-          })}
-        </Flex>
-        {jobs.length > 0 && (
-          <Flex justifyContent="center" mt="3rem" alignItems="center">
-            {page + 1 > 1 && <Button onClick={() => paginateJobs('prev')}>Prev</Button>}
-            <Box>
-              <Text mx="1rem">
-                {page + 1} of {totalPages}
-              </Text>
-            </Box>
-            {page + 1 !== totalPages && (
-              <Button onClick={() => paginateJobs('next')}>Next</Button>
-            )}
-          </Flex>
-        )}
-      </Box>
+        <Box onClick={fetchSearches} mx="1rem" cursor="pointer">
+          <Text fontWeight="bold">Recent Searches</Text>
+          <Box className={active === 'searches' ? 'slide-left-div' : ''}></Box>
+        </Box>
+      </Flex>
+      {active === 'jobs' && (
+        <Jobs
+          resetJobs={resetJobs}
+          search={search}
+          page={page}
+          totalPages={totalPages}
+          jobs={jobs}
+          paginateJobs={paginateJobs}
+        />
+      )}
+      {active === 'searches' && (
+        <Searches research={research} searches={searches} removeSearch={removeSearch} />
+      )}
     </Box>
   );
 };

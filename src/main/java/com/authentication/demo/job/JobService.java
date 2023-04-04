@@ -9,10 +9,12 @@ import com.authentication.demo.job.dto.ViewJobDto;
 import com.authentication.demo.job.request.CreateJobRequest;
 import com.authentication.demo.job.request.UpdateJobRequest;
 import com.authentication.demo.job.response.DeleteJobResponse;
+import com.authentication.demo.search.SearchService;
 import com.authentication.demo.user.User;
 import com.authentication.demo.user.UserRepository;
 import com.authentication.demo.util.MyUtils;
 import com.authentication.demo.advice.NotFoundException;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.authentication.demo.advice.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +25,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @Service
 public class JobService {
+
+    @Autowired
+    private final SearchService searchService;
 
     @Autowired
     private final UserRepository userRepository;
@@ -36,10 +43,11 @@ public class JobService {
     final EmployerRepository employerRepository;
 
     public JobService(JobRepository jobRepository, EmployerRepository employerRepository,
-            UserRepository userRepository) {
+            UserRepository userRepository, SearchService searchService) {
         this.jobRepository = jobRepository;
         this.employerRepository = employerRepository;
         this.userRepository = userRepository;
+        this.searchService = searchService;
 
     }
 
@@ -78,7 +86,24 @@ public class JobService {
         return employerJob;
     }
 
-    public JobPaginationDto getJobsSearch(Integer page, Integer size, String direction, String q) {
+    public JobPaginationDto getJobsSearch(Integer page, Integer size, String direction, String q,
+            HttpServletRequest request) {
+
+        String userName = "";
+        Object auth = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        if (auth instanceof UserDetails) {
+            userName = ((UserDetails) auth).getUsername();
+        }
+
+        User user = this.userRepository
+                .findByEmail(userName)
+                .orElseThrow(() -> new NotFoundException("User not found."));
+        this.searchService.createSearch(user, q);
+
         Integer currentPage = MyUtils.paginate(page, direction);
 
         Pageable paging = PageRequest.of(currentPage, size, Sort.by("id"));

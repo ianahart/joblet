@@ -266,3 +266,37 @@ tr:nth-child(even) {
   width: 100wh;
   height: 100vh;
 }
+
+.slide-left-div {
+  border: 2px solid #57cc99;
+  animation: divleft 0.5s forwards;
+}
+
+.slide-right-div {
+  border: 2px solid #57cc99;
+  animation: divright 0.5s forwards;
+}
+
+@keyframes divright {
+  0% {
+    opacity: 0;
+    transform: translateX(-200px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes divleft {
+  0% {
+    opacity: 0;
+    transform: translateX(200px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

@@ -8,6 +8,7 @@ import com.authentication.demo.employer.Employer;
 import com.authentication.demo.passwordreset.PasswordReset;
 import com.authentication.demo.profile.Profile;
 import com.authentication.demo.savedjob.SavedJob;
+import com.authentication.demo.search.Search;
 import com.authentication.demo.refreshtoken.RefreshToken;
 import com.authentication.demo.review.Review;
 import com.authentication.demo.token.Token;
@@ -75,6 +76,9 @@ public class User implements UserDetails {
     private List<PasswordReset> passwordResets;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Search> searches;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<SavedJob> savedJobs;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -125,6 +129,10 @@ public class User implements UserDetails {
 
     public List<Review> getReviews() {
         return reviews;
+    }
+
+    public List<Search> getSearches() {
+        return searches;
     }
 
     public List<Application> getApplications() {
@@ -203,6 +211,11 @@ public class User implements UserDetails {
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+
+    public void setSearches(List<Search> searches) {
+        this.searches = searches;
     }
 
     public void setLastName(String lastName) {

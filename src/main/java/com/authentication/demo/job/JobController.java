@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @Validated
@@ -45,11 +46,11 @@ public class JobController {
     @GetMapping("/search")
     public ResponseEntity<GetJobsResponse> getJobsSearch(
             @RequestParam("page") String page, @RequestParam("size") String size,
-            @RequestParam("direction") String direction, @RequestParam("q") String q) {
+            @RequestParam("direction") String direction, @RequestParam("q") String q, HttpServletRequest request) {
 
         JobPaginationDto jobPagination = this.jobService
                 .getJobsSearch(Integer.valueOf(page),
-                        Integer.valueOf(size), direction, q);
+                        Integer.valueOf(size), direction, q, request);
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new GetJobsResponse(
