@@ -22,6 +22,7 @@ import com.authentication.demo.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 
+@CrossOrigin(origins = "https://prod-joblet.netlify.app")
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
