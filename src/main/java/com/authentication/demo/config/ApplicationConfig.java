@@ -1,5 +1,7 @@
 package com.authentication.demo.config;
 
+import java.util.List;
+
 import com.authentication.demo.user.UserRepository;
 
 import org.springframework.context.annotation.Bean;
@@ -14,6 +16,9 @@ import org.springframework.security.authentication.AuthenticationProvider;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 public class ApplicationConfig {
@@ -50,5 +55,17 @@ public class ApplicationConfig {
     @Bean
     public PageableHandlerMethodArgumentResolverCustomizer customize() {
         return p -> p.setOneIndexedParameters(true);
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        final CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(List.of("https://prod-joblet.netlify.app"));
+        config.setAllowedHeaders(List.of("Origin", "Content-Type", "Accept"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "OPTIONS", "DELETE", "PATCH"));
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 }
