@@ -38,13 +38,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf()
+        http.cors().and().csrf()
                 .disable()
-                .cors()
-                .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/auth/**", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/swagger-config",
-                        "/api/v1/reviews/", "https://prod-joblet.herokuapp.com/")
+                        "/api/v1/reviews/", "https://prod-joblet.herokuapp.com/", "https://prod-joblet.netlify.app/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
