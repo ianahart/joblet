@@ -14,6 +14,8 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
 
+import java.util.Objects;
+
 @Entity()
 @Table(name = "saved_job")
 public class SavedJob {
@@ -81,5 +83,17 @@ public class SavedJob {
 
     public void setEmployer(Employer employer) {
         this.employer = employer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SavedJob savedJob)) return false;
+        return Objects.equals(id, savedJob.id) && Objects.equals(user, savedJob.user) && Objects.equals(job, savedJob.job) && Objects.equals(employer, savedJob.employer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, job, employer);
     }
 }

@@ -1,6 +1,7 @@
 package com.authentication.demo.passwordreset;
 
 import java.sql.Date;
+import java.util.Objects;
 
 import com.authentication.demo.user.User;
 
@@ -88,4 +89,15 @@ public class PasswordReset {
         this.createdAt = createdAt;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PasswordReset that)) return false;
+        return Objects.equals(id, that.id) && Objects.equals(createdAt, that.createdAt) && Objects.equals(token, that.token) && Objects.equals(user, that.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, createdAt, token, user);
+    }
 }

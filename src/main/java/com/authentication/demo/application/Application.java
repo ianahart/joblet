@@ -1,6 +1,7 @@
 package com.authentication.demo.application;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 import com.authentication.demo.employer.Employer;
 import com.authentication.demo.job.Job;
@@ -140,5 +141,17 @@ public class Application {
 
     public void setEmployer(Employer employer) {
         this.employer = employer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Application that)) return false;
+        return Objects.equals(id, that.id) && Objects.equals(jobCompany, that.jobCompany) && Objects.equals(jobPosition, that.jobPosition) && Objects.equals(profile, that.profile) && Objects.equals(user, that.user) && Objects.equals(job, that.job) && Objects.equals(employer, that.employer) && Objects.equals(createdAt, that.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, jobCompany, jobPosition, profile, user, job, employer, createdAt);
     }
 }

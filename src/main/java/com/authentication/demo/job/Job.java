@@ -3,6 +3,7 @@ package com.authentication.demo.job;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 import com.authentication.demo.application.Application;
 import com.authentication.demo.employer.Employer;
@@ -213,5 +214,17 @@ public class Job {
                 ", multipleCandidates=" + multipleCandidates +
                 ", body=" + body +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Job job)) return false;
+        return Objects.equals(id, job.id) && Objects.equals(position, job.position) && Objects.equals(perHour, job.perHour) && Objects.equals(availability, job.availability) && Objects.equals(urgentlyHiring, job.urgentlyHiring) && Objects.equals(multipleCandidates, job.multipleCandidates) && Objects.equals(createdAt, job.createdAt) && Objects.equals(updatedAt, job.updatedAt) && Objects.equals(body, job.body) && Objects.equals(employer, job.employer) && Objects.equals(savedJobs, job.savedJobs) && Objects.equals(applications, job.applications);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, position, perHour, availability, urgentlyHiring, multipleCandidates, createdAt, updatedAt, body, employer, savedJobs, applications);
     }
 }

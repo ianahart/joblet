@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.sql.Date;
 import java.util.List;
+import java.util.Objects;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -233,4 +234,15 @@ public class Employer {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Employer employer)) return false;
+        return Objects.equals(id, employer.id) && Objects.equals(companyName, employer.companyName) && Objects.equals(numOfEmployees, employer.numOfEmployees) && Objects.equals(firstName, employer.firstName) && Objects.equals(lastName, employer.lastName) && Objects.equals(email, employer.email) && Objects.equals(createdAt, employer.createdAt) && Objects.equals(updatedAt, employer.updatedAt) && Objects.equals(location, employer.location) && Objects.equals(locationQuestionId, employer.locationQuestionId) && Objects.equals(user, employer.user) && Objects.equals(applications, employer.applications) && Objects.equals(jobs, employer.jobs) && Objects.equals(savedJobs, employer.savedJobs) && Objects.equals(reviews, employer.reviews);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, companyName, numOfEmployees, firstName, lastName, email, createdAt, updatedAt, location, locationQuestionId, user, applications, jobs, savedJobs, reviews);
+    }
 }

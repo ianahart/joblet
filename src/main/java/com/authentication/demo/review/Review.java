@@ -13,6 +13,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "review")
 public class Review {
@@ -73,5 +75,17 @@ public class Review {
 
     public void setEmployer(Employer employer) {
         this.employer = employer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Review review)) return false;
+        return Objects.equals(id, review.id) && Objects.equals(text, review.text) && Objects.equals(rating, review.rating) && Objects.equals(user, review.user) && Objects.equals(employer, review.employer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, text, rating, user, employer);
     }
 }

@@ -1,6 +1,7 @@
 package com.authentication.demo.refreshtoken;
 
 import java.time.Instant;
+import java.util.Objects;
 
 import com.authentication.demo.user.User;
 
@@ -77,5 +78,17 @@ public class RefreshToken {
 
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RefreshToken that)) return false;
+        return Objects.equals(id, that.id) && Objects.equals(user, that.user) && Objects.equals(refreshToken, that.refreshToken) && Objects.equals(expiryDate, that.expiryDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, refreshToken, expiryDate);
     }
 }

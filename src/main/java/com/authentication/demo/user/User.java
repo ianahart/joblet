@@ -2,6 +2,7 @@ package com.authentication.demo.user;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import com.authentication.demo.application.Application;
 import com.authentication.demo.employer.Employer;
@@ -293,4 +294,15 @@ public class User implements UserDetails {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+        return Objects.equals(id, user.id) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(abbreviation, user.abbreviation) && role == user.role && Objects.equals(profile, user.profile) && Objects.equals(employer, user.employer) && Objects.equals(applications, user.applications) && Objects.equals(refreshTokens, user.refreshTokens) && Objects.equals(tokens, user.tokens) && Objects.equals(passwordResets, user.passwordResets) && Objects.equals(searches, user.searches) && Objects.equals(savedJobs, user.savedJobs) && Objects.equals(reviews, user.reviews);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, email, password, abbreviation, role, profile, employer, applications, refreshTokens, tokens, passwordResets, searches, savedJobs, reviews);
+    }
 }

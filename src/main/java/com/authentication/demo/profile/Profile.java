@@ -1,6 +1,7 @@
 package com.authentication.demo.profile;
 
 import java.net.URL;
+import java.util.Objects;
 
 import com.authentication.demo.application.Application;
 import com.authentication.demo.user.User;
@@ -158,4 +159,15 @@ public class Profile {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Profile profile)) return false;
+        return Objects.equals(id, profile.id) && Objects.equals(email, profile.email) && Objects.equals(phoneNumber, profile.phoneNumber) && Objects.equals(city, profile.city) && Objects.equals(state, profile.state) && Objects.equals(country, profile.country) && Objects.equals(resume, profile.resume) && Objects.equals(fileName, profile.fileName) && Objects.equals(application, profile.application) && Objects.equals(user, profile.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, phoneNumber, city, state, country, resume, fileName, application, user);
+    }
 }

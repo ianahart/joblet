@@ -1,6 +1,7 @@
 package com.authentication.demo.search;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 import com.authentication.demo.user.User;
 
@@ -81,5 +82,17 @@ public class Search {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Search search)) return false;
+        return Objects.equals(id, search.id) && Objects.equals(createdAt, search.createdAt) && Objects.equals(term, search.term) && Objects.equals(user, search.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, createdAt, term, user);
     }
 }
