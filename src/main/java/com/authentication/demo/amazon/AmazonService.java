@@ -109,6 +109,7 @@ public class AmazonService {
         S3ObjectInputStream inputStream = s3Object.getObjectContent();
         try {
             byte[] content = IOUtils.toByteArray(inputStream);
+            inputStream.close();
             return content;
         } catch (IOException e) {
             e.printStackTrace();
