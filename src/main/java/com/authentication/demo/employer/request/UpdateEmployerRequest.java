@@ -1,22 +1,21 @@
 package com.authentication.demo.employer.request;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Size;
 
 public class UpdateEmployerRequest {
 
-    @Size(max = 175, message = "Pleae keep company name under 175 characters.")
+    @Size(max = 175, message = "Please keep company name under 175 characters.")
     private String companyName;
-    @Size(max = 175, message = "Pleae keep first name under 175 characters.")
+    @Size(max = 175, message = "Please keep first name under 175 characters.")
     private String numOfEmployees;
-    @Size(max = 175, message = "Pleae keep first name under 175 characters.")
+    @Size(max = 175, message = "Please keep first name under 175 characters.")
     private String firstName;
-    @Size(max = 175, message = "Pleae keep last name under 175 characters.")
+    @Size(max = 175, message = "Please keep last name under 175 characters.")
     private String lastName;
     @Email(message = "Please provide a valid email address.")
     private String email;
-    @Size(max = 175, message = "Pleae keep location under 175 characters.")
+    @Size(max = 175, message = "Please keep location under 175 characters.")
     private String location;
 
     public UpdateEmployerRequest() {

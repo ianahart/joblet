@@ -20,7 +20,7 @@ public class PasswordResetService {
     }
 
     public void isResetTokenValid(String token) {
-        PasswordReset passwordReset = this.passwordResetRepository.findByToken(token)
+        this.passwordResetRepository.findByToken(token)
                 .orElseThrow(() -> new ForbiddenException("Reset token is invalid."));
     }
 

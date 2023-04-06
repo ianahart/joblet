@@ -32,9 +32,6 @@ public class JobPaginationDto {
         this.page = page;
     }
 
-    public void setJobDto(List<JobDto> jobDto) {
-        this.jobDto = jobDto;
-    }
 
     public void setTotalPages(Integer totalPages) {
         this.totalPages = totalPages;

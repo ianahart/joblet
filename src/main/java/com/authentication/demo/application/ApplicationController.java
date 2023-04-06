@@ -40,7 +40,7 @@ public class ApplicationController {
 
     @PostMapping("/")
     public void createApplication(@RequestBody CreateApplicationRequest request) {
-        Application application = this.applicationService.createApplication(request);
+        this.applicationService.createApplication(request);
     }
 
     @GetMapping("/")

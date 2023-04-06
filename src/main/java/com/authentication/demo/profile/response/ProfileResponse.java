@@ -1,6 +1,5 @@
 package com.authentication.demo.profile.response;
 
-import com.authentication.demo.profile.Profile;
 
 public class ProfileResponse {
 

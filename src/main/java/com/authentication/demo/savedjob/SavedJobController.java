@@ -64,7 +64,7 @@ public class SavedJobController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<DeleteSavedJobResponse> deleteSavedJob(@PathVariable("") Long id) {
+    public ResponseEntity<DeleteSavedJobResponse> deleteSavedJob(@PathVariable("id") Long id) {
 
         this.savedJobService.deleteSavedJob(id);
         return ResponseEntity.status(HttpStatus.OK).body(new DeleteSavedJobResponse("Success"));

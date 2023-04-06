@@ -1,6 +1,6 @@
 package com.authentication.demo.employer;
 
-import com.amazonaws.services.xray.model.Http;
+
 import com.authentication.demo.employer.request.CreateEmployerRequest;
 import com.authentication.demo.employer.request.UpdateEmployerRequest;
 import com.authentication.demo.employer.response.CreateEmployerResponse;

@@ -22,6 +22,7 @@ env.properties
 
 ### IntelliJ IDEA ###
 .idea
+.metadata
 *.iws
 *.iml
 *.ipr

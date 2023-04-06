@@ -59,8 +59,7 @@ public class SavedJobService {
             User user = this.userRepository.findByEmail(username)
                     .orElseThrow(() -> new NotFoundException("User not found"));
 
-            SavedJob exists = this.savedJobRepository.checkIfSavedJobExists(jobId, user.getId());
-            return exists;
+            return this.savedJobRepository.checkIfSavedJobExists(jobId, user.getId());
         }
         return null;
     }

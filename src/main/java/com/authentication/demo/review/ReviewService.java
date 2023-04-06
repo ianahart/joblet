@@ -40,8 +40,7 @@ public class ReviewService {
     }
 
     public Integer getAvgReviewRating(Long employerId) {
-        Integer avgRating = this.reviewRepository.getAvgReviewRating(employerId);
-        return avgRating;
+        return this.reviewRepository.getAvgReviewRating(employerId);
     }
 
     public ReviewPaginationDto getReviews(Integer page, Integer size, String direction) {

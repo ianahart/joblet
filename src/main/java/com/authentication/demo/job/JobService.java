@@ -157,8 +157,8 @@ public class JobService {
         currentJob.setMultipleCandidates(request.getMultipleCandidates());
         currentJob.setBody(request.getBody());
 
-        Job updatedJob = this.jobRepository.save(currentJob);
-        return updatedJob;
+        return this.jobRepository.save(currentJob);
+
     }
 
     public ViewJobDto getJob(Long jobId) {

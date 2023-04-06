@@ -1,6 +1,5 @@
 package com.authentication.demo.job.request;
 
-import com.authentication.demo.employer.Employer;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Size;

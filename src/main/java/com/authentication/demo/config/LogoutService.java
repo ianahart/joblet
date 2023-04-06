@@ -1,7 +1,6 @@
 package com.authentication.demo.config;
 
 import com.authentication.demo.advice.NotFoundException;
-import com.authentication.demo.token.Token;
 import com.authentication.demo.token.TokenRepository;
 import com.authentication.demo.user.User;
 import com.authentication.demo.user.UserRepository;

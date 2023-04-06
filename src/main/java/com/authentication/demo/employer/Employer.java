@@ -5,7 +5,6 @@ import com.authentication.demo.job.Job;
 import com.authentication.demo.review.Review;
 import com.authentication.demo.user.User;
 import com.authentication.demo.savedjob.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.sql.Date;
 import java.util.List;

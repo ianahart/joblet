@@ -63,7 +63,7 @@ public class UserService {
         Claims claims = extractUserIdFromToken(token);
 
         User user = getUserByEmail(claims.getSubject());
-        UserDto userDto = new UserDto(
+        return new UserDto(
                 user.getId(),
                 user.getProfile().getId(),
                 user.getEmail(),
@@ -72,8 +72,6 @@ public class UserService {
                 user.getRole(),
                 user.getAbbreviation(),
                 user.getEmployer() == null ? null : user.getEmployer().getId());
-        return userDto;
-
     }
 
     public User getUserByEmail(String email) {
