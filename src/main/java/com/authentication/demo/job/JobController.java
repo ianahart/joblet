@@ -74,7 +74,7 @@ public class JobController {
                         jobPagination.getTotalPages()));
     }
 
-    @DeleteMapping("/{id")
+    @DeleteMapping("owner/{id}")
     public ResponseEntity<DeleteJobResponse> deleteJob(@PathVariable("id") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(this.jobService.deleteEmployerJob(id));
     }
