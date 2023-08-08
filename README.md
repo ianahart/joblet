@@ -63,5 +63,5 @@ In order for the email portion of the website to work you will need to make an a
 
 - user smith@aol.com
 - pass Test12345%
-- https://prod-joblet.netlify.app
+
 
